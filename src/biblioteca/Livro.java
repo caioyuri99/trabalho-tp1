@@ -72,6 +72,8 @@ public class Livro extends Item {
                 ", edicao='" + this.getEdicao() + "'" +
                 ", condicao='" + this.getCondicao() + "'" +
                 ", disponivel='" + this.isDisponivel() + "'" +
+                ", obra='" + this.getObra().getId() + "'" +
+                ", leitor='" + this.getLeitor().getCpf() + "'" +
                 " tipoCapa='" + this.getTipoCapa() + "'" +
                 ", dataLancamento='" + this.getDataLancamento() + "'" +
                 "}";

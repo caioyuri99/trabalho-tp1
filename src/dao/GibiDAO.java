@@ -153,4 +153,37 @@ public class GibiDAO {
         }
     }
 
+    public ArrayList<Item> getLoans(Cliente leitor) {
+        ArrayList<Item> items = new ArrayList<Item>();
+        String query = "SELECT * FROM gibi WHERE leitor = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Gibi gibi = new Gibi();
+                gibi.setId(rs.getInt("id"));
+                gibi.setEditora(rs.getString("editora"));
+                gibi.setEdicao(rs.getInt("edicao"));
+                gibi.setCondicao(rs.getString("condicao"));
+                gibi.setDisponivel(rs.getBoolean("disponivel"));
+                gibi.setTipo(rs.getString("tipo"));
+                gibi.setCategoria(rs.getString("categoria"));
+                gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+                gibi.setLeitor(leitor);
+
+                items.add(gibi);
+            }
+
+            return items;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar: " + e.getMessage());
+
+            return null;
+        }
+    }
+
 }

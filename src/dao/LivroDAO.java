@@ -154,4 +154,38 @@ public class LivroDAO {
             return false;
         }
     }
+
+    public ArrayList<Item> getLoans(Cliente leitor) {
+        ArrayList<Item> items = new ArrayList<Item>();
+
+        String query = "SELECT * FROM livro WHERE leitor = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Livro livro = new Livro();
+                livro.setId(rs.getInt("id"));
+                livro.setEditora(rs.getString("editora"));
+                livro.setEdicao(rs.getInt("edicao"));
+                livro.setCondicao(rs.getString("condicao"));
+                livro.setDisponivel(rs.getBoolean("disponivel"));
+                livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+                livro.setTipoCapa(rs.getString("tipoCapa"));
+                livro.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
+                livro.setLeitor(leitor);
+
+                items.add(livro);
+            }
+
+            return items;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao obter: " + e.getMessage());
+
+            return null;
+        }
+    }
 }

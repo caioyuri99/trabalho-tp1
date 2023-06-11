@@ -149,4 +149,36 @@ public class RevistaDAO {
             return false;
         }
     }
+
+    public ArrayList<Item> getLoans(Cliente leitor) {
+        ArrayList<Item> items = new ArrayList<Item>();
+        String query = "SELECT * FROM revista WHERE leitor = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Revista revista = new Revista();
+                revista.setId(rs.getInt("id"));
+                revista.setEditora(rs.getString("editora"));
+                revista.setEdicao(rs.getInt("edicao"));
+                revista.setCondicao(rs.getString("condicao"));
+                revista.setDisponivel(rs.getBoolean("disponivel"));
+                revista.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+                revista.setCategoria(rs.getString("categoria"));
+                revista.setLeitor(leitor);
+
+                items.add(revista);
+            }
+
+            return items;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao obter: " + e.getMessage());
+
+            return null;
+        }
+    }
 }
