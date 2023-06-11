@@ -15,6 +15,11 @@ public class Emprestimo {
     public Emprestimo() {
     }
 
+    public Emprestimo(ArrayList<Item> itens, Cliente cliente) {
+        this.itens = itens;
+        this.cliente = cliente;
+    }
+
     public Emprestimo(LocalDate dataDevolucao, LocalDate dataEmprestimo, ArrayList<Item> itens, Cliente cliente) {
         this.dataDevolucao = dataDevolucao;
         this.dataEmprestimo = dataEmprestimo;
