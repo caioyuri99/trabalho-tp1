@@ -1,8 +1,9 @@
 import biblioteca.Cliente;
 import biblioteca.Item;
+import biblioteca.Livro;
 import biblioteca.Obra;
 import dao.ClienteDAO;
-import dao.EmprestimoDAO;
+import dao.LivroDAO;
 import dao.ObraDAO;
 
 public class App {
@@ -13,8 +14,8 @@ public class App {
 
         Cliente c = new ClienteDAO().getCliente("11111111111");
 
-        EmprestimoDAO dao = new EmprestimoDAO();
+        LivroDAO dao = new LivroDAO();
 
-        dao.insert(c, i);
+        dao.updateLeitor((Livro) i, c, false);
     }
 }

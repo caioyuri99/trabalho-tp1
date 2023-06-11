@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import biblioteca.Cliente;
 import biblioteca.Item;
 import biblioteca.Obra;
 import biblioteca.Revista;
@@ -123,6 +124,27 @@ public class RevistaDAO {
 
         } catch (Exception e) {
             System.out.println("Erro ao remover: " + e.getMessage());
+
+            return false;
+        }
+    }
+
+    public boolean updateLeitor(Revista revista, Cliente leitor, boolean disponivel) {
+        String query = "UPDATE revista SET leitor = ?, disponivel = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            stmt.setBoolean(2, disponivel);
+            stmt.setInt(3, revista.getId());
+            stmt.execute();
+
+            System.out.println("Leitor atualizado com sucesso!");
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
 
             return false;
         }
