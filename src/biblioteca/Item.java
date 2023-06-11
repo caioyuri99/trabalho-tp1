@@ -34,6 +34,8 @@ public abstract class Item {
 
     public abstract boolean remover();
 
+    public abstract boolean emprestar(Cliente leitor);
+
     // GETTERS & SETTERS
     public int getId() {
         return this.id;

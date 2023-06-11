@@ -45,6 +45,16 @@ public class Gibi extends Item {
         return dao.delete(this.id);
     }
 
+    @Override
+    public boolean emprestar(Cliente leitor) {
+        this.leitor = leitor;
+        this.disponivel = false;
+
+        GibiDAO dao = new GibiDAO();
+
+        return dao.updateLeitor(this, leitor, false);
+    }
+
     // GETTERS & SETTTERS
     public String getTipo() {
         return tipo;
@@ -61,4 +71,5 @@ public class Gibi extends Item {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
 }

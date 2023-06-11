@@ -47,6 +47,16 @@ public class Livro extends Item {
         return dao.delete(this.id);
     }
 
+    @Override
+    public boolean emprestar(Cliente leitor) {
+        this.leitor = leitor;
+        this.disponivel = false;
+
+        LivroDAO dao = new LivroDAO();
+
+        return dao.updateLeitor(this, leitor, false);
+    }
+
     // GETTERS & SETTERS
     public String getTipoCapa() {
         return tipoCapa;

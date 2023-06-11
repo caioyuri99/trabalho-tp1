@@ -35,6 +35,16 @@ public class Revista extends Item {
         return dao.delete(this.id);
     }
 
+    @Override
+    public boolean emprestar(Cliente leitor) {
+        this.leitor = leitor;
+        this.disponivel = false;
+
+        RevistaDAO dao = new RevistaDAO();
+
+        return dao.updateLeitor(this, leitor, false);
+    }
+
     // GETTERS & SETTERS
     public String getCategoria() {
         return categoria;
