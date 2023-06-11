@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dao.ClienteDAO;
+import dao.EmprestimoDAO;
+import dao.GibiDAO;
+import dao.LivroDAO;
+import dao.RevistaDAO;
 
 public class Cliente extends Usuario {
     // ATRIBUTOS
@@ -70,11 +74,28 @@ public class Cliente extends Usuario {
     public boolean fazerEmprestimo(Emprestimo emprestimo) {
         if (this.getTotalEmprestimos() + emprestimo.getItems().size() > 5) {
             System.out.println("Somente 5 itens podem ser emprestados por vez.");
-            
+
             return false;
         }
 
-        return false;
+        // TODO: Verificar se o cliente tem multa
+        // TODO: Verificar se o cliente tem algum item atrasado
+        // TODO: Verificar se o item está disponível
+
+        EmprestimoDAO dao = new EmprestimoDAO();
+        for (Item item : emprestimo.getItems()) {
+            boolean registrar = dao.insert(this, item);
+
+            boolean emprestar = item.emprestar(this);
+
+            if (!registrar || !emprestar) {
+                System.out.println("Erro ao fazer emprestimo.");
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean fazerRenovacao(Item item) {
@@ -87,20 +108,34 @@ public class Cliente extends Usuario {
 
     public int getTotalEmprestimos() {
         int tot = 0;
-        for (Emprestimo emprestimo : this.emprestimos) {
-            tot += emprestimo.getItems().size();
-        }
+
+        // FIXME: SOLUÇÃO TEMPORÁRIA PARA CONTAR EMPRESTIMOS
+        LivroDAO livroDAO = new LivroDAO();
+        RevistaDAO revistaDAO = new RevistaDAO();
+        GibiDAO gibiDAO = new GibiDAO();
+
+        tot += livroDAO.getEmprestados(this).size();
+        tot += revistaDAO.getEmprestados(this).size();
+        tot += gibiDAO.getEmprestados(this).size();
 
         return tot;
     }
 
     // GETTERS & SETTERS
+    public double getSaldoDevedor() {
+        return this.saldoDevedor;
+    }
+
     public void setSaldoDevedor(double valor) {
         this.saldoDevedor = valor;
     }
 
-    public double getSaldoDevedor() {
-        return this.saldoDevedor;
+    public ArrayList<Emprestimo> getEmprestimos() {
+        return this.emprestimos;
+    }
+
+    public void setEmprestimos(ArrayList<Emprestimo> emprestimos) {
+        this.emprestimos = emprestimos;
     }
 
 }
