@@ -32,7 +32,7 @@ public class ObraDAO {
             stmt.setString(4, obra.getAutor());
             stmt.setInt(5, obra.getVolume());
             stmt.setString(6, obra.getGenero());
-            stmt.setInt(7, obra.getClassificaoIndicativa());
+            stmt.setString(7, Integer.toString(obra.getClassificaoIndicativa()));
             stmt.setInt(8, estante.getId());
             stmt.execute();
 
