@@ -68,6 +68,7 @@ public class RevistaDAO {
             revista.setCondicao(rs.getString("condicao"));
             revista.setDisponivel(rs.getBoolean("disponivel"));
             revista.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+            revista.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             revista.setCategoria(rs.getString("categoria"));
 
             return revista;
@@ -150,7 +151,7 @@ public class RevistaDAO {
         }
     }
 
-    public ArrayList<Item> getLoans(Cliente leitor) {
+    public ArrayList<Item> getEmprestados(Cliente leitor) {
         ArrayList<Item> items = new ArrayList<Item>();
         String query = "SELECT * FROM revista WHERE leitor = ?";
 

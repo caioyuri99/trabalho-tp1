@@ -70,6 +70,7 @@ public class LivroDAO {
             livro.setCondicao(rs.getString("condicao"));
             livro.setDisponivel(rs.getBoolean("disponivel"));
             livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+            livro.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             livro.setTipoCapa(rs.getString("tipoCapa"));
             livro.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
 
@@ -155,7 +156,7 @@ public class LivroDAO {
         }
     }
 
-    public ArrayList<Item> getLoans(Cliente leitor) {
+    public ArrayList<Item> getEmprestados(Cliente leitor) {
         ArrayList<Item> items = new ArrayList<Item>();
 
         String query = "SELECT * FROM livro WHERE leitor = ?";

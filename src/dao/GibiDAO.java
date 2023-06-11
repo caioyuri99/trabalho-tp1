@@ -68,9 +68,10 @@ public class GibiDAO {
             gibi.setEdicao(rs.getInt("edicao"));
             gibi.setCondicao(rs.getString("condicao"));
             gibi.setDisponivel(rs.getBoolean("disponivel"));
+            gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
+            gibi.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             gibi.setTipo(rs.getString("tipo"));
             gibi.setCategoria(rs.getString("categoria"));
-            gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
 
             return gibi;
 
@@ -153,7 +154,7 @@ public class GibiDAO {
         }
     }
 
-    public ArrayList<Item> getLoans(Cliente leitor) {
+    public ArrayList<Item> getEmprestados(Cliente leitor) {
         ArrayList<Item> items = new ArrayList<Item>();
         String query = "SELECT * FROM gibi WHERE leitor = ?";
 
