@@ -109,6 +109,12 @@ public class Cliente extends Usuario {
     }
 
     public boolean fazerRenovacao(Emprestimo emprestimo) {
+        if (!this.cpf.equals(emprestimo.getLeitor().getCpf())) {
+            System.out.println("O emprestimo não pertence ao cliente.");
+
+            return false;
+        }
+
         if (emprestimo.getQtdRenovacoes() == 3) {
             System.out.println("O emprestimo já foi renovado 3 vezes.");
 
@@ -135,8 +141,24 @@ public class Cliente extends Usuario {
         return true;
     }
 
-    public boolean fazerDevolucao(Item item) {
-        return false;
+    public boolean fazerDevolucao(Emprestimo emprestimo) {
+        if (!this.cpf.equals(emprestimo.getLeitor().getCpf())) {
+            System.out.println("O emprestimo não pertence ao cliente.");
+
+            return false;
+        }
+
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        boolean res = dao.devolucao(emprestimo.getId());
+
+        if (!res) {
+            System.out.println("Erro ao fazer devolução.");
+
+            return false;
+        }
+
+        return true;
     }
 
     public int getTotalEmprestimos() {
