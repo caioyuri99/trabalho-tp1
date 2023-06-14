@@ -13,8 +13,8 @@ public class Funcionario extends Usuario {
     public Funcionario() {
     }
 
-    public Funcionario(String nome, String cpf, String senha, LocalDate dataNasc, String cargo) {
-        super(nome, cpf, senha, dataNasc);
+    public Funcionario(String cpf, String senha, String nome, LocalDate dataNasc, String cargo) {
+        super(cpf, senha, nome, dataNasc);
         this.cargo = cargo;
     }
 
