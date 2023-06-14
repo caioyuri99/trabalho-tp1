@@ -78,9 +78,19 @@ public class Cliente extends Usuario {
             return false;
         }
 
-        // TODO: Verificar se o cliente tem multa
-        // TODO: Verificar se o cliente tem algum item atrasado
-        // TODO: Verificar se o item está disponível
+        if (this.saldoDevedor > 0) {
+            System.out.println("O cliente possui multa.");
+
+            return false;
+        }
+
+        for (Emprestimo emp : this.emprestimos) {
+            if (emp.getDataDevolucao().isBefore(LocalDate.now())) {
+                System.out.println("O cliente possui itens atrasados.");
+
+                return false;
+            }
+        }
 
         EmprestimoDAO dao = new EmprestimoDAO();
         for (Item item : emprestimo.getItems()) {
@@ -98,8 +108,31 @@ public class Cliente extends Usuario {
         return true;
     }
 
-    public boolean fazerRenovacao(Item item) {
-        return false;
+    public boolean fazerRenovacao(Emprestimo emprestimo) {
+        if (emprestimo.getQtdRenovacoes() == 3) {
+            System.out.println("O emprestimo já foi renovado 3 vezes.");
+
+            return false;
+        }
+
+        if (this.saldoDevedor > 0) {
+            System.out.println("O cliente possui multa.");
+
+            return false;
+        }
+
+        EmprestimoDAO dao = new EmprestimoDAO();
+        boolean res = dao.renovacao(emprestimo.getId());
+
+        if (!res) {
+            System.out.println("Erro ao fazer renovação.");
+
+            return false;
+        }
+
+        emprestimo.setQtdRenovacoes(emprestimo.getQtdRenovacoes() + 1);
+
+        return true;
     }
 
     public boolean fazerDevolucao(Item item) {
@@ -109,7 +142,6 @@ public class Cliente extends Usuario {
     public int getTotalEmprestimos() {
         int tot = 0;
 
-        // FIXME: SOLUÇÃO TEMPORÁRIA PARA CONTAR EMPRESTIMOS
         LivroDAO livroDAO = new LivroDAO();
         RevistaDAO revistaDAO = new RevistaDAO();
         GibiDAO gibiDAO = new GibiDAO();
