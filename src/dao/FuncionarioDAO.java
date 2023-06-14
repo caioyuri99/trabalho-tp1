@@ -20,7 +20,7 @@ public class FuncionarioDAO {
     }
 
     // MÉTODOS
-    public String insert(Funcionario funcionario) {
+    public boolean insert(Funcionario funcionario) {
         String query = "INSERT INTO funcionario(cpf, senha, nome, dataNasc, cargo) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -32,10 +32,14 @@ public class FuncionarioDAO {
             stmt.setString(5, funcionario.getCargo());
             stmt.execute();
 
-            return "Funcionário inserido com sucesso!";
+            System.out.println("Funcionário inserido com sucesso!");
+
+            return true;
 
         } catch (Exception e) {
-            return "Erro ao inserir: " + e.getMessage();
+            System.out.println("Erro ao inserir: " + e.getMessage());
+
+            return false;
         }
     }
 
