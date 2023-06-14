@@ -6,28 +6,62 @@ import java.time.LocalDate;
 public class Emprestimo {
     // ATRIBUTOS
     // static final double valor_multa = 3.0; <- Ideia de multa fixa.
+    private int id;
+    private String tipoItem;
+    private Item item;
+    private Cliente leitor;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
     private ArrayList<Item> itens = new ArrayList<>();
-    private Cliente cliente;
+    private int qtdRenovacoes;
 
     // CONSTRUTORES
     public Emprestimo() {
     }
 
-    public Emprestimo(ArrayList<Item> itens, Cliente cliente) {
-        this.itens = itens;
-        this.cliente = cliente;
+    public Emprestimo(Cliente leitor) {
+        this.leitor = leitor;
     }
 
-    public Emprestimo(LocalDate dataDevolucao, LocalDate dataEmprestimo, ArrayList<Item> itens, Cliente cliente) {
+    public Emprestimo(LocalDate dataDevolucao, LocalDate dataEmprestimo, Cliente leitor) {
         this.dataDevolucao = dataDevolucao;
         this.dataEmprestimo = dataEmprestimo;
-        this.itens = itens;
-        this.cliente = cliente;
+        this.leitor = leitor;
     }
 
     // GETTERS & SETTERS
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTipoItem() {
+        return this.tipoItem;
+    }
+
+    public void setTipoItem(String tipoItem) {
+        this.tipoItem = tipoItem;
+    }
+
+    public Item getItem() {
+        return this.item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public Cliente getLeitor() {
+        return this.leitor;
+    }
+
+    public void setLeitor(Cliente leitor) {
+        this.leitor = leitor;
+    }
+
     public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
     }
@@ -52,12 +86,12 @@ public class Emprestimo {
         this.itens = itens;
     }
 
-    public Cliente getCliente() {
-        return this.cliente;
+    public int getQtdRenovacoes() {
+        return this.qtdRenovacoes;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setQtdRenovacoes(int qtdRenovacoes) {
+        this.qtdRenovacoes = qtdRenovacoes;
     }
 
 }
