@@ -74,19 +74,4 @@ public class Livro extends Item {
         this.dataLancamento = dataLancamento;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                " id='" + this.getId() + "'" +
-                ", editora='" + this.getEditora() + "'" +
-                ", edicao='" + this.getEdicao() + "'" +
-                ", condicao='" + this.getCondicao() + "'" +
-                ", disponivel='" + this.isDisponivel() + "'" +
-                ", obra='" + this.getObra().getId() + "'" +
-                ", leitor='" + this.getLeitor().getCpf() + "'" +
-                " tipoCapa='" + this.getTipoCapa() + "'" +
-                ", dataLancamento='" + this.getDataLancamento() + "'" +
-                "}";
-    }
-
 }
