@@ -151,6 +151,25 @@ public class EmprestimoDAO {
         }
     }
 
+    public int getTotalEmprestimos(Cliente leitor) {
+        String query = "SELECT COUNT(*) AS total FROM emprestimo WHERE leitor = ? AND NOT devolvido";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.first();
+
+            return rs.getInt("total");
+
+        } catch (Exception e) {
+            System.out.println("Erro ao obter: " + e.getMessage());
+
+            return 0;
+        }
+    }
+
     public boolean renovacao(int id) {
         String query = "UPDATE emprestimo SET dataDevolucao = ?, qtdRenovacoes = ? WHERE id = ?";
 

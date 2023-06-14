@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 import dao.ClienteDAO;
 import dao.EmprestimoDAO;
-import dao.GibiDAO;
-import dao.LivroDAO;
-import dao.RevistaDAO;
 
 public class Cliente extends Usuario {
     // ATRIBUTOS
@@ -162,17 +159,9 @@ public class Cliente extends Usuario {
     }
 
     public int getTotalEmprestimos() {
-        int tot = 0;
+        EmprestimoDAO dao = new EmprestimoDAO();
 
-        LivroDAO livroDAO = new LivroDAO();
-        RevistaDAO revistaDAO = new RevistaDAO();
-        GibiDAO gibiDAO = new GibiDAO();
-
-        tot += livroDAO.getEmprestados(this).size();
-        tot += revistaDAO.getEmprestados(this).size();
-        tot += gibiDAO.getEmprestados(this).size();
-
-        return tot;
+        return dao.getTotalEmprestimos(this);
     }
 
     // GETTERS & SETTERS
