@@ -25,6 +25,3 @@ replay_pid*
 
 # config archives
 .vscode
-
-# test archives
-App.java
