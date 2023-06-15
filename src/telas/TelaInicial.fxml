@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -12,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TelaInicial">
    <left>
       <AnchorPane prefHeight="410.0" prefWidth="350.0" style="-fx-background-color: #ffca2b; -fx-border-color: #ffffff; -fx-border-width: 0px 3px 0px 0px;" BorderPane.alignment="CENTER">
          <children>
@@ -48,8 +50,6 @@
             </Text>
             <Line endX="70.78311157226562" endY="0.517578125" layoutX="176.0" layoutY="274.0" startX="-76.9999771118164" startY="0.517578125" stroke="WHITE" />
             <Line endX="113.78311157226562" endY="0.7841796875" layoutX="157.0" layoutY="327.0" startX="-76.9999771118164" startY="0.517578125" stroke="WHITE" />
-            <Hyperlink layoutX="113.0" layoutY="461.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
-            <Hyperlink layoutX="103.0" layoutY="439.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
          </children>
       </AnchorPane>
    </left>
@@ -64,12 +64,11 @@
                   <ColorAdjust brightness="1.0" contrast="-0.15" hue="-0.04" />
                </effect>
             </ImageView>
-            <TextField layoutX="118.0" layoutY="250.0" promptText="Nome Usuário" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px;">
+            <TextField fx:id="txtCPF" layoutX="119.0" layoutY="250.0" promptText="CPF" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: WHITE;">
                <font>
                   <Font name="Roboto" size="12.0" />
                </font>
             </TextField>
-            <TextField layoutX="118.0" layoutY="302.0" promptText="Senha" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px;" />
             <ImageView fitHeight="25.0" fitWidth="29.0" layoutX="80.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imagens/do-utilizador.png" />
@@ -86,9 +85,12 @@
                   <ColorAdjust brightness="1.0" />
                </effect>
             </ImageView>
-            <Button layoutX="136.0" layoutY="362.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="79.0" style="-fx-background-color: #ffca2b;" text="Acessar" />
-            <Hyperlink layoutX="113.0" layoutY="468.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
-            <Hyperlink layoutX="103.0" layoutY="446.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
+            <Button layoutX="136.0" layoutY="361.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: #ffca2b;" text="Acessar">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Hyperlink layoutX="122.0" layoutY="468.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
+            <Hyperlink layoutX="111.0" layoutY="445.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
             <Text fill="WHITE" layoutX="104.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN USUÁRIO" wrappingWidth="142.78312873840332">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -103,6 +105,7 @@
                   <ColorAdjust brightness="1.0" />
                </effect>
             </ImageView>
+            <PasswordField fx:id="passSenha" layoutX="119.0" layoutY="305.0" promptText="Senha" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: WHITE;" />
          </children>
       </AnchorPane>
    </right>
