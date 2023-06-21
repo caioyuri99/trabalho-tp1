@@ -67,6 +67,12 @@ public class Obra {
         return dao.getAll(limit, offset);
     }
 
+    public static ArrayList<Obra> getObras(String pesquisa, int limit, int offset) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.getObrasByNameOrAutor(pesquisa, limit, offset);
+    }
+
     // GETTERS & SETTERS
 
     public int getId() {
@@ -147,6 +153,21 @@ public class Obra {
 
     public void setEstante(Estante estante) {
         this.estante = estante;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                " id='" + getId() + "'" +
+                ", nome='" + getNome() + "'" +
+                ", tipo='" + getTipo() + "'" +
+                ", dataPublicacao='" + getDataPublicacao() + "'" +
+                ", autor='" + getAutor() + "'" +
+                ", genero='" + getGenero() + "'" +
+                ", sinopse='" + getSinopse() + "'" +
+                ", capaUrl='" + getCapaUrl() + "'" +
+                ", estante='" + getEstante() + "'" +
+                "}";
     }
 
 }

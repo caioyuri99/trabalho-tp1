@@ -158,4 +158,39 @@ public class ObraDAO {
         }
     }
 
+    public ArrayList<Obra> getObrasByNameOrAutor(String search, int limit, int offset) {
+        String query = "SELECT * FROM obra WHERE LOWER(nome) LIKE ? OR LOWER(autor) LIKE ? ORDER BY id ASC LIMIT ? OFFSET ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, '%' + search.toLowerCase() + '%');
+            stmt.setString(2, '%' + search.toLowerCase() + '%');
+            stmt.setInt(3, limit);
+            stmt.setInt(4, offset);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Obra> obras = new ArrayList<Obra>();
+
+            while (rs.next()) {
+                Obra obra = new Obra();
+                obra.setId(rs.getInt("id"));
+                obra.setNome(rs.getString("nome"));
+                obra.setTipo(rs.getString("tipo"));
+                obra.setDataPublicacao(rs.getDate("dataPublicacao").toLocalDate());
+                obra.setAutor(rs.getString("autor"));
+                obra.setGenero(rs.getString("genero"));
+                obra.setSinopse(rs.getString("sinopse"));
+                obra.setCapaUrl(rs.getString("capaUrl"));
+                obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
+                obras.add(obra);
+            }
+
+            return obras;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return null;
+        }
+    }
+
 }
