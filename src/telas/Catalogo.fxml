@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -62,10 +63,13 @@
                <image>
                   <Image url="@../imagens/porta.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
          </children>
       </AnchorPane>
-      <TextField layoutX="175.0" layoutY="86.0" prefHeight="26.0" prefWidth="391.0" promptText="Pesquisar..." />
+      <TextField fx:id="query" layoutX="175.0" layoutY="86.0" onAction="#search" prefHeight="26.0" prefWidth="391.0" promptText="Pesquisar..." />
       <ImageView fitHeight="30.0" fitWidth="42.0" layoutX="133.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../imagens/pesquisar.png" />

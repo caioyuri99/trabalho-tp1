@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import biblioteca.Obra;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,6 +49,9 @@ public class Catalogo implements Initializable {
     @FXML
     private Hyperlink linkPedidos;
 
+    @FXML
+    private TextField query;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (!Session.isLogged()) {
@@ -73,6 +78,15 @@ public class Catalogo implements Initializable {
         this.stage.show();
     }
 
+    @FXML
+    void search(ActionEvent event) {
+        String search = query.getText();
+
+        ArrayList<Obra> result = Obra.getObras(search, 20, 0);
+
+        bookContainer.setContent(createBookGrid((int) Math.ceil(result.size() / 4.0), result));
+    }
+
     public static GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
         GridPane grid = new GridPane();
 
@@ -87,7 +101,7 @@ public class Catalogo implements Initializable {
 
         for (int i = 0; i < rows; i++) {
             grid.addRow(i);
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 4 && (i * 4 + j) < obras.size(); j++) {
                 int index = i * 4 + j;
                 grid.add(createBookCell(obras.get(index).getCapaUrl(), obras.get(index).getNome(),
                         obras.get(index).getAutor()), j, i);
@@ -107,6 +121,7 @@ public class Catalogo implements Initializable {
         image.setPreserveRatio(false);
         image.setFitWidth(133);
         image.setFitHeight(160);
+        image.getStyleClass().add("book-cover");
 
         Label label = new Label(title);
         label.setWrapText(true);
