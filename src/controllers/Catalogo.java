@@ -1,13 +1,17 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import biblioteca.Obra;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,9 +21,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import session.Session;
 
 public class Catalogo implements Initializable {
+
+    private Parent root;
+    private Stage stage;
 
     @FXML
     private ScrollPane bookContainer;
@@ -51,6 +59,18 @@ public class Catalogo implements Initializable {
         }
 
         bookContainer.setContent(createBookGrid(5, Obra.getObras(20, 0)));
+    }
+
+    @FXML
+    void exitLogin(MouseEvent event) throws IOException {
+        if (Session.isLogged()) {
+            Session.loggedCPF = null;
+        }
+
+        this.root = FXMLLoader.load(getClass().getResource("../telas/TelaInicial.fxml"));
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage.setScene(new javafx.scene.Scene(root));
+        this.stage.show();
     }
 
     public static GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
