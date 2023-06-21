@@ -1,0 +1,18 @@
+VBox {
+    -fx-padding: 5;
+    -fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+    -fx-background-radius: 5;
+}
+
+VBox:hover {
+    -fx-background-color: #a8a7a7;
+}
+
+.book-title {
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.book-title:hover {
+    -fx-underline: true;
+}
