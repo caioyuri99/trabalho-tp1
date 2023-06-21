@@ -12,9 +12,9 @@ public class Obra {
     private String tipo;
     private LocalDate dataPublicacao;
     private String autor;
-    private int volume;
     private String genero;
-    private int classIndicativa;
+    private String sinopse;
+    private String capaUrl;
     private ArrayList<Item> itens = new ArrayList<>();
     private Estante estante;
 
@@ -22,15 +22,15 @@ public class Obra {
     public Obra() {
     }
 
-    public Obra(String nome, String tipo, LocalDate dataPublicacao, String autor, int volume, String genero,
-            int classIndicativa) {
+    public Obra(String nome, String tipo, LocalDate dataPublicacao, String autor, String genero, String sinopse,
+            String capaUrl, Estante estante) {
         this.nome = nome;
         this.tipo = tipo;
         this.dataPublicacao = dataPublicacao;
         this.autor = autor;
-        this.volume = volume;
         this.genero = genero;
-        this.classIndicativa = classIndicativa;
+        this.sinopse = sinopse;
+        this.capaUrl = capaUrl;
     }
 
     // METODOS
@@ -59,6 +59,12 @@ public class Obra {
         ObraDAO dao = new ObraDAO();
 
         return dao.isDisponivel(this);
+    }
+
+    public static ArrayList<Obra> getObras(int limit, int offset) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.getAll(limit, offset);
     }
 
     // GETTERS & SETTERS
@@ -103,14 +109,6 @@ public class Obra {
         this.autor = autor;
     }
 
-    public int getVolume() {
-        return this.volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
     public String getGenero() {
         return this.genero;
     }
@@ -119,12 +117,20 @@ public class Obra {
         this.genero = genero;
     }
 
-    public int getClassificaoIndicativa() {
-        return this.classIndicativa;
+    public String getSinopse() {
+        return this.sinopse;
     }
 
-    public void setClassificaoIndicativa(int classIndicativa) {
-        this.classIndicativa = classIndicativa;
+    public void setSinopse(String sinopse) {
+        this.sinopse = sinopse;
+    }
+
+    public String getCapaUrl() {
+        return this.capaUrl;
+    }
+
+    public void setCapaUrl(String capaUrl) {
+        this.capaUrl = capaUrl;
     }
 
     public ArrayList<Item> getItens() {
