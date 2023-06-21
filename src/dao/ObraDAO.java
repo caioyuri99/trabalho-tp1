@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import biblioteca.Estante;
 import biblioteca.Obra;
@@ -22,7 +23,7 @@ public class ObraDAO {
 
     // MÉTODOS
     public boolean insert(Obra obra, Estante estante) {
-        String query = "INSERT INTO obra (nome, tipo, dataPublicacao, autor, volume, genero, classIndicativa, estante) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO obra (nome, tipo, dataPublicacao, autor, genero, sinopse, capaUrl, estante) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -30,9 +31,9 @@ public class ObraDAO {
             stmt.setString(2, obra.getTipo());
             stmt.setDate(3, Date.valueOf(obra.getDataPublicacao()));
             stmt.setString(4, obra.getAutor());
-            stmt.setInt(5, obra.getVolume());
-            stmt.setString(6, obra.getGenero());
-            stmt.setString(7, Integer.toString(obra.getClassificaoIndicativa()));
+            stmt.setString(5, obra.getGenero());
+            stmt.setString(6, obra.getSinopse());
+            stmt.setString(7, obra.getCapaUrl());
             stmt.setInt(8, estante.getId());
             stmt.execute();
 
@@ -68,28 +69,9 @@ public class ObraDAO {
             obra.setTipo(rs.getString("tipo"));
             obra.setDataPublicacao(rs.getDate("dataPublicacao").toLocalDate());
             obra.setAutor(rs.getString("autor"));
-            obra.setVolume(rs.getInt("volume"));
             obra.setGenero(rs.getString("genero"));
-            obra.setClassificaoIndicativa(rs.getInt("classIndicativa"));
-
-            switch (obra.getTipo()) {
-                case "livro":
-                    LivroDAO livroDAO = new LivroDAO();
-                    obra.setItens(livroDAO.getItemsOfObra(obra));
-
-                    break;
-
-                case "revista":
-                    RevistaDAO revistaDAO = new RevistaDAO();
-                    obra.setItens(revistaDAO.getItemsOfObra(obra));
-
-                    break;
-
-                case "gibi":
-                    GibiDAO gibiDAO = new GibiDAO();
-                    obra.setItens(gibiDAO.getItemsOfObra(obra));
-            }
-
+            obra.setSinopse(rs.getString("sinopse"));
+            obra.setCapaUrl(rs.getString("capaUrl"));
             obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
 
             return obra;
@@ -142,4 +124,38 @@ public class ObraDAO {
             return false;
         }
     }
+
+    public ArrayList<Obra> getAll(int limit, int offset) {
+        String query = "SELECT * FROM `obra` ORDER BY id ASC LIMIT ? OFFSET ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Obra> obras = new ArrayList<Obra>();
+
+            while (rs.next()) {
+                Obra obra = new Obra();
+                obra.setId(rs.getInt("id"));
+                obra.setNome(rs.getString("nome"));
+                obra.setTipo(rs.getString("tipo"));
+                obra.setDataPublicacao(rs.getDate("dataPublicacao").toLocalDate());
+                obra.setAutor(rs.getString("autor"));
+                obra.setGenero(rs.getString("genero"));
+                obra.setSinopse(rs.getString("sinopse"));
+                obra.setCapaUrl(rs.getString("capaUrl"));
+                obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
+                obras.add(obra);
+            }
+
+            return obras;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return null;
+        }
+    }
+
 }
