@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TelaInicial">
    <left>
-      <AnchorPane prefHeight="410.0" prefWidth="350.0" style="-fx-background-color: #ffca2b; -fx-border-color: #ffffff; -fx-border-width: 0px 3px 0px 0px;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="paneLeft" prefHeight="410.0" prefWidth="350.0" style="-fx-background-color: #ffca2b; -fx-border-color: #ffffff; -fx-border-width: 0px 3px 0px 0px;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane layoutY="-1.0" prefHeight="50.0" prefWidth="347.0" style="-fx-background-color: #daae2b;">
                <children>
@@ -41,10 +44,13 @@
                   <ColorAdjust brightness="1.0" />
                </effect>
             </ImageView>
-            <Button layoutX="134.0" layoutY="362.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: #38761d;" text="Acessar" textFill="WHITE">
+            <Button layoutX="134.0" layoutY="362.0" mnemonicParsing="false" onAction="#mostrarCatalogo" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: #38761d;" text="Acessar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Text fill="WHITE" layoutX="80.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CATÁLOGO" wrappingWidth="190.78312873840332">
                <font>
                   <Font name="System Bold" size="35.0" />
@@ -52,22 +58,12 @@
             </Text>
             <Line endX="70.78311157226562" endY="0.517578125" layoutX="176.0" layoutY="274.0" startX="-76.9999771118164" startY="0.517578125" stroke="WHITE" />
             <Line endX="113.78311157226562" endY="0.7841796875" layoutX="157.0" layoutY="327.0" startX="-76.9999771118164" startY="0.517578125" stroke="WHITE" />
-            <Hyperlink layoutX="120.0" layoutY="462.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
-            <Hyperlink layoutX="110.0" layoutY="440.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
          </children>
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="500.0" prefWidth="770.0" style="-fx-background-color: #38761d; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 0px 3px;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="paneRight" prefHeight="500.0" prefWidth="770.0" style="-fx-background-color: #38761d; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 0px 3px;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="39.0" fitWidth="38.0" layoutX="298.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../imagens/cadeado.png" />
-               </image>
-               <effect>
-                  <ColorAdjust brightness="1.0" />
-               </effect>
-            </ImageView>
             <ImageView fitHeight="122.0" fitWidth="126.0" layoutX="115.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imagens/do-utilizador.png" />
@@ -76,7 +72,7 @@
                   <ColorAdjust brightness="1.0" contrast="-0.15" hue="-0.04" />
                </effect>
             </ImageView>
-            <TextField layoutX="118.0" layoutY="250.0" promptText="CPF" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffffff;">
+            <TextField fx:id="txtCPF" layoutX="118.0" layoutY="250.0" onAction="#login" promptText="CPF" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffffff;">
                <font>
                   <Font name="Roboto" size="12.0" />
                </font>
@@ -97,10 +93,13 @@
                   <ColorAdjust brightness="1.0" />
                </effect>
             </ImageView>
-            <Button layoutX="136.0" layoutY="362.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="79.0" style="-fx-background-color: #ffca2b;" text="Acessar" textFill="WHITE">
+            <Button layoutX="136.0" layoutY="362.0" mnemonicParsing="false" onAction="#login" prefHeight="28.0" prefWidth="79.0" style="-fx-background-color: #ffca2b;" text="Acessar" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Hyperlink layoutX="120.0" layoutY="462.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
             <Hyperlink layoutX="110.0" layoutY="440.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
             <Text fill="WHITE" layoutX="104.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN USUÁRIO" wrappingWidth="142.78312873840332">
@@ -109,7 +108,28 @@
                </font>
             </Text>
             <Line endX="70.78311157226562" endY="0.517578125" layoutX="176.0" layoutY="198.0" startX="-72.20001983642578" startY="0.517578125" stroke="WHITE" />
-            <PasswordField layoutX="118.0" layoutY="302.0" prefHeight="28.0" prefWidth="150.0" promptText="Senha" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffffff;" />
+            <PasswordField fx:id="passSenha" layoutX="118.0" layoutY="302.0" onAction="#login" prefHeight="28.0" prefWidth="150.0" promptText="Senha" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffffff;" />
+            <Label layoutX="304.0" layoutY="9.0">
+               <graphic>
+                  <ImageView fitHeight="39.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imagens/icon-cadeado.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Área Restrita" />
+               </tooltip>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
          </children>
       </AnchorPane>
    </right>
