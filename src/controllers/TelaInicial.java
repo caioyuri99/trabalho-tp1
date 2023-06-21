@@ -49,11 +49,19 @@ public class TelaInicial {
 
         Session.loggedClienteCPF = cpf;
 
-        this.root = FXMLLoader.load(getClass().getResource("../telas/CatalogoCliente.fxml"));
+        mostrarCatalogo(event);
+    }
+
+    @FXML
+    void mostrarCatalogo(ActionEvent event) throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+    }
 
+    public void telaCarregamento() {
+        // TODO: implementar uma tela de carregamento
     }
 
 }
