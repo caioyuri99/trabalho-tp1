@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -28,7 +29,7 @@ public class TelaInicial {
 
     @FXML
     void login(ActionEvent event) throws IOException {
-        // TODO: implementar uma máscara para validação do CPF
+        // TODO: implementar validação do CPF
 
         String cpf = txtCPF.getText();
         String senha = passSenha.getText();
@@ -53,11 +54,19 @@ public class TelaInicial {
     }
 
     @FXML
+    void loginAreaFuncionario(MouseEvent event) throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource("../telas/LoginFuncionario.fxml"));
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage.setScene(new Scene(root));
+        this.stage.show();
+    }
+
+    @FXML
     void mostrarCatalogo(ActionEvent event) throws IOException {
         this.root = FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage.setScene(new Scene(root));
+        this.stage.show();
     }
 
     public void telaCarregamento() {
