@@ -101,7 +101,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
             <Hyperlink layoutX="120.0" layoutY="462.0" text="Esqueceu A Senha?" textFill="WHITE" underline="true" />
-            <Hyperlink layoutX="110.0" layoutY="440.0" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
+            <Hyperlink layoutX="110.0" layoutY="440.0" onAction="#cadastrar" text="Ainda Não Tem Conta?" textFill="WHITE" underline="true" />
             <Text fill="WHITE" layoutX="104.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN USUÁRIO" wrappingWidth="142.78312873840332">
                <font>
                   <Font name="System Bold" size="18.0" />

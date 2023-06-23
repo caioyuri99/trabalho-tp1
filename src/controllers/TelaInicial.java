@@ -69,6 +69,14 @@ public class TelaInicial {
         this.stage.show();
     }
 
+    @FXML
+    void cadastrar(ActionEvent event) throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource("../telas/CadastroCliente.fxml"));
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage.setScene(new Scene(root));
+        this.stage.show();
+    }
+
     public void telaCarregamento() {
         // TODO: implementar uma tela de carregamento
     }
