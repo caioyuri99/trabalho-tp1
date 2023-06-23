@@ -41,6 +41,26 @@ public class Cliente extends Usuario {
 
         return true;
     }
+    
+    public boolean fazerCadastro() {
+        if (this.cpf == null || this.senha == null || this.nome == null || this.dataNasc == null) {
+            System.out.println("Preencha todos os campos.");
+
+            return false;
+        }
+
+        ClienteDAO dao = new ClienteDAO();
+
+        if (dao.getCliente(this.cpf) != null) {
+            System.out.println("Um cliente com esse CPF já foi cadastrado.");
+
+            return false;
+        }
+
+        boolean res = dao.insert(this);
+
+        return res;
+    }
 
     public boolean pagarMulta(double valor) {
         ClienteDAO dao = new ClienteDAO();

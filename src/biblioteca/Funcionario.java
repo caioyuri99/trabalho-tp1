@@ -2,7 +2,6 @@ package biblioteca;
 
 import java.time.LocalDate;
 
-import dao.ClienteDAO;
 import dao.FuncionarioDAO;
 
 public class Funcionario extends Usuario {
@@ -39,20 +38,6 @@ public class Funcionario extends Usuario {
         System.out.println("Login realizado com sucesso!");
 
         return true;
-    }
-
-    public boolean fazerCadastro(Cliente cliente) {
-        ClienteDAO dao = new ClienteDAO();
-
-        if (dao.getCliente(cliente.cpf) != null) {
-            System.out.println("Um cliente com esse CPF já foi cadastrado.");
-
-            return false;
-        }
-
-        boolean res = dao.insert(cliente);
-
-        return res;
     }
 
     // GETTERS & SETTERS
