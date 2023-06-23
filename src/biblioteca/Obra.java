@@ -33,6 +33,16 @@ public class Obra {
         this.capaUrl = capaUrl;
     }
 
+    public Obra(int id, String nome, String autor, String tipo, String genero, LocalDate dataPublicacao, Estante estante) {
+        this.id = id;
+        this.nome = nome;
+        this.autor = autor;
+        this.tipo = tipo;
+        this.genero = genero;
+        this.dataPublicacao = dataPublicacao;
+        this.estante = estante;
+    }
+
     // METODOS
     public boolean registrarItem(Item item) {
         boolean res = item.cadastrar();
