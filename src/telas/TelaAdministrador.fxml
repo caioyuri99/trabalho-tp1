@@ -62,6 +62,8 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <Text layoutX="337.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remover item:" wrappingWidth="83.60003662109375" />
+            <TextField layoutX="425.0" layoutY="79.0" prefHeight="26.0" prefWidth="212.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="52.0" prefWidth="700.0" style="-fx-background-color: #ffca2b;">
@@ -92,11 +94,12 @@
                <children>
                   <TableView prefHeight="1400.0" prefWidth="635.0">
                     <columns>
-                      <TableColumn prefWidth="76.79998284578323" text="id" />
-                      <TableColumn prefWidth="189.5999984741211" text="Nome" />
-                        <TableColumn prefWidth="120.800048828125" text="Data de Nascimento" />
-                        <TableColumn prefWidth="149.59994506835938" text="CPF" />
-                        <TableColumn prefWidth="101.59991455078125" text="Saldo Devedor" />
+                      <TableColumn prefWidth="64.79998284578323" text="id" />
+                      <TableColumn prefWidth="123.20001983642578" text="Nome" />
+                        <TableColumn prefWidth="118.40003967285156" text="Data de Nascimento" />
+                        <TableColumn prefWidth="111.199951171875" text="CPF" />
+                        <TableColumn prefWidth="87.99996948242188" text="Saldo Devedor" />
+                        <TableColumn prefWidth="124.79986572265625" text="Itens Emprestados" />
                     </columns>
                   </TableView>
                </children>

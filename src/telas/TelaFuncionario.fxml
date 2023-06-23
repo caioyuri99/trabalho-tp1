@@ -55,19 +55,17 @@
       <AnchorPane layoutX="32.0" layoutY="185.0" minHeight="0.0" minWidth="0.0" prefHeight="1400.0" prefWidth="635.0" />
       <ScrollPane hbarPolicy="NEVER" layoutX="23.0" layoutY="131.0" prefHeight="353.0" prefWidth="650.0" vbarPolicy="ALWAYS">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="353.0" prefWidth="651.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="348.0" prefWidth="651.0">
                <children>
-                  <TableView prefHeight="353.0" prefWidth="635.0">
+                  <TableView fx:id="tableObras" onMouseClicked="#test" prefHeight="353.0" prefWidth="635.0">
                     <columns>
                       <TableColumn fx:id="clmId" prefWidth="75.0" text="id" visible="false" />
-                      <TableColumn fx:id="clmNome" editable="false" prefWidth="117.0" text="Nome" />
-                        <TableColumn fx:id="clmTipo" editable="false" prefWidth="53.0" text="Tipo" />
-                        <TableColumn fx:id="clmDataDePublicacao" editable="false" prefWidth="115.0" text="Data de Publicação" />
-                        <TableColumn fx:id="clmAutor" editable="false" prefWidth="100.0" text="Autor" />
-                        <TableColumn fx:id="clmGenero" editable="false" prefWidth="85.0" text="Gênero" />
-                        <TableColumn fx:id="clmEstanteId" editable="false" prefWidth="108.0" text="estanteId" visible="false" />
-                        <TableColumn fx:id="clmEstante" editable="false" prefWidth="94.0" text="Estante" />
-                        <TableColumn fx:id="btnView" editable="false" prefWidth="69.0" />
+                      <TableColumn fx:id="clmNome" editable="false" prefWidth="161.0" text="Nome" />
+                        <TableColumn fx:id="clmAutor" editable="false" prefWidth="105.0" text="Autor" />
+                        <TableColumn fx:id="clmTipo" editable="false" prefWidth="42.0" text="Tipo" />
+                        <TableColumn fx:id="clmDataDePublicacao" editable="false" prefWidth="123.0" text="Data de Publicação" />
+                        <TableColumn fx:id="clmGenero" editable="false" prefWidth="95.0" text="Gênero" />
+                        <TableColumn fx:id="clmEstante" editable="false" prefWidth="107.0" text="Estante" />
                     </columns>
                   </TableView>
                </children>
