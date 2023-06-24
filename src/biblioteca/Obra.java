@@ -3,7 +3,10 @@ package biblioteca;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import dao.GibiDAO;
+import dao.LivroDAO;
 import dao.ObraDAO;
+import dao.RevistaDAO;
 
 public class Obra {
     // ATRIBUTOS
@@ -33,7 +36,8 @@ public class Obra {
         this.capaUrl = capaUrl;
     }
 
-    public Obra(int id, String nome, String autor, String tipo, String genero, LocalDate dataPublicacao, Estante estante) {
+    public Obra(int id, String nome, String autor, String tipo, String genero, LocalDate dataPublicacao,
+            Estante estante) {
         this.id = id;
         this.nome = nome;
         this.autor = autor;
@@ -71,6 +75,17 @@ public class Obra {
         return dao.isDisponivel(this);
     }
 
+    public ArrayList<Item> getItensDaObra() {
+        ArrayList<Item> itens = switch (this.tipo) {
+            case "livro" -> new LivroDAO().getItemsOfObra(this);
+            case "revista" -> new RevistaDAO().getItemsOfObra(this);
+            case "gibi" -> new GibiDAO().getItemsOfObra(this);
+            default -> new ArrayList<>();
+        };
+
+        return itens;
+    }
+
     public static ArrayList<Obra> getObras(int limit, int offset) {
         ObraDAO dao = new ObraDAO();
 
@@ -81,6 +96,12 @@ public class Obra {
         ObraDAO dao = new ObraDAO();
 
         return dao.getObrasByNameOrAutor(pesquisa, limit, offset);
+    }
+
+    public static Obra getObra(int id) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.getObra(id);
     }
 
     // GETTERS & SETTERS
