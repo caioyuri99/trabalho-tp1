@@ -13,6 +13,7 @@ import exceptions.Confirmation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -24,6 +25,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import session.Session;
 
 public class DetalhesObra implements Initializable {
@@ -142,6 +144,8 @@ public class DetalhesObra implements Initializable {
             alert.setContentText("O item selecionado não está disponível para empréstimo.");
 
             alert.showAndWait();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
             return;
         }
 
@@ -168,7 +172,7 @@ public class DetalhesObra implements Initializable {
             alert.getButtonTypes().setAll(confirmButton, cancelButton);
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
+            if (result.get() == confirmButton) {
                 ((Cliente) Session.getLoggedUser()).getCarrinho().add(item);
 
                 Alert info = new Alert(AlertType.INFORMATION);
@@ -177,6 +181,8 @@ public class DetalhesObra implements Initializable {
                 info.setContentText("O item foi adicionado ao carrinho com sucesso.");
 
                 info.showAndWait();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
                 return;
             }
 
@@ -187,7 +193,6 @@ public class DetalhesObra implements Initializable {
 
             info.showAndWait();
             return;
-
         }
 
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -196,6 +201,8 @@ public class DetalhesObra implements Initializable {
         alert.setContentText("O item foi adicionado ao carrinho com sucesso.");
 
         alert.showAndWait();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     public void setObra(Obra obra) {
