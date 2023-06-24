@@ -14,6 +14,10 @@ public class Emprestimo {
     private LocalDate dataDevolucao;
     private ArrayList<Item> itens = new ArrayList<>();
     private int qtdRenovacoes;
+    private boolean devolvido;
+    private boolean atrasado;
+    private boolean multado;
+    private double valorMulta;
 
     // CONSTRUTORES
     public Emprestimo() {
@@ -92,6 +96,38 @@ public class Emprestimo {
 
     public void setQtdRenovacoes(int qtdRenovacoes) {
         this.qtdRenovacoes = qtdRenovacoes;
+    }
+
+    public boolean isDevolvido() {
+        return this.devolvido;
+    }
+
+    public void setDevolvido(boolean devolvido) {
+        this.devolvido = devolvido;
+    }
+
+    public boolean isAtrasado() {
+        return this.atrasado;
+    }
+
+    public void setAtrasado(boolean atrasado) {
+        this.atrasado = atrasado;
+    }
+
+    public boolean isMultado() {
+        return this.multado;
+    }
+
+    public void setMultado(boolean multado) {
+        this.multado = multado;
+    }
+
+    public double getValorMulta() {
+        return this.valorMulta;
+    }
+
+    public void setValorMulta(double valorMulta) {
+        this.valorMulta = valorMulta;
     }
 
 }
