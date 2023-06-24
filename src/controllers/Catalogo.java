@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -24,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import session.Session;
@@ -79,7 +81,7 @@ public class Catalogo implements Initializable {
     @FXML
     void exitLogin(MouseEvent event) throws IOException {
         if (Session.isLogged()) {
-            Session.loggedCPF = null;
+            Session.setLoggedUser(null);
         }
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaInicial.fxml"));
@@ -158,15 +160,14 @@ public class Catalogo implements Initializable {
     public void viewObraEvent(Event event, int id) throws IOException {
         Obra obra = Obra.getObra(id);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DetalhesObraPopUp.fxml"));
+        Stage details = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DetalhesObra.fxml"));
 
-        Popup popup = new Popup();
         loader.setControllerFactory(param -> {
-            if (param == DetalhesObraPopUp.class) {
-                DetalhesObraPopUp popupController = new DetalhesObraPopUp();
-                popupController.setObra(obra);
-                popupController.setPopup(popup);
-                return popupController;
+            if (param == DetalhesObra.class) {
+                DetalhesObra controller = new DetalhesObra();
+                controller.setObra(obra);
+                return controller;
             } else {
                 try {
                     return param.getDeclaredConstructor().newInstance();
@@ -176,11 +177,14 @@ public class Catalogo implements Initializable {
             }
         });
 
-        Parent popupContent = loader.load();
+        Parent content = loader.load();
+        details.setScene(new Scene(content));
+        details.initModality(Modality.APPLICATION_MODAL);
+        details.initOwner(bookContainer.getScene().getWindow());
+        details.showAndWait();
 
-        popup.getContent().add(popupContent);
-        popup.setAutoHide(true);
-        popup.show(((Node) event.getSource()).getScene().getWindow());
+        // popup.getContent().add(popupContent);
+        // popup.show(((Node) event.getSource()).getScene().getWindow());
     }
 
 }
