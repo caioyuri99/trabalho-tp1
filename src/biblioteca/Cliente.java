@@ -90,41 +90,31 @@ public class Cliente extends Usuario {
         return true;
     }
 
-    public boolean fazerEmprestimo(Emprestimo emprestimo) {
-        if (this.getTotalEmprestimos() + emprestimo.getItems().size() > 5) {
-            System.out.println("Somente 5 itens podem ser emprestados por vez.");
-
-            return false;
-        }
-
+    public void fazerEmprestimo() throws Exception {
         if (this.saldoDevedor > 0) {
-            System.out.println("O cliente possui multa.");
-
-            return false;
+            throw new Exception("O cliente possui multa.");
         }
 
-        for (Emprestimo emp : this.emprestimos) {
-            if (emp.getDataDevolucao().isBefore(LocalDate.now())) {
-                System.out.println("O cliente possui itens atrasados.");
-
-                return false;
-            }
+        if (this.carrinho.size() == 0) {
+            throw new Exception("O carrinho está vazio.");
         }
 
         EmprestimoDAO dao = new EmprestimoDAO();
-        for (Item item : emprestimo.getItems()) {
-            boolean registrar = dao.insert(this, item);
 
-            boolean emprestar = item.emprestar(this);
-
-            if (!registrar || !emprestar) {
-                System.out.println("Erro ao fazer emprestimo.");
-
-                return false;
+        for (Emprestimo emprestimo : this.getEmprestimosAtivos()) {
+            if (!emprestimo.isDevolvido() && emprestimo.isAtrasado()) {
+                throw new Exception("O cliente possui empréstimos atrasados.");
             }
         }
 
-        return true;
+        for (Item item : this.carrinho) {
+            dao.insert(this, item);
+            item.emprestar();
+        }
+
+        this.carrinho.clear();
+
+        System.out.println("Emprestimo realizado com sucesso!");
     }
 
     public boolean fazerRenovacao(Emprestimo emprestimo) {
@@ -208,6 +198,18 @@ public class Cliente extends Usuario {
         }
 
         this.carrinho.add(item);
+    }
+
+    public ArrayList<Emprestimo> getEmprestimosAtivos() {
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        try {
+            return dao.getEmprestimosAtivos(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        }
     }
 
     // GETTERS & SETTERS
