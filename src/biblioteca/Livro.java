@@ -51,6 +51,17 @@ public class Livro extends Item {
         return dao.updateLeitor(this, leitor, false);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Livro) {
+            Livro livro = (Livro) obj;
+
+            return this.id == livro.id;
+        }
+
+        return false;
+    }
+
     // GETTERS & SETTERS
     public String getTipoCapa() {
         return tipoCapa;

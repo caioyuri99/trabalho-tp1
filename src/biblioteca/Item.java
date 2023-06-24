@@ -36,6 +36,9 @@ public abstract class Item {
 
     public abstract boolean emprestar(Cliente leitor);
 
+    @Override
+    public abstract boolean equals(Object obj);
+
     // GETTERS & SETTERS
     public int getId() {
         return this.id;

@@ -45,6 +45,17 @@ public class Revista extends Item {
         return dao.updateLeitor(this, leitor, false);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Revista) {
+            Revista revista = (Revista) obj;
+
+            return this.id == revista.id;
+        }
+
+        return false;
+    }
+
     // GETTERS & SETTERS
     public String getCategoria() {
         return categoria;

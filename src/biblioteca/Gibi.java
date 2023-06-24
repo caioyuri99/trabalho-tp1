@@ -55,6 +55,17 @@ public class Gibi extends Item {
         return dao.updateLeitor(this, leitor, false);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Gibi) {
+            Gibi gibi = (Gibi) obj;
+
+            return this.id == gibi.id;
+        }
+
+        return false;
+    }
+
     // GETTERS & SETTTERS
     public String getTipo() {
         return tipo;
