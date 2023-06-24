@@ -26,7 +26,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -86,7 +85,7 @@ public class Catalogo implements Initializable {
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaInicial.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        this.stage.setScene(new javafx.scene.Scene(root));
+        this.stage.setScene(new Scene(root));
         this.stage.show();
     }
 
@@ -97,6 +96,17 @@ public class Catalogo implements Initializable {
         ArrayList<Obra> result = Obra.getObras(search, 20, 0);
 
         bookContainer.setContent(this.createBookGrid((int) Math.ceil(result.size() / 4.0), result));
+    }
+
+    @FXML
+    void mostrarCarrinho(ActionEvent event) throws IOException {
+        Stage carrinho = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/Carrinho.fxml"));
+        Parent content = loader.load();
+        carrinho.setScene(new Scene(content));
+        carrinho.initModality(Modality.APPLICATION_MODAL);
+        carrinho.initOwner(((Node) event.getSource()).getScene().getWindow());
+        carrinho.showAndWait();
     }
 
     public GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
@@ -182,9 +192,6 @@ public class Catalogo implements Initializable {
         details.initModality(Modality.APPLICATION_MODAL);
         details.initOwner(bookContainer.getScene().getWindow());
         details.showAndWait();
-
-        // popup.getContent().add(popupContent);
-        // popup.show(((Node) event.getSource()).getScene().getWindow());
     }
 
 }
