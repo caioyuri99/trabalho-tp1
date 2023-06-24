@@ -32,7 +32,7 @@
                   <Image url="@../imagens/interrogação.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="iconCarrinho" fitHeight="30.0" fitWidth="42.0" layoutX="520.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="iconCarrinho" fitHeight="30.0" fitWidth="42.0" layoutX="520.0" layoutY="10.0" onMouseClicked="#mostrarCarrinho" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imagens/carrinho-de-compras.png" />
                </image>
@@ -40,7 +40,7 @@
                   <ColorAdjust />
                </effect>
             </ImageView>
-            <Hyperlink fx:id="linkCarrinho" layoutX="553.0" layoutY="14.0" style="-fx-background-color: transparent;" text="Meu Carrinho" textOverrun="CLIP" underline="true">
+            <Hyperlink fx:id="linkCarrinho" layoutX="553.0" layoutY="14.0" onAction="#mostrarCarrinho" style="-fx-background-color: transparent;" text="Meu Carrinho" textOverrun="CLIP" underline="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
