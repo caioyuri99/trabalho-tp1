@@ -36,13 +36,12 @@ public class Revista extends Item {
     }
 
     @Override
-    public boolean emprestar(Cliente leitor) {
-        this.leitor = leitor;
+    public void emprestar() throws Exception {
         this.disponivel = false;
 
         RevistaDAO dao = new RevistaDAO();
 
-        return dao.updateLeitor(this, leitor, false);
+        dao.updateLeitor(this, false);
     }
 
     @Override

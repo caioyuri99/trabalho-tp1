@@ -42,13 +42,12 @@ public class Livro extends Item {
     }
 
     @Override
-    public boolean emprestar(Cliente leitor) {
-        this.leitor = leitor;
+    public void emprestar() throws Exception {
         this.disponivel = false;
 
         LivroDAO dao = new LivroDAO();
 
-        return dao.updateLeitor(this, leitor, false);
+        dao.updateLeitor(this, false);
     }
 
     @Override

@@ -46,13 +46,12 @@ public class Gibi extends Item {
     }
 
     @Override
-    public boolean emprestar(Cliente leitor) {
-        this.leitor = leitor;
+    public void emprestar() throws Exception {
         this.disponivel = false;
 
         GibiDAO dao = new GibiDAO();
 
-        return dao.updateLeitor(this, leitor, false);
+        dao.updateLeitor(this, false);
     }
 
     @Override

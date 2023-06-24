@@ -34,7 +34,7 @@ public abstract class Item {
 
     public abstract boolean remover();
 
-    public abstract boolean emprestar(Cliente leitor);
+    public abstract void emprestar() throws Exception;
 
     @Override
     public abstract boolean equals(Object obj);
