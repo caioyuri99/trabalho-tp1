@@ -25,7 +25,7 @@ public class LivroDAO {
 
     // MÉTODOS
     public boolean insert(Livro livro) {
-        String query = "INSERT INTO livro (editora, edicao, condicao, obra, tipoCapa, dataLancamento) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO livro (editora, edicao, condicao, obra, tipoCapa) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -34,7 +34,6 @@ public class LivroDAO {
             stmt.setString(3, livro.getCondicao());
             stmt.setInt(4, livro.getObra().getId());
             stmt.setString(5, livro.getTipoCapa().toLowerCase());
-            stmt.setDate(6, Date.valueOf(livro.getDataLancamento()));
             stmt.execute();
 
             System.out.println("Livro cadastrado com sucesso!");
@@ -72,7 +71,6 @@ public class LivroDAO {
             livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
             livro.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             livro.setTipoCapa(rs.getString("tipoCapa"));
-            livro.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
 
             return livro;
 
@@ -102,7 +100,6 @@ public class LivroDAO {
                 livro.setDisponivel(rs.getBoolean("disponivel"));
                 livro.setObra(obra);
                 livro.setTipoCapa(rs.getString("tipoCapa"));
-                livro.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
 
                 items.add(livro);
             }
@@ -175,7 +172,6 @@ public class LivroDAO {
                 livro.setDisponivel(rs.getBoolean("disponivel"));
                 livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
                 livro.setTipoCapa(rs.getString("tipoCapa"));
-                livro.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
                 livro.setLeitor(leitor);
 
                 items.add(livro);

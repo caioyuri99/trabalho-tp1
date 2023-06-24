@@ -97,7 +97,6 @@ public class EmprestimoDAO {
             switch (tipoItem) {
                 case "livro":
                     ((Livro) item).setTipoCapa(rs.getString(tipoItem + ".tipoCapa"));
-                    ((Livro) item).setDataLancamento(rs.getDate(tipoItem + ".dataLancamento").toLocalDate());
                     break;
 
                 case "revista":
