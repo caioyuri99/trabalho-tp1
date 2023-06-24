@@ -69,8 +69,8 @@ public class LivroDAO {
             livro.setCondicao(rs.getString("condicao"));
             livro.setDisponivel(rs.getBoolean("disponivel"));
             livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
-            livro.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
-            livro.setTipoCapa(rs.getString("tipoCapa"));
+            String tipoCapa = rs.getString("tipoCapa");
+            livro.setTipoCapa(tipoCapa.substring(0, 1).toUpperCase() + tipoCapa.substring(1).toLowerCase());
 
             return livro;
 
@@ -99,7 +99,8 @@ public class LivroDAO {
                 livro.setCondicao(rs.getString("condicao"));
                 livro.setDisponivel(rs.getBoolean("disponivel"));
                 livro.setObra(obra);
-                livro.setTipoCapa(rs.getString("tipoCapa"));
+                String tipoCapa = rs.getString("tipoCapa");
+                livro.setTipoCapa(tipoCapa.substring(0, 1).toUpperCase() + tipoCapa.substring(1).toLowerCase());
 
                 items.add(livro);
             }
