@@ -48,7 +48,7 @@ public class TelaInicial {
             return;
         }
 
-        Session.loggedCPF = cpf;
+        Session.setLoggedUser(cliente);
 
         mostrarCatalogo(event);
     }

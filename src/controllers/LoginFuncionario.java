@@ -56,7 +56,7 @@ public class LoginFuncionario {
             return;
         }
 
-        Session.loggedCPF = cpf;
+        Session.setLoggedUser(funcionario);
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaFuncionario.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

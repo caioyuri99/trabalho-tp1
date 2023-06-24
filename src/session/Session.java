@@ -1,9 +1,19 @@
 package session;
 
+import biblioteca.Usuario;
+
 public class Session {
-    public static String loggedCPF = null;
+    private static Usuario loggedUser = null;
 
     public static boolean isLogged() {
-        return loggedCPF != null;
+        return loggedUser != null;
+    }
+
+    public static Usuario getLoggedUser() {
+        return loggedUser;
+    }
+
+    public static void setLoggedUser(Usuario loggedUser) {
+        Session.loggedUser = loggedUser;
     }
 }
