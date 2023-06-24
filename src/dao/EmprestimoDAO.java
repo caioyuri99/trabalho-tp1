@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import biblioteca.Cliente;
 import biblioteca.Emprestimo;
@@ -15,6 +16,8 @@ import biblioteca.Revista;
 import connection.ConnectionDB;
 
 public class EmprestimoDAO {
+    // TODO: ver a possibilidade de usar roolback para dar segurança ao banco de dados
+
     // ATRIBUTOS
     ConnectionDB connectionDB;
     Connection connection;
@@ -26,7 +29,7 @@ public class EmprestimoDAO {
     }
 
     // MÉTODOS
-    public boolean insert(Cliente cliente, Item item) {
+    public void insert(Cliente cliente, Item item) throws Exception {
         String tipoItem = item.getClass().getSimpleName().toLowerCase();
 
         String query = String.format(
@@ -44,12 +47,8 @@ public class EmprestimoDAO {
 
             System.out.println("Emprestimo registrado com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao registrar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao registrar empréstimo: " + e.getMessage());
         }
     }
 
@@ -140,6 +139,10 @@ public class EmprestimoDAO {
             emprestimo.setDataDevolucao(rs.getDate("dataDevolucao").toLocalDate());
             emprestimo.setQtdRenovacoes(rs.getInt("qtdRenovacoes"));
             emprestimo.setItem(this.getItemFromEmprestimo(emprestimo));
+            emprestimo.setDevolvido(rs.getBoolean("devolvido"));
+            emprestimo.setAtrasado(rs.getBoolean("atrasado"));
+            emprestimo.setMultado(rs.getBoolean("multado"));
+            emprestimo.setValorMulta(rs.getDouble("valorMulta"));
 
             return emprestimo;
 
@@ -210,6 +213,41 @@ public class EmprestimoDAO {
             System.out.println("Erro ao registrar: " + e.getMessage());
 
             return false;
+        }
+    }
+
+    public ArrayList<Emprestimo> getEmprestimosAtivos(Cliente leitor) throws Exception {
+        String query = "SELECT * FROM emprestimo WHERE leitor = ? AND NOT devolvido";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, leitor.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
+
+            while (rs.next()) {
+                Emprestimo emprestimo = new Emprestimo();
+
+                emprestimo.setId(rs.getInt("id"));
+                emprestimo.setTipoItem(rs.getString("tipoItem"));
+                emprestimo.setLeitor(leitor);
+                emprestimo.setDataEmprestimo(rs.getDate("dataEmprestimo").toLocalDate());
+                emprestimo.setDataDevolucao(rs.getDate("dataDevolucao").toLocalDate());
+                emprestimo.setQtdRenovacoes(rs.getInt("qtdRenovacoes"));
+                emprestimo.setItem(this.getItemFromEmprestimo(emprestimo));
+                emprestimo.setDevolvido(rs.getBoolean("devolvido"));
+                emprestimo.setAtrasado(rs.getBoolean("atrasado"));
+                emprestimo.setMultado(rs.getBoolean("multado"));
+                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+
+                emprestimos.add(emprestimo);
+            }
+
+            return emprestimos;
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao obter: " + e.getMessage());
         }
     }
 }
