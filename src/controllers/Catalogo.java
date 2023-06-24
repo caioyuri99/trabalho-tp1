@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import biblioteca.Obra;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -52,18 +54,26 @@ public class Catalogo implements Initializable {
     @FXML
     private TextField query;
 
+    @FXML
+    private ImageView iconDivida;
+
+    @FXML
+    private Hyperlink linkDivida;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (!Session.isLogged()) {
             iconCarrinho.setVisible(false);
             iconPedidos.setVisible(false);
+            iconDivida.setVisible(false);
             linkCarrinho.setVisible(false);
             linkPedidos.setVisible(false);
+            linkDivida.setVisible(false);
 
             iconExitLogin.setImage(new Image(getClass().getResourceAsStream("../imagens/login.png")));
         }
 
-        bookContainer.setContent(createBookGrid(5, Obra.getObras(20, 0)));
+        bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
     }
 
     @FXML
@@ -84,10 +94,10 @@ public class Catalogo implements Initializable {
 
         ArrayList<Obra> result = Obra.getObras(search, 20, 0);
 
-        bookContainer.setContent(createBookGrid((int) Math.ceil(result.size() / 4.0), result));
+        bookContainer.setContent(this.createBookGrid((int) Math.ceil(result.size() / 4.0), result));
     }
 
-    public static GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
+    public GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
         GridPane grid = new GridPane();
 
         for (int i = 0; i < 4; i++) {
@@ -103,7 +113,8 @@ public class Catalogo implements Initializable {
             grid.addRow(i);
             for (int j = 0; j < 4 && (i * 4 + j) < obras.size(); j++) {
                 int index = i * 4 + j;
-                grid.add(createBookCell(obras.get(index).getCapaUrl(), obras.get(index).getNome(),
+                grid.add(this.createBookCell(obras.get(index).getId(), obras.get(index).getCapaUrl(),
+                        obras.get(index).getNome(),
                         obras.get(index).getAutor()), j, i);
             }
         }
@@ -111,7 +122,7 @@ public class Catalogo implements Initializable {
         return grid;
     }
 
-    public static VBox createBookCell(String urlImage, String title, String author) {
+    public VBox createBookCell(int id, String urlImage, String title, String author) {
         VBox cell = new VBox();
         cell.setAlignment(Pos.TOP_CENTER);
         cell.setMaxWidth(163);
@@ -133,7 +144,43 @@ public class Catalogo implements Initializable {
 
         cell.getChildren().addAll(image, label);
 
+        cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                this.viewObraEvent(event, id);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         return cell;
+    }
+
+    public void viewObraEvent(Event event, int id) throws IOException {
+        Obra obra = Obra.getObra(id);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DetalhesObraPopUp.fxml"));
+
+        Popup popup = new Popup();
+        loader.setControllerFactory(param -> {
+            if (param == DetalhesObraPopUp.class) {
+                DetalhesObraPopUp popupController = new DetalhesObraPopUp();
+                popupController.setObra(obra);
+                popupController.setPopup(popup);
+                return popupController;
+            } else {
+                try {
+                    return param.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao criar o controlador", e);
+                }
+            }
+        });
+
+        Parent popupContent = loader.load();
+
+        popup.getContent().add(popupContent);
+        popup.setAutoHide(true);
+        popup.show(((Node) event.getSource()).getScene().getWindow());
     }
 
 }
