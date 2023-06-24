@@ -133,24 +133,19 @@ public class GibiDAO {
         }
     }
 
-    public boolean updateLeitor(Gibi gibi, Cliente leitor, boolean disponivel) {
-        String query = "UPDATE gibi SET leitor = ?, disponivel = ? WHERE id = ?";
+    public void updateLeitor(Gibi gibi, boolean disponivel) throws Exception {
+        String query = "UPDATE gibi SET disponivel = ? WHERE id = ?";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-            stmt.setString(1, leitor.getCpf());
-            stmt.setBoolean(2, disponivel);
-            stmt.setInt(3, gibi.getId());
+            stmt.setBoolean(1, disponivel);
+            stmt.setInt(2, gibi.getId());
             stmt.execute();
 
             System.out.println("Leitor atualizado com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao atualizar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
         }
     }
 

@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -133,24 +132,19 @@ public class LivroDAO {
         }
     }
 
-    public boolean updateLeitor(Livro livro, Cliente leitor, boolean disponivel) {
-        String query = "UPDATE livro SET leitor = ?, disponivel = ? WHERE id = ?";
+    public void updateLeitor(Livro livro, boolean disponivel) throws Exception {
+        String query = "UPDATE livro SET disponivel = ? WHERE id = ?";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-            stmt.setString(1, leitor.getCpf());
-            stmt.setBoolean(2, disponivel);
-            stmt.setInt(3, livro.getId());
+            stmt.setBoolean(1, disponivel);
+            stmt.setInt(2, livro.getId());
             stmt.execute();
 
             System.out.println("Leitor atualizado com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao atualizar leitor: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
         }
     }
 
