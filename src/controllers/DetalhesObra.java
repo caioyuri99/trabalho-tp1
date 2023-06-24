@@ -2,28 +2,31 @@ package controllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import biblioteca.Cliente;
 import biblioteca.Item;
 import biblioteca.Obra;
 import controllers.cellFactoryFormat.ItemDisponivelFactory;
+import exceptions.Confirmation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Popup;
 import session.Session;
 
-public class DetalhesObraPopUp implements Initializable {
-
-    private Popup popup;
+public class DetalhesObra implements Initializable {
 
     private Obra obra;
 
@@ -64,9 +67,7 @@ public class DetalhesObraPopUp implements Initializable {
         lblSinopse.setText(obra.getSinopse());
         imgCapa.setImage(new Image(obra.getCapaUrl()));
 
-        if (!Session.isLogged()) {
-            btnAdd.setDisable(true);
-        }
+        tableItems.setPlaceholder(new Label("Nenhum item cadastrado."));
 
         ArrayList<Item> itens = obra.getItensDaObra();
 
@@ -74,7 +75,7 @@ public class DetalhesObraPopUp implements Initializable {
         TableColumn<Item, String> clmEditora = new TableColumn<>("Editora");
         TableColumn<Item, Integer> clmEdicao = new TableColumn<>("Edição");
         TableColumn<Item, String> clmCondicao = new TableColumn<>("Condição");
-        TableColumn<Item, Boolean> clmDisponivel = new TableColumn<>("Disponível");
+        TableColumn<Item, Boolean> clmDisponivel = new TableColumn<>("Disponibilidade");
 
         clmId.setVisible(false);
 
@@ -118,24 +119,87 @@ public class DetalhesObraPopUp implements Initializable {
         }
 
         tableItems.getItems().addAll(itens);
+
+        if (Session.isLogged()) {
+            tableItems.setOnMouseClicked(event -> {
+                Item item = tableItems.getSelectionModel().getSelectedItem();
+
+                if (item != null) {
+                    btnAdd.setDisable(false);
+                }
+            });
+        }
     }
 
     @FXML
     void addToCarrinho(ActionEvent event) {
+        Item item = tableItems.getSelectionModel().getSelectedItem();
 
-    }
+        if (!item.isDisponivel()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Item indisponível");
+            alert.setContentText("O item selecionado não está disponível para empréstimo.");
 
-    @FXML
-    void close(MouseEvent event) {
-        popup.hide();
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            ((Cliente) Session.getLoggedUser()).adicionarAoCarrinho(item);
+        } catch (Exception e) {
+            if (!(e instanceof Confirmation)) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao adicionar item ao carrinho");
+                alert.setContentText(e.getMessage());
+
+                alert.showAndWait();
+                return;
+            }
+
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação");
+            alert.setHeaderText("Já adicionado um item desta obra ao carrinho");
+            alert.setContentText("Deseja adicionar outro item desta obra ao carrinho?");
+            ButtonType confirmButton = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(confirmButton, cancelButton);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                ((Cliente) Session.getLoggedUser()).getCarrinho().add(item);
+
+                Alert info = new Alert(AlertType.INFORMATION);
+                info.setTitle("Sucesso");
+                info.setHeaderText("Item adicionado ao carrinho");
+                info.setContentText("O item foi adicionado ao carrinho com sucesso.");
+
+                info.showAndWait();
+                return;
+            }
+
+            Alert info = new Alert(AlertType.INFORMATION);
+            info.setTitle("Informação");
+            info.setHeaderText("Item não adicionado ao carrinho");
+            info.setContentText("O item não foi adicionado ao carrinho.");
+
+            info.showAndWait();
+            return;
+
+        }
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText("Item adicionado ao carrinho");
+        alert.setContentText("O item foi adicionado ao carrinho com sucesso.");
+
+        alert.showAndWait();
     }
 
     public void setObra(Obra obra) {
         this.obra = obra;
-    }
-
-    public void setPopup(Popup popup) {
-        this.popup = popup;
     }
 
 }
