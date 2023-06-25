@@ -117,57 +117,35 @@ public class Cliente extends Usuario {
         System.out.println("Emprestimo realizado com sucesso!");
     }
 
-    public boolean fazerRenovacao(Emprestimo emprestimo) {
+    public void fazerRenovacao(Emprestimo emprestimo) throws Exception {
         if (!this.cpf.equals(emprestimo.getLeitor().getCpf())) {
-            System.out.println("O emprestimo não pertence ao cliente.");
-
-            return false;
+            throw new Exception("O empréstimo não pertence a esse cliente.");
         }
 
         if (emprestimo.getQtdRenovacoes() == 3) {
-            System.out.println("O emprestimo já foi renovado 3 vezes.");
-
-            return false;
+            throw new Exception("O empréstimo já foi renovado 3 vezes.");
         }
 
         if (this.saldoDevedor > 0) {
-            System.out.println("O cliente possui multa.");
+            throw new Exception("O cliente possui multa.");
+        }
 
-            return false;
+        if (emprestimo.isAtrasado()) {
+            throw new Exception("O empréstimo está atrasado.");
         }
 
         EmprestimoDAO dao = new EmprestimoDAO();
-        boolean res = dao.renovacao(emprestimo.getId());
+        dao.renovacao(emprestimo.getId());
 
-        if (!res) {
-            System.out.println("Erro ao fazer renovação.");
-
-            return false;
-        }
-
-        emprestimo.setQtdRenovacoes(emprestimo.getQtdRenovacoes() + 1);
-
-        return true;
+        Emprestimo updatedEmprestimo = dao.getEmprestimo(emprestimo.getId());
+        emprestimo.setQtdRenovacoes(updatedEmprestimo.getQtdRenovacoes());
+        emprestimo.setDataDevolucao(updatedEmprestimo.getDataDevolucao());
     }
 
-    public boolean fazerDevolucao(Emprestimo emprestimo) {
-        if (!this.cpf.equals(emprestimo.getLeitor().getCpf())) {
-            System.out.println("O emprestimo não pertence ao cliente.");
-
-            return false;
-        }
-
+    public void fazerDevolucao(Emprestimo emprestimo) throws Exception {
         EmprestimoDAO dao = new EmprestimoDAO();
-
-        boolean res = dao.devolucao(emprestimo.getId());
-
-        if (!res) {
-            System.out.println("Erro ao fazer devolução.");
-
-            return false;
-        }
-
-        return true;
+        dao.devolucao(emprestimo.getId());
+        emprestimo.getItem().devolver();
     }
 
     public int getTotalEmprestimos() {
