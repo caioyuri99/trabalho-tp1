@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import biblioteca.Estante;
 import connection.ConnectionDB;
@@ -58,6 +59,30 @@ public class EstanteDAO {
             estante.setCategoria(rs.getString("categoria"));
 
             return estante;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return null;
+        }
+    }
+
+    public ArrayList<Estante> getAll() {
+        String query = "SELECT * FROM estante";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Estante> estantes = new ArrayList<Estante>();
+
+            while (rs.next()) {
+                Estante estante = new Estante();
+                estante.setId(rs.getInt("id"));
+                estante.setCategoria(rs.getString("categoria"));
+                estantes.add(estante);
+            }
+
+            return estantes;
 
         } catch (Exception e) {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
