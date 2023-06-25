@@ -1,10 +1,13 @@
-VBox {
+.custom-vbox {
     -fx-padding: 5;
     -fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
     -fx-background-radius: 5;
+    -fx-border-color: white;
+    -fx-border-radius: 5;
 }
 
-VBox:hover {
+.custom-vbox:hover {
+    -fx-border-color: transparent;
     -fx-background-color:  #ffca2b;
 }
 
