@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -59,6 +60,9 @@ public class DetalhesObra implements Initializable {
     @FXML
     private TableView<Item> tableItems;
 
+    @FXML
+    private Label lblDataPubli;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         lblNome.setText(obra.getNome());
@@ -68,6 +72,7 @@ public class DetalhesObra implements Initializable {
         lblEstante.setText(obra.getEstante().getCategoria());
         lblSinopse.setText(obra.getSinopse());
         imgCapa.setImage(new Image(obra.getCapaUrl()));
+        lblDataPubli.setText(obra.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
         tableItems.setPlaceholder(new Label("Nenhum item cadastrado."));
 
