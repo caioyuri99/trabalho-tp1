@@ -68,7 +68,6 @@ public class RevistaDAO {
             revista.setCondicao(rs.getString("condicao"));
             revista.setDisponivel(rs.getBoolean("disponivel"));
             revista.setObra(new ObraDAO().getObra(rs.getInt("obra")));
-            revista.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             revista.setCategoria(rs.getString("categoria"));
 
             return revista;
@@ -164,7 +163,6 @@ public class RevistaDAO {
                 revista.setDisponivel(rs.getBoolean("disponivel"));
                 revista.setObra(new ObraDAO().getObra(rs.getInt("obra")));
                 revista.setCategoria(rs.getString("categoria"));
-                revista.setLeitor(leitor);
 
                 items.add(revista);
             }

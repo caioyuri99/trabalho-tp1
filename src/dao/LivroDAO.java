@@ -167,7 +167,6 @@ public class LivroDAO {
                 livro.setDisponivel(rs.getBoolean("disponivel"));
                 livro.setObra(new ObraDAO().getObra(rs.getInt("obra")));
                 livro.setTipoCapa(rs.getString("tipoCapa"));
-                livro.setLeitor(leitor);
 
                 items.add(livro);
             }

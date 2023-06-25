@@ -69,7 +69,6 @@ public class GibiDAO {
             gibi.setCondicao(rs.getString("condicao"));
             gibi.setDisponivel(rs.getBoolean("disponivel"));
             gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
-            gibi.setLeitor(new ClienteDAO().getCliente(rs.getString("leitor")));
             gibi.setTipo(rs.getString("tipo"));
             gibi.setCategoria(rs.getString("categoria"));
 
@@ -168,7 +167,6 @@ public class GibiDAO {
                 gibi.setTipo(rs.getString("tipo"));
                 gibi.setCategoria(rs.getString("categoria"));
                 gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
-                gibi.setLeitor(leitor);
 
                 items.add(gibi);
             }

@@ -8,7 +8,6 @@ public abstract class Item {
     protected String condicao;
     protected boolean disponivel;
     protected Obra obra;
-    protected Cliente leitor;
 
     // CONSTRUTORES
     public Item() {
@@ -88,14 +87,6 @@ public abstract class Item {
 
     public void setObra(Obra obra) {
         this.obra = obra;
-    }
-
-    public Cliente getLeitor() {
-        return this.leitor;
-    }
-
-    public void setLeitor(Cliente leitor) {
-        this.leitor = leitor;
     }
 
 }
