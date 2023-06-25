@@ -1,14 +1,11 @@
 package biblioteca;
 
-import java.util.ArrayList;
-
 import dao.EmprestimoDAO;
 
 import java.time.LocalDate;
 
 public class Emprestimo {
     // ATRIBUTOS
-    // static final double valor_multa = 3.0; <- Ideia de multa fixa.
     private int id;
     private String tipoItem;
     private Item item;
