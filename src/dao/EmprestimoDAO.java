@@ -16,7 +16,8 @@ import biblioteca.Revista;
 import connection.ConnectionDB;
 
 public class EmprestimoDAO {
-    // TODO: ver a possibilidade de usar roolback para dar segurança ao banco de dados
+    // TODO: ver a possibilidade de usar roolback para dar segurança ao banco de
+    // dados
 
     // ATRIBUTOS
     ConnectionDB connectionDB;
@@ -91,7 +92,6 @@ public class EmprestimoDAO {
             item.setCondicao(rs.getString(tipoItem + ".condicao"));
             item.setDisponivel(rs.getBoolean(tipoItem + ".disponivel"));
             item.setObra(new ObraDAO().getObra(rs.getInt(tipoItem + ".obra")));
-            item.setLeitor(new ClienteDAO().getCliente(rs.getString(tipoItem + ".leitor")));
 
             switch (tipoItem) {
                 case "livro":
@@ -172,7 +172,7 @@ public class EmprestimoDAO {
         }
     }
 
-    public boolean renovacao(int id) {
+    public void renovacao(int id) throws Exception {
         String query = "UPDATE emprestimo SET dataDevolucao = ?, qtdRenovacoes = ? WHERE id = ?";
 
         try {
@@ -186,16 +186,12 @@ public class EmprestimoDAO {
 
             System.out.println("Renovacao registrada com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao registrar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao registrar: " + e.getMessage());
         }
     }
 
-    public boolean devolucao(int id) {
+    public void devolucao(int id) throws Exception {
         String query = "UPDATE emprestimo SET dataDevolucao = ?, devolvido = ? WHERE id = ?";
 
         try {
@@ -207,12 +203,8 @@ public class EmprestimoDAO {
 
             System.out.println("Devolucao registrada com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao registrar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao registrar: " + e.getMessage());
         }
     }
 
