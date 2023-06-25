@@ -20,7 +20,7 @@ public class EstanteDAO {
     }
 
     // MÉTODOS
-    public boolean insert(Estante estante) {
+    public void insert(Estante estante) throws Exception {
         String sql = "INSERT INTO estante (categoria) VALUES (?)";
 
         try {
@@ -30,12 +30,8 @@ public class EstanteDAO {
 
             System.out.println("Estante cadastrada com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao cadastrar estante: " + e.getMessage());
         }
     }
 
@@ -88,6 +84,30 @@ public class EstanteDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+        }
+    }
+
+    public boolean estanteExists(String categoria) {
+        String query = "SELECT * FROM estante WHERE categoria = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, categoria);
+            ResultSet rs = stmt.executeQuery();
+
+            boolean res = rs.first();
+            if (!res) {
+                System.out.println("A pesquisa não gerou resultados.");
+
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return false;
         }
     }
 }
