@@ -56,20 +56,20 @@ public class Catalogo implements Initializable {
     private TextField query;
 
     @FXML
-    private ImageView iconDivida;
+    private ImageView iconDados;
 
     @FXML
-    private Hyperlink linkDivida;
+    private Hyperlink linkDados;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (!Session.isLogged()) {
             iconCarrinho.setVisible(false);
             iconPedidos.setVisible(false);
-            iconDivida.setVisible(false);
+            iconDados.setVisible(false);
             linkCarrinho.setVisible(false);
             linkPedidos.setVisible(false);
-            linkDivida.setVisible(false);
+            linkDados.setVisible(false);
 
             iconExitLogin.setImage(new Image(getClass().getResourceAsStream("../imagens/login.png")));
         }
@@ -90,6 +90,7 @@ public class Catalogo implements Initializable {
     }
 
     @FXML
+    // TODO: definir os filtros de busca
     void search(ActionEvent event) {
         String search = query.getText();
 
@@ -107,6 +108,17 @@ public class Catalogo implements Initializable {
         carrinho.initModality(Modality.APPLICATION_MODAL);
         carrinho.initOwner(((Node) event.getSource()).getScene().getWindow());
         carrinho.showAndWait();
+    }
+
+    @FXML
+    void mostrarPedidos(MouseEvent event) throws IOException {
+        Stage pedidos = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/PedidosCliente.fxml"));
+        Parent content = loader.load();
+        pedidos.setScene(new Scene(content));
+        pedidos.initModality(Modality.APPLICATION_MODAL);
+        pedidos.initOwner(((Node) event.getSource()).getScene().getWindow());
+        pedidos.showAndWait();
     }
 
     public GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
