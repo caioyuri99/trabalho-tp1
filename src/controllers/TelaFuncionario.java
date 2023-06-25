@@ -1,23 +1,37 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import biblioteca.Funcionario;
 import biblioteca.Obra;
 import controllers.cellFactoryFormat.ObraDataPublicacaoFactory;
 import controllers.tabledata.ObraData;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import session.Session;
 
 public class TelaFuncionario implements Initializable {
+
+    private Parent root;
+    private Stage stage;
 
     @FXML
     private TableView<ObraData> tableObras;
@@ -64,7 +78,8 @@ public class TelaFuncionario implements Initializable {
         ArrayList<ObraData> list = new ArrayList<ObraData>();
         for (Obra obra : obras) {
             // Button btnView = new Button();
-            // ImageView imgView = new ImageView(new Image(getClass().getResourceAsStream("../imagens/mais.png")));
+            // ImageView imgView = new ImageView(new
+            // Image(getClass().getResourceAsStream("../imagens/mais.png")));
             // imgView.setPreserveRatio(true);
             // imgView.setFitHeight(20);
             // btnView.setGraphic(imgView);
@@ -78,8 +93,47 @@ public class TelaFuncionario implements Initializable {
     }
 
     @FXML
-    void test(MouseEvent event) {
-        System.out.println(event.getSource().toString());
+    void addEstante(ActionEvent event) {
+
+    }
+
+    @FXML
+    void addObra(ActionEvent event) {
+
+    }
+
+    @FXML
+    void exit(MouseEvent event) throws IOException {
+        Session.setLoggedUser(null);
+
+        this.root = FXMLLoader.load(getClass().getResource("../telas/LoginFuncionario.fxml"));
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage.setScene(new Scene(root));
+        this.stage.show();
+    }
+
+    @FXML
+    void goToAdmin(ActionEvent event) {
+        Funcionario funcionario = (Funcionario) Session.getLoggedUser();
+
+        if (!funcionario.isAdmin()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Você não tem permissão para acessar essa página.");
+            alert.setContentText("Você não tem permissão para acessar essa página.");
+
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            this.root = FXMLLoader.load(getClass().getResource("../telas/TelaAdministrador.fxml"));
+            this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            this.stage.setScene(new Scene(root));
+            this.stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
