@@ -64,30 +64,18 @@ public class Cliente extends Usuario {
         return res;
     }
 
-    public boolean pagarMulta(double valor) {
+    public void pagarMulta(double valor) throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
         Cliente cliente = dao.getCliente(cpf);
 
         if (cliente == null) {
-            System.out.println("O cliente não está cadastrado.");
-
-            return false;
+            throw new Exception("Cliente não encontrado.");
         }
 
         this.saldoDevedor -= valor;
 
-        boolean res = dao.update(cpf, senha, nome, dataNasc, saldoDevedor);
-
-        if (!res) {
-            System.out.println("Erro ao pagar multa.");
-
-            return false;
-        }
-
-        System.out.println("Multa paga com sucesso!");
-
-        return true;
+        dao.update(cpf, senha, nome, dataNasc, saldoDevedor);
     }
 
     public void fazerEmprestimo() throws Exception {
@@ -188,6 +176,12 @@ public class Cliente extends Usuario {
 
             return null;
         }
+    }
+
+    public void atualizarCadastro() throws Exception {
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.update(this.cpf, this.senha, this.nome, this.dataNasc, this.saldoDevedor);
     }
 
     // GETTERS & SETTERS
