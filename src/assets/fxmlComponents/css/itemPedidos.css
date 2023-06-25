@@ -1,0 +1,10 @@
+.container {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-background-color:  #eceeeb;
+}
+
+.subcontainer {
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="475.0" styleClass="container" stylesheets="@css/itemPedidos.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assets.fxmlComponents.controllers.ItemPedidos">
+   <children>
+      <VBox prefHeight="233.0" prefWidth="474.0">
+         <children>
+            <AnchorPane prefHeight="99.0" prefWidth="474.0" styleClass="container">
+               <children>
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="174.0" prefWidth="470.0" spacing="5.0">
+                     <children>
+                        <AnchorPane prefHeight="163.0" prefWidth="126.0" style="-fx-border-color: black;">
+                           <children>
+                              <ImageView fx:id="imgCapa" fitHeight="160.0" fitWidth="123.0" layoutX="1.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="164.0" prefWidth="329.0" spacing="1.0">
+                           <children>
+                              <Label fx:id="lblNome" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="329.0" text="Título do livro" wrapText="true">
+                                 <graphic>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Título:" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="lblAutor" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="320.0" text="Autor do livro" wrapText="true">
+                                 <graphic>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Autor:" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="lblDataEmprestimo" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="12/12/2012" wrapText="true">
+                                 <graphic>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data de empréstimo:" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="lblDataDevolucao" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="30/12/2012" wrapText="true">
+                                 <graphic>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data de devolução:" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </graphic>
+                              </Label>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="59.0" prefWidth="152.0">
+                                       <children>
+                                          <Label fx:id="lblTipo" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="Livro" wrapText="true">
+                                             <graphic>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo:" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </graphic>
+                                          </Label>
+                                          <Label fx:id="lblQtdRenovações" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="3" wrapText="true">
+                                             <graphic>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Qtd. de Renovações:" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </graphic>
+                                          </Label>
+                                          <Label fx:id="lblAtrasado" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="Sim" wrapText="true">
+                                             <graphic>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Atrasado:" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox maxWidth="1.7976931348623157E308" prefHeight="59.0" prefWidth="177.0">
+                                       <children>
+                                          <Label fx:id="lblMultado" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="Sim" visible="false" wrapText="true">
+                                             <graphic>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Multado:" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </graphic>
+                                          </Label>
+                                          <Label fx:id="lblValorMulta" maxHeight="51.0" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="320.0" text="R$ 100,00" visible="false" wrapText="true">
+                                             <graphic>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Valor da Multa:" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <AnchorPane prefHeight="55.0" prefWidth="290.0" styleClass="subcontainer">
+                     <children>
+                        <Button layoutX="54.0" layoutY="15.0" mnemonicParsing="false" onAction="#renovar" prefHeight="25.0" prefWidth="135.0" text="RENOVAR">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="55.0" prefWidth="278.0" styleClass="subcontainer">
+                     <children>
+                        <Button layoutX="51.0" layoutY="14.0" mnemonicParsing="false" onAction="#devolver" prefHeight="25.0" prefWidth="135.0" text="DEVOLVER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
