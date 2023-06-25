@@ -45,6 +45,15 @@ public class Revista extends Item {
     }
 
     @Override
+    public void devolver() throws Exception {
+        this.disponivel = true;
+
+        RevistaDAO dao = new RevistaDAO();
+
+        dao.updateLeitor(this, true);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Revista) {
             Revista revista = (Revista) obj;

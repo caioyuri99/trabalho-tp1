@@ -36,6 +36,8 @@ public abstract class Item {
 
     public abstract void emprestar() throws Exception;
 
+    public abstract void devolver() throws Exception;
+
     @Override
     public abstract boolean equals(Object obj);
 

@@ -55,6 +55,15 @@ public class Gibi extends Item {
     }
 
     @Override
+    public void devolver() throws Exception {
+        this.disponivel = true;
+
+        GibiDAO dao = new GibiDAO();
+
+        dao.updateLeitor(this, true);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Gibi) {
             Gibi gibi = (Gibi) obj;

@@ -51,6 +51,15 @@ public class Livro extends Item {
     }
 
     @Override
+    public void devolver() throws Exception {
+        this.disponivel = true;
+
+        LivroDAO dao = new LivroDAO();
+
+        dao.updateLeitor(this, true);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Livro) {
             Livro livro = (Livro) obj;
