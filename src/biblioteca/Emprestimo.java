@@ -1,6 +1,9 @@
 package biblioteca;
 
 import java.util.ArrayList;
+
+import dao.EmprestimoDAO;
+
 import java.time.LocalDate;
 
 public class Emprestimo {
@@ -12,7 +15,6 @@ public class Emprestimo {
     private Cliente leitor;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
-    private ArrayList<Item> itens = new ArrayList<>();
     private int qtdRenovacoes;
     private boolean devolvido;
     private boolean atrasado;
@@ -31,6 +33,13 @@ public class Emprestimo {
         this.dataDevolucao = dataDevolucao;
         this.dataEmprestimo = dataEmprestimo;
         this.leitor = leitor;
+    }
+
+    // MÉTODOS
+    public Item getItemEmprestado() {
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        return dao.getItemFromEmprestimo(this);
     }
 
     // GETTERS & SETTERS
@@ -80,14 +89,6 @@ public class Emprestimo {
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
-    }
-
-    public ArrayList<Item> getItems() {
-        return this.itens;
-    }
-
-    public void setItens(ArrayList<Item> itens) {
-        this.itens = itens;
     }
 
     public int getQtdRenovacoes() {
