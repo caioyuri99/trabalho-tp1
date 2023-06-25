@@ -32,7 +32,7 @@
                   <Image url="@../imagens/interrogação.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="iconCarrinho" fitHeight="30.0" fitWidth="42.0" layoutX="520.0" layoutY="10.0" onMouseClicked="#mostrarCarrinho" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="iconCarrinho" fitHeight="30.0" fitWidth="42.0" layoutX="520.0" layoutY="11.0" onMouseClicked="#mostrarCarrinho" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imagens/carrinho-de-compras.png" />
                </image>
@@ -40,7 +40,7 @@
                   <ColorAdjust />
                </effect>
             </ImageView>
-            <Hyperlink fx:id="linkCarrinho" layoutX="553.0" layoutY="14.0" onAction="#mostrarCarrinho" style="-fx-background-color: transparent;" text="Meu Carrinho" textOverrun="CLIP" underline="true">
+            <Hyperlink fx:id="linkCarrinho" layoutX="550.0" layoutY="14.0" onAction="#mostrarCarrinho" style="-fx-background-color: transparent;" text="Meu Carrinho" textOverrun="CLIP" underline="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -53,20 +53,7 @@
                   <ColorAdjust />
                </effect>
             </ImageView>
-            <Hyperlink fx:id="linkPedidos" layoutX="422.0" layoutY="14.0" style="-fx-background-color: transparent;" text="Meus Pedidos" textOverrun="CLIP" underline="true">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Hyperlink>
-            <ImageView fx:id="iconDivida" fitHeight="30.0" fitWidth="42.0" layoutX="270.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../imagens/perceber.png" />
-               </image>
-               <effect>
-                  <ColorAdjust />
-               </effect>
-            </ImageView>
-            <Hyperlink fx:id="linkDivida" layoutX="298.0" layoutY="15.0" style="-fx-background-color: transparent;" text="Minha Dívida" textOverrun="CLIP" underline="true">
+            <Hyperlink fx:id="linkPedidos" layoutX="424.0" layoutY="14.0" onMouseClicked="#mostrarPedidos" style="-fx-background-color: transparent;" text="Meus Pedidos" textOverrun="CLIP" underline="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -86,6 +73,19 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
+            <Hyperlink fx:id="linkDados" layoutX="307.0" layoutY="14.0" style="-fx-background-color: transparent;" text="Meus Dados" textOverrun="CLIP" underline="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Hyperlink>
+            <ImageView fx:id="iconDados" fitHeight="30.0" fitWidth="42.0" layoutX="277.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../imagens/dados-pessoais.png" />
+               </image>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </ImageView>
          </children>
       </AnchorPane>
       <ImageView fitHeight="30.0" fitWidth="42.0" layoutX="133.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
