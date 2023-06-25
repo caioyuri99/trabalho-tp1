@@ -98,6 +98,16 @@ public class Obra {
         return dao.getObrasByNameOrAutor(pesquisa, limit, offset);
     }
 
+    public static ArrayList<Obra> getObras(String search, String tipo, Estante estante, LocalDate fromData,
+            LocalDate toData, String genero, String disponibilidade, String condicao, String editora, int limit,
+            int offset) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.searchCustomQuery(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao,
+                editora, limit,
+                offset);
+    }
+
     public static Obra getObra(int id) {
         ObraDAO dao = new ObraDAO();
 
