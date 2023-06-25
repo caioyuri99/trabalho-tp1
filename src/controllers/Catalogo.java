@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -204,6 +205,17 @@ public class Catalogo implements Initializable {
         details.initModality(Modality.APPLICATION_MODAL);
         details.initOwner(bookContainer.getScene().getWindow());
         details.showAndWait();
+    }
+
+    @FXML
+    void mostrarDados(MouseEvent event) throws IOException {
+        Stage dados = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DadosCliente.fxml"));
+        Parent content = loader.load();
+        dados.setScene(new Scene(content));
+        dados.initModality(Modality.APPLICATION_MODAL);
+        dados.initOwner(((Node) event.getSource()).getScene().getWindow());
+        dados.showAndWait();
     }
 
 }
