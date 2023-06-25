@@ -21,7 +21,7 @@ public class FuncionarioDAO {
 
     // MÉTODOS
     public boolean insert(Funcionario funcionario) {
-        String query = "INSERT INTO funcionario(cpf, senha, nome, dataNasc, cargo) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO funcionario(cpf, senha, nome, dataNasc, cargo, admin) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -30,6 +30,7 @@ public class FuncionarioDAO {
             stmt.setString(3, funcionario.getNome());
             stmt.setDate(4, Date.valueOf(funcionario.getDataNasc()));
             stmt.setString(5, funcionario.getCargo());
+            stmt.setBoolean(6, funcionario.isAdmin());
             stmt.execute();
 
             System.out.println("Funcionário inserido com sucesso!");
@@ -64,6 +65,7 @@ public class FuncionarioDAO {
             funcionario.setNome(rs.getString("nome"));
             funcionario.setDataNasc(rs.getDate("dataNasc").toLocalDate());
             funcionario.setCargo(rs.getString("cargo"));
+            funcionario.setAdmin(rs.getBoolean("admin"));
 
             return funcionario;
 
