@@ -73,7 +73,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
-            <Hyperlink fx:id="linkDados" layoutX="307.0" layoutY="14.0" style="-fx-background-color: transparent;" text="Meus Dados" textOverrun="CLIP" underline="true">
+            <Hyperlink fx:id="linkDados" layoutX="307.0" layoutY="14.0" onMouseClicked="#mostrarDados" style="-fx-background-color: transparent;" text="Meus Dados" textOverrun="CLIP" underline="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
