@@ -7,6 +7,7 @@ import dao.FuncionarioDAO;
 public class Funcionario extends Usuario {
     // ATRIBUTOS
     private String cargo;
+    private boolean admin;
 
     // CONSTRUTORES
     public Funcionario() {
@@ -47,6 +48,14 @@ public class Funcionario extends Usuario {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public boolean isAdmin() {
+        return this.admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 }
