@@ -74,7 +74,8 @@ public class ClienteDAO {
         }
     }
 
-    public boolean update(String cpf, String senha, String nome, LocalDate dataNasc, double saldoDevedor) {
+    public void update(String cpf, String senha, String nome, LocalDate dataNasc, double saldoDevedor)
+            throws Exception {
         String query = "UPDATE cliente SET senha=?, nome=?, dataNasc=?, saldoDevedor=? WHERE cpf=?";
 
         try {
@@ -88,12 +89,8 @@ public class ClienteDAO {
 
             System.out.println("Dados atualizados com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao autalizar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
         }
     }
 }
