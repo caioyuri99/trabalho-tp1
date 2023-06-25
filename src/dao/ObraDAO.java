@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import biblioteca.Estante;
+import biblioteca.Item;
 import biblioteca.Obra;
 import connection.ConnectionDB;
 
@@ -181,6 +183,118 @@ public class ObraDAO {
                 obra.setSinopse(rs.getString("sinopse"));
                 obra.setCapaUrl(rs.getString("capaUrl"));
                 obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
+                obras.add(obra);
+            }
+
+            return obras;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return null;
+        }
+    }
+
+    public ArrayList<Obra> searchCustomQuery(String search, String tipo, Estante estante, LocalDate fromData,
+            LocalDate toData, String genero, String disponibilidade, String condicao, String editora, int limit,
+            int offset) {
+
+        if (fromData == null) {
+            fromData = LocalDate.of(1000, 1, 1);
+        }
+
+        if (toData == null) {
+            toData = LocalDate.now();
+        }
+
+        String query = String.format(
+                "SELECT * FROM obra WHERE (LOWER(nome) LIKE ? OR LOWER(autor) LIKE ?) AND tipo LIKE ? AND estante %s AND dataPublicacao BETWEEN ? AND ? AND genero LIKE ? ORDER BY id ASC LIMIT ? OFFSET ?",
+                (estante == null) ? "IS NOT NULL" : "= ?");
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            int c = 1;
+            stmt.setString(c, '%' + search.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + search.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + tipo + '%');
+            c++;
+            if (estante != null) {
+                stmt.setInt(c, estante.getId());
+                c++;
+            }
+            stmt.setDate(c, Date.valueOf(fromData));
+            c++;
+            stmt.setDate(c, Date.valueOf(toData));
+            c++;
+            stmt.setString(c, '%' + genero + '%');
+            c++;
+            stmt.setInt(c, limit);
+            c++;
+            stmt.setInt(c, offset);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Obra> obras = new ArrayList<Obra>();
+
+            while (rs.next()) {
+                Obra obra = new Obra();
+                obra.setId(rs.getInt("id"));
+                obra.setNome(rs.getString("nome"));
+                obra.setTipo(rs.getString("tipo"));
+                obra.setDataPublicacao(rs.getDate("dataPublicacao").toLocalDate());
+                obra.setAutor(rs.getString("autor"));
+                obra.setGenero(rs.getString("genero"));
+                obra.setSinopse(rs.getString("sinopse"));
+                obra.setCapaUrl(rs.getString("capaUrl"));
+                obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
+
+                if (!disponibilidade.equals("")) {
+                    if (disponibilidade.equals("disponivel")) {
+                        if (this.isDisponivel(obra)) {
+                            continue;
+                        }
+                    } else if (disponibilidade.equals("indisponivel")) {
+                        if (!this.isDisponivel(obra)) {
+                            continue;
+                        }
+                    }
+                }
+
+                ArrayList<Item> itemsOfObra = switch (obra.getTipo()) {
+                    case "livro" -> new LivroDAO().getItemsOfObra(obra);
+                    case "revista" -> new RevistaDAO().getItemsOfObra(obra);
+                    case "gibi" -> new GibiDAO().getItemsOfObra(obra);
+                    default -> null;
+                };
+
+                if (!condicao.equals("")) {
+                    boolean hasItemWithCondition = false;
+                    for (Item item : itemsOfObra) {
+                        if (item.getCondicao().equals(condicao)) {
+                            hasItemWithCondition = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasItemWithCondition) {
+                        continue;
+                    }
+                }
+
+                if (!editora.equals("")) {
+                    boolean hasItemWithEditora = false;
+                    for (Item item : itemsOfObra) {
+                        if (item.getEditora().toLowerCase().contains(editora.toLowerCase())) {
+                            hasItemWithEditora = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasItemWithEditora) {
+                        continue;
+                    }
+                }
+
                 obras.add(obra);
             }
 
