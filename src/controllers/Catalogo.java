@@ -2,9 +2,11 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import biblioteca.Estante;
 import biblioteca.Obra;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,6 +17,8 @@ import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -26,12 +30,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import session.Session;
 
 public class Catalogo implements Initializable {
-
+    // TODO: implementar a paginação
     private Parent root;
     private Stage stage;
 
@@ -39,7 +42,34 @@ public class Catalogo implements Initializable {
     private ScrollPane bookContainer;
 
     @FXML
+    private ComboBox<String> filterCondicao;
+
+    @FXML
+    private ComboBox<String> filterDisponibilidade;
+
+    @FXML
+    private TextField filterEditora;
+
+    @FXML
+    private ComboBox<Estante> filterEstante;
+
+    @FXML
+    private DatePicker filterFromDataPubli;
+
+    @FXML
+    private TextField filterGenero;
+
+    @FXML
+    private ComboBox<String> filterTipo;
+
+    @FXML
+    private DatePicker filterToDataPubli;
+
+    @FXML
     private ImageView iconCarrinho;
+
+    @FXML
+    private ImageView iconDados;
 
     @FXML
     private ImageView iconExitLogin;
@@ -51,16 +81,13 @@ public class Catalogo implements Initializable {
     private Hyperlink linkCarrinho;
 
     @FXML
+    private Hyperlink linkDados;
+
+    @FXML
     private Hyperlink linkPedidos;
 
     @FXML
     private TextField query;
-
-    @FXML
-    private ImageView iconDados;
-
-    @FXML
-    private Hyperlink linkDados;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -76,6 +103,20 @@ public class Catalogo implements Initializable {
         }
 
         bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
+
+        Estante todos = new Estante();
+        todos.setId(0);
+        todos.setCategoria("Todos");
+        filterEstante.getItems().add(todos);
+
+        ArrayList<Estante> filterEstanteOpts = Estante.getListaEstantes();
+        for (Estante estante : filterEstanteOpts) {
+            filterEstante.getItems().add(estante);
+        }
+
+        filterCondicao.getItems().addAll("Todos", "Novo", "Semi-novo", "Usado", "Restaurado");
+        filterDisponibilidade.getItems().addAll("Todos", "Disponível", "Indisponível");
+        filterTipo.getItems().addAll("Todos", "Livro", "Revista", "Gibi");
     }
 
     @FXML
@@ -91,7 +132,6 @@ public class Catalogo implements Initializable {
     }
 
     @FXML
-    // TODO: definir os filtros de busca
     void search(ActionEvent event) {
         String search = query.getText();
 
@@ -120,6 +160,43 @@ public class Catalogo implements Initializable {
         pedidos.initModality(Modality.APPLICATION_MODAL);
         pedidos.initOwner(((Node) event.getSource()).getScene().getWindow());
         pedidos.showAndWait();
+    }
+
+    @FXML
+    void mostrarDados(MouseEvent event) throws IOException {
+        Stage dados = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DadosCliente.fxml"));
+        Parent content = loader.load();
+        dados.setScene(new Scene(content));
+        dados.initModality(Modality.APPLICATION_MODAL);
+        dados.initOwner(((Node) event.getSource()).getScene().getWindow());
+        dados.showAndWait();
+    }
+
+    @FXML
+    void queryWithFilters(ActionEvent event) {
+        String search = query.getText();
+
+        // filtros obra
+        String tipo = filterTipo.getValue();
+        tipo = (tipo == "Todos" || tipo == null) ? "" : tipo;
+        Estante estante = filterEstante.getValue();
+        estante = (estante == null || estante.getId() == 0) ? null : estante;
+        LocalDate fromData = filterFromDataPubli.getValue();
+        LocalDate toData = filterToDataPubli.getValue();
+        String genero = filterGenero.getText();
+        String disponibilidade = filterDisponibilidade.getValue();
+        disponibilidade = (disponibilidade == "Todos" || disponibilidade == null) ? "" : disponibilidade;
+
+        // filtros item
+        String condicao = filterCondicao.getValue();
+        condicao = (condicao == "Todos" || condicao == null) ? "" : condicao;
+        String editora = filterEditora.getText();
+
+        ArrayList<Obra> obras = Obra.getObras(search, tipo, estante, fromData, toData, genero, disponibilidade,
+                condicao, editora, 20, 0);
+
+        bookContainer.setContent(this.createBookGrid((int) Math.ceil(obras.size() / 4.0), obras));
     }
 
     public GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
@@ -152,6 +229,7 @@ public class Catalogo implements Initializable {
         cell.setAlignment(Pos.TOP_CENTER);
         cell.setMaxWidth(163);
         cell.setMaxHeight(211);
+        cell.getStyleClass().add("custom-vbox");
 
         ImageView image = new ImageView(urlImage);
         image.setPreserveRatio(false);
@@ -205,17 +283,6 @@ public class Catalogo implements Initializable {
         details.initModality(Modality.APPLICATION_MODAL);
         details.initOwner(bookContainer.getScene().getWindow());
         details.showAndWait();
-    }
-
-    @FXML
-    void mostrarDados(MouseEvent event) throws IOException {
-        Stage dados = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DadosCliente.fxml"));
-        Parent content = loader.load();
-        dados.setScene(new Scene(content));
-        dados.initModality(Modality.APPLICATION_MODAL);
-        dados.initOwner(((Node) event.getSource()).getScene().getWindow());
-        dados.showAndWait();
     }
 
 }
