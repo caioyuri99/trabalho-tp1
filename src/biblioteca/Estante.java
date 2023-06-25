@@ -26,6 +26,11 @@ public class Estante {
     }
 
     // MÉTODOS
+    public void adicionarEstante() throws Exception {
+        EstanteDAO dao = new EstanteDAO();
+        dao.insert(this);
+    }
+
     public boolean registrarObra(Obra obra) {
         ObraDAO dao = new ObraDAO();
         boolean res = dao.insert(obra, this);
@@ -50,6 +55,12 @@ public class Estante {
         EstanteDAO dao = new EstanteDAO();
 
         return dao.getAll();
+    }
+
+    public static boolean estanteExiste(String categoria) {
+        EstanteDAO dao = new EstanteDAO();
+
+        return dao.estanteExists(categoria);
     }
 
     // GETTERS & SETTERS
