@@ -2,6 +2,7 @@ package biblioteca;
 
 import java.util.ArrayList;
 
+import dao.EstanteDAO;
 import dao.ObraDAO;
 
 public class Estante {
@@ -45,6 +46,12 @@ public class Estante {
         return dao.delete(obra.getId());
     }
 
+    public static ArrayList<Estante> getListaEstantes() {
+        EstanteDAO dao = new EstanteDAO();
+
+        return dao.getAll();
+    }
+
     // GETTERS & SETTERS
     public int getId() {
         return this.id;
@@ -68,6 +75,11 @@ public class Estante {
 
     public void setListaObras(ArrayList<Obra> obras) {
         this.obras = obras;
+    }
+
+    @Override
+    public String toString() {
+        return this.categoria;
     }
 
 }
