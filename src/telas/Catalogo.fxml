@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -93,20 +98,62 @@
             <Image url="@../imagens/pesquisar.png" />
          </image>
       </ImageView>
-      <MenuButton layoutX="54.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="295.0" text="Tipo">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Livro" />
-          <MenuItem mnemonicParsing="false" text="Revista" />
-            <MenuItem mnemonicParsing="false" text="Gibi" />
-        </items>
-      </MenuButton>
-      <MenuButton layoutX="355.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="295.0" text="Condição">
-         <items>
-            <MenuItem mnemonicParsing="false" text="Menos de 1 ano" />
-            <MenuItem mnemonicParsing="false" text="Menos de 2 anos" />
-            <MenuItem mnemonicParsing="false" text="2+ anos" />
-         </items>
-      </MenuButton>
-      <ScrollPane fx:id="bookContainer" hbarPolicy="NEVER" layoutX="17.0" layoutY="200.0" prefHeight="273.0" prefWidth="667.0" vbarPolicy="ALWAYS" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="7.0" layoutY="123.0" prefHeight="342.0" prefWidth="693.0">
+         <content>
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+               <children>
+                  <Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                    <panes>
+                      <TitledPane expanded="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Filtros">
+                        <content>
+                          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <children>
+                                    <VBox layoutX="120.0" layoutY="14.0" spacing="5.0" style="-fx-border-color: black;">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="Data de Publicação:">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label contentDisplay="RIGHT" prefHeight="25.0" text="De: " textAlignment="JUSTIFY">
+                                             <graphic>
+                                                <DatePicker fx:id="filterFromDataPubli" />
+                                             </graphic>
+                                          </Label>
+                                          <Label contentDisplay="RIGHT" text="Até:">
+                                             <graphic>
+                                                <DatePicker fx:id="filterToDataPubli" />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <TextField fx:id="filterGenero" layoutX="341.0" layoutY="14.0" promptText="Gênero" />
+                                    <TextField fx:id="filterEditora" layoutX="341.0" layoutY="46.0" promptText="Editora" />
+                                    <Button alignment="CENTER" layoutX="191.0" layoutY="112.0" mnemonicParsing="false" onAction="#queryWithFilters" prefHeight="25.0" prefWidth="109.0" text="FILTRAR" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <ComboBox fx:id="filterTipo" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="94.0" promptText="Tipo" />
+                                    <ComboBox fx:id="filterCondicao" layoutX="14.0" layoutY="46.0" prefHeight="25.0" prefWidth="94.0" promptText="Condição" />
+                                    <ComboBox fx:id="filterEstante" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="94.0" promptText="Estante" />
+                                    <ComboBox fx:id="filterDisponibilidade" layoutX="341.0" layoutY="78.0" prefHeight="25.0" prefWidth="149.0" promptText="Disponibilidade" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
+                  <ScrollPane fx:id="bookContainer" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="676.0" vbarPolicy="ALWAYS" />
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
