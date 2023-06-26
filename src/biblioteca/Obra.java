@@ -26,7 +26,7 @@ public class Obra {
     }
 
     public Obra(String nome, String tipo, LocalDate dataPublicacao, String autor, String genero, String sinopse,
-            String capaUrl, Estante estante) {
+            String capaUrl) {
         this.nome = nome;
         this.tipo = tipo;
         this.dataPublicacao = dataPublicacao;
