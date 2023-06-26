@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: #ffffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EditarObra">
+   <children>
+      <AnchorPane prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: #ffca2b;">
+         <children>
+            <Text layoutX="125.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar Obra" textAlignment="CENTER" wrappingWidth="100.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="450.0" prefHeight="54.0" prefWidth="350.0" style="-fx-background-color: #ffca2b;">
+         <children>
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#confirmChanges" prefHeight="26.0" prefWidth="322.0" text="CONFIRMAR ALTERAÇÕES">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="50.0" prefHeight="400.0" prefWidth="350.0" style="-fx-background-color: #38761d;">
+         <children>
+            <Text fill="WHITE" layoutX="14.0" layoutY="34.0" stroke="WHITE" strokeWidth="0.5" text="NOME:" underline="true" wrappingWidth="61.298675537109375">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <AnchorPane layoutX="189.0" layoutY="207.0" prefHeight="185.0" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000; -fx-border-width: 2px;">
+               <children>
+                  <ImageView fx:id="imgPreviewCapa" fitHeight="179.0" fitWidth="144.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" />
+                  <Label fx:id="lblErrorUrl" layoutX="36.0" layoutY="83.0" text="URL inválida" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <VBox layoutX="12.0" layoutY="241.0" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="161.0" spacing="5.0" style="-fx-border-color: white;">
+               <children>
+                  <Text fill="WHITE" stroke="WHITE" strokeWidth="0.5" text="SINOPSE:" underline="true" wrappingWidth="81.49999999999977">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+                     </effect>
+                  </Text>
+                  <TextArea fx:id="txtSinopse" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="146.0" prefWidth="147.0" wrapText="true" />
+               </children>
+            </VBox>
+            <Text fill="WHITE" layoutX="15.0" layoutY="73.0" stroke="WHITE" strokeWidth="0.5" text="AUTOR:" underline="true" wrappingWidth="69.29867553710938">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <Text fill="WHITE" layoutX="15.0" layoutY="113.0" stroke="WHITE" strokeWidth="0.5" wrappingWidth="69.29867553710938">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <Text fill="WHITE" layoutX="15.0" layoutY="103.0" stroke="WHITE" strokeWidth="0.5" text="DATA DE PUBLICAÇÃO:" underline="true" wrappingWidth="69.29867553710938">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <Text fill="WHITE" layoutX="15.0" layoutY="153.0" stroke="WHITE" strokeWidth="0.5" text="GÊNERO:" underline="true" wrappingWidth="81.49999999999977">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <Text fill="WHITE" layoutX="15.0" layoutY="193.0" stroke="WHITE" strokeWidth="0.5" text="IMAGEM:" underline="true" wrappingWidth="81.49999999999977">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="9.3" radius="1.8250000000000002" spread="0.51" width="0.0" />
+               </effect>
+            </Text>
+            <TextField fx:id="txtNome" layoutX="98.0" layoutY="14.0" prefHeight="26.0" prefWidth="241.0" />
+            <TextField fx:id="txtAutor" layoutX="98.0" layoutY="54.0" prefHeight="26.0" prefWidth="241.0" />
+            <TextField fx:id="txtGenero" layoutX="98.0" layoutY="133.0" prefHeight="26.0" prefWidth="241.0" />
+            <TextField fx:id="txtUrlCapa" layoutX="98.0" layoutY="173.0" prefHeight="26.0" prefWidth="241.0" />
+            <DatePicker fx:id="dateDataPubli" layoutX="97.0" layoutY="93.0" prefHeight="25.0" prefWidth="241.0" />
+            <ComboBox fx:id="cbbEstante" layoutX="12.0" layoutY="207.0" prefHeight="25.0" prefWidth="81.0" promptText="Estante" />
+            <ComboBox fx:id="cbbTipo" layoutX="93.0" layoutY="207.0" prefHeight="25.0" prefWidth="81.0" promptText="Tipo" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
