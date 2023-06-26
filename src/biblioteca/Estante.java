@@ -31,18 +31,12 @@ public class Estante {
         dao.insert(this);
     }
 
-    public boolean registrarObra(Obra obra) {
+    public void registrarObra(Obra obra) throws Exception {
         ObraDAO dao = new ObraDAO();
-        boolean res = dao.insert(obra, this);
-
-        if (!res) {
-            return false;
-        }
+        dao.insert(obra, this);
 
         obra.setEstante(this);
         obras.add(obra);
-
-        return true;
     }
 
     public boolean removerObra(Obra obra) {
