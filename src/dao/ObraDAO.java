@@ -24,7 +24,7 @@ public class ObraDAO {
     }
 
     // MÉTODOS
-    public boolean insert(Obra obra, Estante estante) {
+    public void insert(Obra obra, Estante estante) throws Exception {
         String query = "INSERT INTO obra (nome, tipo, dataPublicacao, autor, genero, sinopse, capaUrl, estante) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -41,12 +41,8 @@ public class ObraDAO {
 
             System.out.println("Obra cadastrada com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
         }
     }
 
