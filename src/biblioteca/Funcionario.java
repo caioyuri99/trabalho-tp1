@@ -35,6 +35,7 @@ public class Funcionario extends Usuario {
         this.nome = funcionario.nome;
         this.dataNasc = funcionario.dataNasc;
         this.cargo = funcionario.cargo;
+        this.admin = funcionario.admin;
 
         System.out.println("Login realizado com sucesso!");
 
