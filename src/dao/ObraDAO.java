@@ -46,6 +46,29 @@ public class ObraDAO {
         }
     }
 
+    public void updateObra(Estante estante, Obra obra) throws Exception {
+        String query = "UPDATE obra SET nome = ?, tipo = ?, dataPublicacao = ?, autor = ?, genero = ?, sinopse = ?, capaUrl = ?, estante = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, obra.getNome());
+            stmt.setString(2, obra.getTipo());
+            stmt.setDate(3, Date.valueOf(obra.getDataPublicacao()));
+            stmt.setString(4, obra.getAutor());
+            stmt.setString(5, obra.getGenero());
+            stmt.setString(6, obra.getSinopse());
+            stmt.setString(7, obra.getCapaUrl());
+            stmt.setInt(8, estante.getId());
+            stmt.setInt(8, obra.getId());
+            stmt.execute();
+
+            System.out.println("Obra atualizada com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
     public Obra getObra(int id) {
         String query = "SELECT * FROM obra WHERE id = ?";
 
