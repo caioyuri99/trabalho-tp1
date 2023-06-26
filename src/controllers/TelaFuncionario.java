@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import biblioteca.Funcionario;
 import biblioteca.Obra;
 import controllers.cellFactoryFormat.ObraDataPublicacaoFactory;
-import controllers.tabledata.ObraData;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,28 +35,28 @@ public class TelaFuncionario implements Initializable {
     private Stage stage;
 
     @FXML
-    private TableView<ObraData> tableObras;
+    private TableView<Obra> tableObras;
 
     @FXML
-    private TableColumn<ObraData, String> clmAutor;
+    private TableColumn<Obra, String> clmAutor;
 
     @FXML
-    private TableColumn<ObraData, LocalDate> clmDataDePublicacao;
+    private TableColumn<Obra, LocalDate> clmDataDePublicacao;
 
     @FXML
-    private TableColumn<ObraData, String> clmEstante;
+    private TableColumn<Obra, String> clmEstante;
 
     @FXML
-    private TableColumn<ObraData, String> clmGenero;
+    private TableColumn<Obra, String> clmGenero;
 
     @FXML
-    private TableColumn<ObraData, String> clmId;
+    private TableColumn<Obra, String> clmId;
 
     @FXML
-    private TableColumn<ObraData, String> clmNome;
+    private TableColumn<Obra, String> clmNome;
 
     @FXML
-    private TableColumn<ObraData, String> clmTipo;
+    private TableColumn<Obra, String> clmTipo;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -68,19 +68,45 @@ public class TelaFuncionario implements Initializable {
         clmTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         clmGenero.setCellValueFactory(new PropertyValueFactory<>("genero"));
         clmDataDePublicacao.setCellFactory(column -> new ObraDataPublicacaoFactory());
-        clmDataDePublicacao.setCellValueFactory(new PropertyValueFactory<>("dataDePublicacao"));
+        clmDataDePublicacao.setCellValueFactory(new PropertyValueFactory<>("dataPublicacao"));
         clmEstante.setCellValueFactory(new PropertyValueFactory<>("estante"));
 
+        tableObras.setRowFactory(tv -> {
+            TableRow<Obra> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Obra obra = row.getItem();
+
+                    Stage gerenciarObra = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/GerenciarObra.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == GerenciarObra.class) {
+                            GerenciarObra controller = new GerenciarObra();
+                            controller.setObra(obra);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    try {
+                        gerenciarObra.setScene(new Scene(loader.load()));
+                        gerenciarObra.initModality(Modality.APPLICATION_MODAL);
+                        gerenciarObra.initOwner(((Node) event.getSource()).getScene().getWindow());
+                        gerenciarObra.showAndWait();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return row;
+        });
+
         ArrayList<Obra> obras = Obra.getObras(50, 0);
-        ArrayList<ObraData> list = new ArrayList<ObraData>();
-        for (Obra obra : obras) {
-
-            ObraData obraData = new ObraData(obra);
-            list.add(obraData);
-
-        }
-
-        tableObras.setItems(FXCollections.observableArrayList(list));
+        tableObras.setItems(FXCollections.observableArrayList(obras));
     }
 
     @FXML
