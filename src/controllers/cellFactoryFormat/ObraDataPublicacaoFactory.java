@@ -3,10 +3,10 @@ package controllers.cellFactoryFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import controllers.tabledata.ObraData;
+import biblioteca.Obra;
 import javafx.scene.control.TableCell;
 
-public class ObraDataPublicacaoFactory extends TableCell<ObraData, LocalDate> {
+public class ObraDataPublicacaoFactory extends TableCell<Obra, LocalDate> {
 
     @Override
     protected void updateItem(LocalDate item, boolean empty) {
