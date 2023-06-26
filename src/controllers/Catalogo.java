@@ -104,15 +104,12 @@ public class Catalogo implements Initializable {
 
         bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
 
+        ArrayList<Estante> filterEstanteOpts = new ArrayList<Estante>();
         Estante todos = new Estante();
         todos.setId(0);
         todos.setCategoria("Todos");
         filterEstante.getItems().add(todos);
-
-        ArrayList<Estante> filterEstanteOpts = Estante.getListaEstantes();
-        for (Estante estante : filterEstanteOpts) {
-            filterEstante.getItems().add(estante);
-        }
+        filterEstanteOpts.addAll(Estante.getListaEstantes());
 
         filterCondicao.getItems().addAll("Todos", "Novo", "Semi-novo", "Usado", "Restaurado");
         filterDisponibilidade.getItems().addAll("Todos", "Disponível", "Indisponível");
