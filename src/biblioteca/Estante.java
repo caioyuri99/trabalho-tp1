@@ -45,6 +45,11 @@ public class Estante {
         return dao.delete(obra.getId());
     }
 
+    public void atualizarObra(Obra obra) throws Exception {
+        ObraDAO dao = new ObraDAO();
+        dao.updateObra(this, obra);
+    }
+
     public static ArrayList<Estante> getListaEstantes() {
         EstanteDAO dao = new EstanteDAO();
 
