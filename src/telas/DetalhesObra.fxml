@@ -19,15 +19,12 @@
          <children>
             <AnchorPane prefHeight="50.0" prefWidth="564.0" style="-fx-background-color: #ffca2b;">
                <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="579.0">
-                     <graphic>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vsualizar Obra" textAlignment="CENTER" wrappingWidth="124.49864196777344">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Text>
-                     </graphic>
-                  </Label>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="579.0" />
+                  <Text layoutX="221.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualizar Obra" textAlignment="CENTER" wrappingWidth="129.49864196777344">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="453.0" prefWidth="556.0" style="-fx-background-color: #38761d;">
