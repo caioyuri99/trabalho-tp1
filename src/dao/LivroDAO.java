@@ -23,7 +23,7 @@ public class LivroDAO {
     }
 
     // MÉTODOS
-    public boolean insert(Livro livro) {
+    public void insert(Livro livro) throws Exception {
         String query = "INSERT INTO livro (editora, edicao, condicao, obra, tipoCapa) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -37,12 +37,8 @@ public class LivroDAO {
 
             System.out.println("Livro cadastrado com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
         }
     }
 

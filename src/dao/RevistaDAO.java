@@ -23,7 +23,7 @@ public class RevistaDAO {
     }
 
     // METODOS
-    public boolean insert(Revista revista) {
+    public void insert(Revista revista) throws Exception {
         String query = "INSERT INTO revista (editora, edicao, condicao, obra, categoria) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -37,12 +37,8 @@ public class RevistaDAO {
 
             System.out.println("Revista cadastrada com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
         }
     }
 

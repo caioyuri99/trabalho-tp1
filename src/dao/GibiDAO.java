@@ -23,7 +23,7 @@ public class GibiDAO {
     }
 
     // MÉTODOS
-    public boolean insert(Gibi gibi) {
+    public void insert(Gibi gibi) throws Exception {
         String query = "INSERT INTO gibi (editora, edicao, condicao, obra, tipo, categoria) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -38,12 +38,8 @@ public class GibiDAO {
 
             System.out.println("Gibi cadastrado com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
         }
     }
 
