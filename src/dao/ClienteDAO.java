@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 
 import biblioteca.Cliente;
 import connection.ConnectionDB;
@@ -74,17 +73,17 @@ public class ClienteDAO {
         }
     }
 
-    public void update(String cpf, String senha, String nome, LocalDate dataNasc, double saldoDevedor)
+    public void update(Cliente cliente)
             throws Exception {
         String query = "UPDATE cliente SET senha=?, nome=?, dataNasc=?, saldoDevedor=? WHERE cpf=?";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-            stmt.setString(1, senha);
-            stmt.setString(2, nome);
-            stmt.setDate(3, Date.valueOf(dataNasc));
-            stmt.setDouble(4, saldoDevedor);
-            stmt.setString(5, cpf);
+            stmt.setString(1, cliente.getSenha());
+            stmt.setString(2, cliente.getNome());
+            stmt.setDate(3, Date.valueOf(cliente.getDataNasc()));
+            stmt.setDouble(4, cliente.getSaldoDevedor());
+            stmt.setString(5, cliente.getCpf());
             stmt.execute();
 
             System.out.println("Dados atualizados com sucesso!");

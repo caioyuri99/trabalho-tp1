@@ -75,7 +75,7 @@ public class Cliente extends Usuario {
 
         this.saldoDevedor -= valor;
 
-        dao.update(cpf, senha, nome, dataNasc, saldoDevedor);
+        dao.update(this);
     }
 
     public void fazerEmprestimo() throws Exception {
@@ -181,7 +181,7 @@ public class Cliente extends Usuario {
     public void atualizarCadastro() throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
-        dao.update(this.cpf, this.senha, this.nome, this.dataNasc, this.saldoDevedor);
+        dao.update(this);
     }
 
     // GETTERS & SETTERS
