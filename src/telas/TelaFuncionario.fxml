@@ -77,7 +77,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <TableView fx:id="tableObras" layoutX="9.0" layoutY="106.0" onMouseClicked="#test" prefHeight="318.0" prefWidth="682.0">
+      <TableView fx:id="tableObras" layoutX="9.0" layoutY="106.0" prefHeight="318.0" prefWidth="682.0">
         <columns>
           <TableColumn fx:id="clmId" prefWidth="75.0" text="id" visible="false" />
           <TableColumn fx:id="clmNome" editable="false" prefWidth="161.0" text="Nome" />

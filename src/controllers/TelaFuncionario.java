@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -35,9 +36,6 @@ public class TelaFuncionario implements Initializable {
 
     @FXML
     private TableView<ObraData> tableObras;
-
-    // @FXML
-    // private TableColumn<ObraData, Button> btnView;
 
     @FXML
     private TableColumn<ObraData, String> clmAutor;
@@ -72,17 +70,10 @@ public class TelaFuncionario implements Initializable {
         clmDataDePublicacao.setCellFactory(column -> new ObraDataPublicacaoFactory());
         clmDataDePublicacao.setCellValueFactory(new PropertyValueFactory<>("dataDePublicacao"));
         clmEstante.setCellValueFactory(new PropertyValueFactory<>("estante"));
-        // btnView.setCellValueFactory(new PropertyValueFactory<>("btnView"));
 
         ArrayList<Obra> obras = Obra.getObras(50, 0);
         ArrayList<ObraData> list = new ArrayList<ObraData>();
         for (Obra obra : obras) {
-            // Button btnView = new Button();
-            // ImageView imgView = new ImageView(new
-            // Image(getClass().getResourceAsStream("../imagens/mais.png")));
-            // imgView.setPreserveRatio(true);
-            // imgView.setFitHeight(20);
-            // btnView.setGraphic(imgView);
 
             ObraData obraData = new ObraData(obra);
             list.add(obraData);
@@ -93,13 +84,23 @@ public class TelaFuncionario implements Initializable {
     }
 
     @FXML
-    void addEstante(ActionEvent event) {
-
+    void addEstante(ActionEvent event) throws IOException {
+        Stage addEstante = new Stage();
+        Parent content = FXMLLoader.load(getClass().getResource("../telas/AdicionarEstante.fxml"));
+        addEstante.setScene(new Scene(content));
+        addEstante.initModality(Modality.APPLICATION_MODAL);
+        addEstante.initOwner(((Node) event.getSource()).getScene().getWindow());
+        addEstante.showAndWait();
     }
 
     @FXML
-    void addObra(ActionEvent event) {
-
+    void addObra(ActionEvent event) throws IOException {
+        Stage addObra = new Stage();
+        Parent content = FXMLLoader.load(getClass().getResource("../telas/CadastroObra.fxml"));
+        addObra.setScene(new Scene(content));
+        addObra.initModality(Modality.APPLICATION_MODAL);
+        addObra.initOwner(((Node) event.getSource()).getScene().getWindow());
+        addObra.showAndWait();
     }
 
     @FXML
