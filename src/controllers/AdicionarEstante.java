@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Optional;
+
 import biblioteca.Estante;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,32 +51,31 @@ public class AdicionarEstante {
         ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
 
-        alert.showAndWait().ifPresent(type -> {
-            if (type == btnConfirmar) {
-                Estante estante = new Estante(categoria);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == btnConfirmar) {
+            Estante estante = new Estante(categoria);
 
-                try {
-                    estante.adicionarEstante();
-                } catch (Exception e) {
-                    Alert alertErro = new Alert(Alert.AlertType.ERROR);
-                    alertErro.setTitle("Erro");
-                    alertErro.setHeaderText("Erro ao adicionar estante");
-                    alertErro.setContentText(e.getMessage());
+            try {
+                estante.adicionarEstante();
+            } catch (Exception e) {
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
+                alertErro.setTitle("Erro");
+                alertErro.setHeaderText("Erro ao adicionar estante");
+                alertErro.setContentText(e.getMessage());
 
-                    alertErro.showAndWait();
-                    return;
-                }
-
-                Alert alertSucesso = new Alert(Alert.AlertType.INFORMATION);
-                alertSucesso.setTitle("Sucesso");
-                alertSucesso.setHeaderText("Sucesso ao adicionar estante");
-                alertSucesso.setContentText("Estante adicionada com sucesso!");
-
-                alertSucesso.showAndWait();
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.close();
+                alertErro.showAndWait();
+                return;
             }
-        });
+
+            Alert alertSucesso = new Alert(Alert.AlertType.INFORMATION);
+            alertSucesso.setTitle("Sucesso");
+            alertSucesso.setHeaderText("Sucesso ao adicionar estante");
+            alertSucesso.setContentText("Estante adicionada com sucesso!");
+
+            alertSucesso.showAndWait();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
 }
