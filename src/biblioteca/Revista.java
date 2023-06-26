@@ -10,6 +10,11 @@ public class Revista extends Item {
     public Revista() {
     }
 
+    public Revista(String editora, int edicao, String condicao, String categoria) {
+        super(editora, edicao, condicao);
+        this.categoria = categoria;
+    }
+
     public Revista(String editora, int edicao, String condicao, Obra obra, String categoria) {
         super(editora, edicao, condicao, obra);
         this.categoria = categoria;
@@ -22,10 +27,10 @@ public class Revista extends Item {
 
     // MÉTODOS
     @Override
-    public boolean cadastrar() {
+    public void cadastrar() throws Exception {
         RevistaDAO dao = new RevistaDAO();
 
-        return dao.insert(this);
+        dao.insert(this);
     }
 
     @Override

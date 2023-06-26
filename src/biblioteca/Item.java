@@ -13,6 +13,12 @@ public abstract class Item {
     public Item() {
     }
 
+    public Item(String editora, int edicao, String condicao) {
+        this.editora = editora;
+        this.edicao = edicao;
+        this.condicao = condicao;
+    }
+
     public Item(String editora, int edicao, String condicao, Obra obra) {
         this.editora = editora;
         this.edicao = edicao;
@@ -29,7 +35,7 @@ public abstract class Item {
     }
 
     // MÉTODOS
-    public abstract boolean cadastrar();
+    public abstract void cadastrar() throws Exception;
 
     public abstract boolean remover();
 

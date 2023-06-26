@@ -11,6 +11,12 @@ public class Gibi extends Item {
     public Gibi() {
     };
 
+    public Gibi(String editora, int edicao, String condicao, String tipo, String categoria) {
+        super(editora, edicao, condicao);
+        this.tipo = tipo;
+        this.categoria = categoria;
+    }
+
     public Gibi(String editora, int edicao, String condicao, Obra obra, String tipo, String categoria) {
         super(editora, edicao, condicao, obra);
         this.tipo = tipo;
@@ -32,10 +38,10 @@ public class Gibi extends Item {
 
     // MÉTODOS
     @Override
-    public boolean cadastrar() {
+    public void cadastrar() throws Exception {
         GibiDAO dao = new GibiDAO();
 
-        return dao.insert(this);
+        dao.insert(this);
     }
 
     @Override

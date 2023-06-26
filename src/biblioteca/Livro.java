@@ -10,8 +10,8 @@ public class Livro extends Item {
     public Livro() {
     }
 
-    public Livro(String editora, int edicao, String condicao, Obra obra, String tipoCapa) {
-        super(editora, edicao, condicao, obra);
+    public Livro(String editora, int edicao, String condicao, String tipoCapa) {
+        super(editora, edicao, condicao);
         this.tipoCapa = tipoCapa;
     }
 
@@ -28,10 +28,10 @@ public class Livro extends Item {
 
     // MÉTODOS
     @Override
-    public boolean cadastrar() {
+    public void cadastrar() throws Exception {
         LivroDAO dao = new LivroDAO();
 
-        return dao.insert(this);
+        dao.insert(this);
     }
 
     @Override
