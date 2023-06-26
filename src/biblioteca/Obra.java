@@ -48,15 +48,9 @@ public class Obra {
     }
 
     // METODOS
-    public boolean registrarItem(Item item) {
-        boolean res = item.cadastrar();
-
-        if (res) {
-            itens.add(item);
-        }
-
-        return res;
-
+    public void registrarItem(Item item) throws Exception {
+        item.cadastrar();
+        itens.add(item);
     }
 
     public boolean removerItem(Item item) {
