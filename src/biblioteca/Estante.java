@@ -39,10 +39,11 @@ public class Estante {
         obras.add(obra);
     }
 
-    public boolean removerObra(Obra obra) {
+    public void removerObra(Obra obra) throws Exception {
         ObraDAO dao = new ObraDAO();
 
-        return dao.delete(obra.getId());
+        obra.removeAllItems();
+        dao.delete(obra.getId());
     }
 
     public void atualizarObra(Obra obra) throws Exception {
