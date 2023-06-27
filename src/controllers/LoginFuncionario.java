@@ -36,7 +36,7 @@ public class LoginFuncionario {
     }
 
     @FXML
-    void login(ActionEvent event) throws IOException {
+    void login(ActionEvent event) throws Exception {
         // TODO: implementar validação do CPF
 
         String cpf = txtCpf.getText();
@@ -56,7 +56,7 @@ public class LoginFuncionario {
             return;
         }
 
-        Session.setLoggedUser(funcionario);
+        Session.login(funcionario);
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaFuncionario.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

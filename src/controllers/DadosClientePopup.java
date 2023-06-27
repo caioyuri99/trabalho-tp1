@@ -79,7 +79,7 @@ public class DadosClientePopup implements Initializable {
 
             try {
                 cliente.atualizarCadastro();
-                Session.setLoggedUser(cliente);
+                Session.login(cliente);
             } catch (Exception e) {
                 Alert alertErro = new Alert(AlertType.ERROR);
                 alertErro.setTitle("Erro");
