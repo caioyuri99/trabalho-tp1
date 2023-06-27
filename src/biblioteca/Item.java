@@ -37,7 +37,9 @@ public abstract class Item {
     // MÉTODOS
     public abstract void cadastrar() throws Exception;
 
-    public abstract boolean remover();
+    public abstract void atualizar() throws Exception;
+
+    public abstract void remover() throws Exception;
 
     public abstract void emprestar() throws Exception;
 

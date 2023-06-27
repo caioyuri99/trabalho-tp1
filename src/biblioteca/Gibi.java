@@ -45,10 +45,17 @@ public class Gibi extends Item {
     }
 
     @Override
-    public boolean remover() {
+    public void atualizar() throws Exception {
         GibiDAO dao = new GibiDAO();
 
-        return dao.delete(this.id);
+        dao.update(this);
+    }
+
+    @Override
+    public void remover() throws Exception {
+        GibiDAO dao = new GibiDAO();
+
+        dao.delete(this.id);
     }
 
     @Override

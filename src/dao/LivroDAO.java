@@ -42,6 +42,26 @@ public class LivroDAO {
         }
     }
 
+    public void update(Livro livro) throws Exception {
+        String query = "UPDATE livro SET editora = ?, edicao = ?, condicao = ?, obra = ?, tipoCapa = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, livro.getEditora());
+            stmt.setInt(2, livro.getEdicao());
+            stmt.setString(3, livro.getCondicao());
+            stmt.setInt(4, livro.getObra().getId());
+            stmt.setString(5, livro.getTipoCapa().toLowerCase());
+            stmt.setInt(6, livro.getId());
+            stmt.execute();
+
+            System.out.println("Livro atualizado com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
     public Livro getLivro(int id) {
         String query = "SELECT * FROM livro WHERE id = ?";
 
@@ -109,7 +129,7 @@ public class LivroDAO {
         }
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) throws Exception {
         String query = "DELETE FROM livro WHERE id = ?";
 
         try {
@@ -119,12 +139,8 @@ public class LivroDAO {
 
             System.out.println("Livro removido com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao remover: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao remover: " + e.getMessage());
         }
     }
 

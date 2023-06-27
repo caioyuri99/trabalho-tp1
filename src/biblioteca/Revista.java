@@ -34,10 +34,17 @@ public class Revista extends Item {
     }
 
     @Override
-    public boolean remover() {
+    public void atualizar() throws Exception {
         RevistaDAO dao = new RevistaDAO();
 
-        return dao.delete(this.id);
+        dao.update(this);
+    }
+
+    @Override
+    public void remover() throws Exception {
+        RevistaDAO dao = new RevistaDAO();
+
+        dao.delete(this.id);
     }
 
     @Override

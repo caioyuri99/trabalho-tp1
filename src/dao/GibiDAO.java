@@ -43,6 +43,27 @@ public class GibiDAO {
         }
     }
 
+    public void update(Gibi gibi) throws Exception {
+        String query = "UPDATE gibi SET editora = ?, edicao = ?, condicao = ?, obra = ?, tipo = ?, categoria = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, gibi.getEditora());
+            stmt.setInt(2, gibi.getEdicao());
+            stmt.setString(3, gibi.getCondicao());
+            stmt.setInt(4, gibi.getObra().getId());
+            stmt.setString(5, gibi.getTipo());
+            stmt.setString(6, gibi.getCategoria());
+            stmt.setInt(7, gibi.getId());
+            stmt.execute();
+
+            System.out.println("Gibi atualizado com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
     public Gibi getGibi(int id) {
         String query = "SELECT * FROM gibi WHERE id = ?";
 
@@ -109,7 +130,7 @@ public class GibiDAO {
         }
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) throws Exception {
         String query = "DELETE FROM gibi WHERE id = ?";
 
         try {
@@ -119,12 +140,8 @@ public class GibiDAO {
 
             System.out.println("Gibi removido com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao remover: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao remover: " + e.getMessage());
         }
     }
 

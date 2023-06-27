@@ -35,10 +35,17 @@ public class Livro extends Item {
     }
 
     @Override
-    public boolean remover() {
+    public void atualizar() throws Exception {
         LivroDAO dao = new LivroDAO();
 
-        return dao.delete(this.id);
+        dao.update(this);
+    }
+
+    @Override
+    public void remover() throws Exception {
+        LivroDAO dao = new LivroDAO();
+
+        dao.delete(this.id);
     }
 
     @Override

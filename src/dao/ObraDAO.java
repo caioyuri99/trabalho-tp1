@@ -104,27 +104,15 @@ public class ObraDAO {
         }
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) throws Exception {
         String query = "DELETE FROM obra WHERE id = ?";
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
             stmt.setInt(1, id);
-            boolean res = stmt.execute();
-
-            if (!res) {
-                System.out.println("Erro ao deletar.");
-
-                return false;
-            }
-
-            System.out.println("Obra deletada com sucesso!");
-
-            return true;
+            stmt.execute();
 
         } catch (Exception e) {
-            System.out.println("Erro ao deletar: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao deletar: " + e.getMessage());
         }
     }
 
