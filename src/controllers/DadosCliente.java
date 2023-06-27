@@ -35,6 +35,13 @@ public class DadosCliente implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         Cliente cliente = (Cliente) Session.getLoggedUser();
 
+        try {
+            Session.verificaEmprestimos();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         lblCpf.setText(formatCPF(cliente.getCpf()));
         lblDataNasc.setText(cliente.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         lblNome.setText(cliente.getNome());

@@ -135,6 +135,13 @@ public class DetalhesObra implements Initializable {
                     btnAdd.setDisable(false);
                 }
             });
+
+            try {
+                Session.verificaEmprestimos();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -100,6 +100,13 @@ public class Catalogo implements Initializable {
             linkDados.setVisible(false);
 
             iconExitLogin.setImage(new Image(getClass().getResourceAsStream("../imagens/login.png")));
+        } else {
+            try {
+                Session.verificaEmprestimos();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
@@ -119,7 +126,7 @@ public class Catalogo implements Initializable {
     @FXML
     void exitLogin(MouseEvent event) throws IOException {
         if (Session.isLogged()) {
-            Session.setLoggedUser(null);
+            Session.logout();
         }
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaInicial.fxml"));

@@ -36,6 +36,13 @@ public class Carrinho implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        try {
+            Session.verificaEmprestimos();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Cliente cliente = (Cliente) Session.getLoggedUser();
 
         if (cliente.getCarrinho().size() != 0) {
