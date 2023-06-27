@@ -3,10 +3,10 @@ package controllers.cellFactoryFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import biblioteca.Obra;
+import biblioteca.DatePattern;
 import javafx.scene.control.TableCell;
 
-public class ObraDataPublicacaoFactory extends TableCell<Obra, LocalDate> {
+public class DatePatternDateFactory extends TableCell<DatePattern, LocalDate> {
 
     @Override
     protected void updateItem(LocalDate item, boolean empty) {
@@ -18,5 +18,4 @@ public class ObraDataPublicacaoFactory extends TableCell<Obra, LocalDate> {
             setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
     }
-
 }
