@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="502.0" style="-fx-background-color: #ffffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PedidosCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="502.0" style="-fx-background-color: #ffffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PedidosCliente">
    <children>
       <ScrollPane layoutX="-1.0" layoutY="50.0" prefHeight="451.0" prefWidth="503.0" stylesheets="@../css/pedidosStyle.css">
          <content>
@@ -47,6 +47,20 @@
                   <ColorAdjust />
                </effect>
             </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="501.0" prefHeight="56.0" prefWidth="502.0" style="-fx-background-color: #ffca2b;">
+         <children>
+            <Text layoutX="251.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SALDO DEVEDOR:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="txtSaldoDevedor" layoutX="410.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R$ 00,00">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>
