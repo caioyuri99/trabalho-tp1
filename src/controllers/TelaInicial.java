@@ -28,7 +28,7 @@ public class TelaInicial {
     private TextField txtCPF;
 
     @FXML
-    void login(ActionEvent event) throws IOException {
+    void login(ActionEvent event) throws Exception {
         // TODO: implementar validação do CPF
 
         String cpf = txtCPF.getText();
@@ -48,7 +48,7 @@ public class TelaInicial {
             return;
         }
 
-        Session.setLoggedUser(cliente);
+        Session.login(cliente);
 
         mostrarCatalogo(event);
     }
