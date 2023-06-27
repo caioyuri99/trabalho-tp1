@@ -44,38 +44,57 @@ public class Cliente extends Usuario {
         return true;
     }
 
-    public boolean fazerCadastro() {
-        if (this.cpf == null || this.senha == null || this.nome == null || this.dataNasc == null) {
-            System.out.println("Preencha todos os campos.");
-
-            return false;
-        }
-
+    public void fazerCadastro() throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
         if (dao.getCliente(this.cpf) != null) {
-            System.out.println("Um cliente com esse CPF já foi cadastrado.");
-
-            return false;
+            throw new Exception("CPF já cadastrado.");
         }
 
-        boolean res = dao.insert(this);
-
-        return res;
+        dao.insert(this);
     }
 
-    public void pagarMulta(double valor) throws Exception {
+    public void atualizarCadastro() throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
-        Cliente cliente = dao.getCliente(cpf);
+        dao.update(this);
+    }
+
+    public void delete() throws Exception {
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.delete(this);
+    }
+
+    public void calcularMulta() throws Exception {
+        EmprestimoDAO dao = new EmprestimoDAO();
+        this.atualizaAtrasosMultas();
+
+        this.saldoDevedor = dao.getTotalMultas(this);
+    }
+
+    private void atualizaAtrasosMultas() throws Exception {
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        dao.atualizaAtrasosMultas(this);
+    }
+
+    public void pagarMulta(Emprestimo emprestimo) throws Exception {
+        ClienteDAO clienteDAO = new ClienteDAO();
+        EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+
+        Cliente cliente = clienteDAO.getCliente(this.cpf);
 
         if (cliente == null) {
             throw new Exception("Cliente não encontrado.");
         }
 
-        this.saldoDevedor -= valor;
+        if (!emprestimo.isMultado() || emprestimo.isPago()) {
+            throw new Exception("O empréstimo não possui multa.");
+        }
 
-        dao.update(this);
+        emprestimoDAO.pagarMulta(cliente, emprestimo);
+        this.calcularMulta();
     }
 
     public void fazerEmprestimo() throws Exception {
@@ -178,10 +197,40 @@ public class Cliente extends Usuario {
         }
     }
 
-    public void atualizarCadastro() throws Exception {
+    public static ArrayList<Cliente> getClientesByCpfLike(String cpf, int limit, int offset) {
         ClienteDAO dao = new ClienteDAO();
 
-        dao.update(this);
+        try {
+            return dao.getClientesByCpfLike(cpf, limit, offset);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return new ArrayList<Cliente>();
+        }
+    }
+
+    public static ArrayList<Cliente> getClientesByNomeLike(String nome, int limit, int offset) {
+        ClienteDAO dao = new ClienteDAO();
+
+        try {
+            return dao.getClientesByNomeLike(nome, limit, offset);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return new ArrayList<Cliente>();
+        }
+    }
+
+    public static ArrayList<Cliente> getListaClientes(int limit, int offset) {
+        ClienteDAO dao = new ClienteDAO();
+
+        try {
+            return dao.getListaClientes(limit, offset);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        }
     }
 
     // GETTERS & SETTERS
