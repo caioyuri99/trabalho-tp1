@@ -2,6 +2,7 @@ package biblioteca;
 
 import java.time.LocalDate;
 
+import dao.ClienteDAO;
 import dao.FuncionarioDAO;
 
 public class Admin extends Funcionario {
@@ -14,15 +15,47 @@ public class Admin extends Funcionario {
     }
 
     // MÉTODOS
-    public boolean fazerCadastro(Funcionario funcionario) {
+    public void fazerCadastro(Funcionario funcionario) throws Exception {
         FuncionarioDAO dao = new FuncionarioDAO();
 
-        if (!dao.insert(funcionario)) {
-            System.out.println("Erro ao cadastrar funcionário.");
-
-            return false;
+        if (dao.getFuncionario(funcionario.getCpf()) != null) {
+            throw new Exception("CPF já cadastrado.");
         }
 
-        return true;
+        dao.insert(funcionario);
+    }
+
+    public void fazerCadastro(Cliente cliente) throws Exception {
+        ClienteDAO dao = new ClienteDAO();
+
+        if (dao.getCliente(cliente.getCpf()) != null) {
+            throw new Exception("CPF já cadastrado.");
+        }
+
+        dao.insert(cliente);
+    }
+
+    public void deletarUsuario(Funcionario funcionario) throws Exception {
+        FuncionarioDAO dao = new FuncionarioDAO();
+
+        dao.delete(funcionario);
+    }
+
+    public void deletarUsuario(Cliente cliente) throws Exception {
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.delete(cliente);
+    }
+
+    public void editarUsuario(Funcionario funcionario) throws Exception {
+        FuncionarioDAO dao = new FuncionarioDAO();
+
+        dao.update(funcionario);
+    }
+
+    public void editarUsuario(Cliente cliente) throws Exception {
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.update(cliente);
     }
 }
