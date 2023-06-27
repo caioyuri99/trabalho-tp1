@@ -42,6 +42,26 @@ public class RevistaDAO {
         }
     }
 
+    public void update(Revista revista) throws Exception {
+        String query = "UPDATE revista SET editora = ?, edicao = ?, condicao = ?, obra = ?, categoria = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, revista.getEditora());
+            stmt.setInt(2, revista.getEdicao());
+            stmt.setString(3, revista.getCondicao());
+            stmt.setInt(4, revista.getObra().getId());
+            stmt.setString(5, revista.getCategoria());
+            stmt.setInt(6, revista.getId());
+            stmt.execute();
+
+            System.out.println("Revista atualizada com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
     public Revista getRevista(int id) {
         String query = "SELECT * FROM revista WHERE id = ?";
 
@@ -106,7 +126,7 @@ public class RevistaDAO {
         }
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) throws Exception {
         String query = "DELETE FROM revista WHERE id = ?";
 
         try {
@@ -116,12 +136,8 @@ public class RevistaDAO {
 
             System.out.println("Revista removida com sucesso!");
 
-            return true;
-
         } catch (Exception e) {
-            System.out.println("Erro ao remover: " + e.getMessage());
-
-            return false;
+            throw new Exception("Erro ao remover: " + e.getMessage());
         }
     }
 
