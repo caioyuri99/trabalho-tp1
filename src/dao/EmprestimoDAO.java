@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import biblioteca.Cliente;
@@ -14,6 +15,7 @@ import biblioteca.Item;
 import biblioteca.Livro;
 import biblioteca.Revista;
 import connection.ConnectionDB;
+import session.Session;
 
 public class EmprestimoDAO {
     // TODO: ver a possibilidade de usar roolback para dar segurança ao banco de
@@ -50,6 +52,21 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao registrar empréstimo: " + e.getMessage());
+        }
+    }
+
+    public void pagarMulta(Emprestimo emprestimo) throws Exception {
+        String query = "UPDATE emprestimo SET pago = true WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, emprestimo.getId());
+            stmt.execute();
+
+            System.out.println("Multa paga com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao pagar multa: " + e.getMessage());
         }
     }
 
@@ -240,6 +257,77 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao obter: " + e.getMessage());
+        }
+    }
+
+    public double getTotalMultas(Cliente cliente) throws Exception {
+        String query = "SELECT SUM(valorMulta) AS total FROM emprestimo WHERE leitor = ? AND multado AND NOT pago";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, cliente.getCpf());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.first();
+
+            return rs.getDouble("total");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao obter: " + e.getMessage());
+        }
+    }
+
+    public void pagarMulta(Cliente cliente, Emprestimo emprestimo) throws Exception {
+        String query = "UPDATE emprestimo SET pago = ?, devolvido = ? WHERE leitor = ? AND id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setBoolean(1, true);
+            stmt.setBoolean(2, true);
+            stmt.setString(3, cliente.getCpf());
+            stmt.setInt(4, emprestimo.getId());
+            stmt.execute();
+
+            System.out.println("Multa paga com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao pagar: " + e.getMessage());
+        }
+    }
+
+    public void atualizaAtrasosMultas(Cliente cliente) throws Exception {
+        String query = "UPDATE emprestimo SET atrasado = ?, multado = ?, valorMulta = ? WHERE leitor = ? AND NOT devolvido";
+
+        try {
+            ArrayList<Emprestimo> emprestimos = this.getEmprestimosAtivos(cliente);
+
+            for (Emprestimo emprestimo : emprestimos) {
+                long atraso = ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), Session.getDataAtual());
+
+                if (atraso <= 3 && atraso > 0) {
+                    emprestimo.setAtrasado(true);
+                    emprestimo.setMultado(false);
+                    emprestimo.setValorMulta(0);
+                } else if (atraso > 3) {
+                    emprestimo.setAtrasado(true);
+                    emprestimo.setMultado(true);
+                    emprestimo.setValorMulta(atraso * 0.8);
+                } else {
+                    emprestimo.setAtrasado(false);
+                    emprestimo.setMultado(false);
+                    emprestimo.setValorMulta(0);
+                }
+
+                PreparedStatement stmt = this.connection.prepareStatement(query);
+                stmt.setBoolean(1, emprestimo.isAtrasado());
+                stmt.setBoolean(2, emprestimo.isMultado());
+                stmt.setDouble(3, emprestimo.getValorMulta());
+                stmt.setString(4, cliente.getCpf());
+                stmt.execute();
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
         }
     }
 }
