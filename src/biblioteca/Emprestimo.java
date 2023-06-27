@@ -17,6 +17,7 @@ public class Emprestimo {
     private boolean atrasado;
     private boolean multado;
     private double valorMulta;
+    private boolean pago;
 
     // CONSTRUTORES
     public Emprestimo() {
@@ -126,6 +127,14 @@ public class Emprestimo {
 
     public void setValorMulta(double valorMulta) {
         this.valorMulta = valorMulta;
+    }
+
+    public boolean isPago() {
+        return this.pago;
+    }
+
+    public void setPago(boolean pago) {
+        this.pago = pago;
     }
 
 }
