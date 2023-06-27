@@ -6,9 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import biblioteca.DatePattern;
 import biblioteca.Funcionario;
 import biblioteca.Obra;
-import controllers.cellFactoryFormat.ObraDataPublicacaoFactory;
+import controllers.cellFactoryFormat.DatePatternDateFactory;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -41,7 +43,7 @@ public class TelaFuncionario implements Initializable {
     private TableColumn<Obra, String> clmAutor;
 
     @FXML
-    private TableColumn<Obra, LocalDate> clmDataDePublicacao;
+    private TableColumn<DatePattern, LocalDate> clmDataDePublicacao;
 
     @FXML
     private TableColumn<Obra, String> clmEstante;
@@ -58,6 +60,9 @@ public class TelaFuncionario implements Initializable {
     @FXML
     private TableColumn<Obra, String> clmTipo;
 
+    @FXML
+    private TextField txtSearch;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         tableObras.setPlaceholder(new Label("Nenhuma obra encontrada"));
@@ -67,7 +72,7 @@ public class TelaFuncionario implements Initializable {
         clmAutor.setCellValueFactory(new PropertyValueFactory<>("autor"));
         clmTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         clmGenero.setCellValueFactory(new PropertyValueFactory<>("genero"));
-        clmDataDePublicacao.setCellFactory(column -> new ObraDataPublicacaoFactory());
+        clmDataDePublicacao.setCellFactory(column -> new DatePatternDateFactory());
         clmDataDePublicacao.setCellValueFactory(new PropertyValueFactory<>("dataPublicacao"));
         clmEstante.setCellValueFactory(new PropertyValueFactory<>("estante"));
 
@@ -83,6 +88,7 @@ public class TelaFuncionario implements Initializable {
                         if (param == GerenciarObra.class) {
                             GerenciarObra controller = new GerenciarObra();
                             controller.setObra(obra);
+                            controller.setTelaFuncionarioController(this);
                             return controller;
                         } else {
                             try {
@@ -131,7 +137,7 @@ public class TelaFuncionario implements Initializable {
 
     @FXML
     void exit(MouseEvent event) throws IOException {
-        Session.setLoggedUser(null);
+        Session.logout();
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/LoginFuncionario.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -161,6 +167,20 @@ public class TelaFuncionario implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void refreshTable(ActionEvent event) {
+        ArrayList<Obra> obras = Obra.getObras(50, 0);
+        tableObras.setItems(FXCollections.observableArrayList(obras));
+    }
+
+    @FXML
+    void search(ActionEvent event) {
+        String search = txtSearch.getText();
+
+        ArrayList<Obra> obras = Obra.getObras(search, 50, 0);
+        tableObras.setItems(FXCollections.observableArrayList(obras));
     }
 
 }
