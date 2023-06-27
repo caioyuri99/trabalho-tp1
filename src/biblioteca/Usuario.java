@@ -2,7 +2,7 @@ package biblioteca;
 
 import java.time.LocalDate;
 
-public abstract class Usuario {
+public abstract class Usuario implements DatePattern {
     // ATRIBUTOS
     protected String senha, nome, cpf;
     protected LocalDate dataNasc;
