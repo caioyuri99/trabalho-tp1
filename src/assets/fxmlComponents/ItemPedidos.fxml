@@ -10,13 +10,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="475.0" styleClass="container" stylesheets="@css/itemPedidos.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assets.fxmlComponents.controllers.ItemPedidos">
+<AnchorPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="261.0" prefWidth="475.0" styleClass="container" stylesheets="@css/itemPedidos.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assets.fxmlComponents.controllers.ItemPedidos">
    <children>
-      <VBox prefHeight="233.0" prefWidth="474.0">
+      <VBox prefHeight="261.0" prefWidth="474.0">
          <children>
             <AnchorPane prefHeight="99.0" prefWidth="474.0" styleClass="container">
                <children>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="174.0" prefWidth="470.0" spacing="5.0">
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="196.0" prefWidth="470.0" spacing="5.0">
                      <children>
                         <AnchorPane prefHeight="163.0" prefWidth="126.0" style="-fx-border-color: black;">
                            <children>
@@ -118,6 +118,15 @@
                                     </VBox>
                                  </children>
                               </HBox>
+                              <AnchorPane prefHeight="45.0" prefWidth="329.0">
+                                 <children>
+                                    <Button fx:id="btnPagar" layoutX="97.0" layoutY="10.0" mnemonicParsing="false" onAction="#pagar" prefHeight="25.0" prefWidth="135.0" style="-fx-background-color: #17a31c;" text="PAGAR MULTA" textFill="WHITE" visible="false">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </VBox>
                      </children>
@@ -127,11 +136,11 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="196.0" prefWidth="474.0">
                <children>
                   <AnchorPane prefHeight="55.0" prefWidth="290.0" styleClass="subcontainer">
                      <children>
-                        <Button layoutX="54.0" layoutY="15.0" mnemonicParsing="false" onAction="#renovar" prefHeight="25.0" prefWidth="135.0" text="RENOVAR">
+                        <Button fx:id="btnRenovar" layoutX="54.0" layoutY="18.0" mnemonicParsing="false" onAction="#renovar" prefHeight="25.0" prefWidth="135.0" text="RENOVAR">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -140,7 +149,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="55.0" prefWidth="278.0" styleClass="subcontainer">
                      <children>
-                        <Button layoutX="51.0" layoutY="14.0" mnemonicParsing="false" onAction="#devolver" prefHeight="25.0" prefWidth="135.0" text="DEVOLVER">
+                        <Button fx:id="btnDevolver" layoutX="48.0" layoutY="18.0" mnemonicParsing="false" onAction="#devolver" prefHeight="25.0" prefWidth="135.0" text="DEVOLVER">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

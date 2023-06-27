@@ -15,17 +15,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import session.Session;
 
 public class ItemPedidos implements Initializable {
 
     private Emprestimo emprestimo;
     private Item item;
+    private Text txtSaldoDevedor;
 
     @FXML
     private AnchorPane container;
@@ -60,6 +63,15 @@ public class ItemPedidos implements Initializable {
     @FXML
     private Label lblQtdRenovações;
 
+    @FXML
+    private Button btnDevolver;
+
+    @FXML
+    private Button btnPagar;
+
+    @FXML
+    private Button btnRenovar;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         imgCapa.setImage(new Image(item.getObra().getCapaUrl()));
@@ -72,12 +84,17 @@ public class ItemPedidos implements Initializable {
 
         lblAtrasado.setText(emprestimo.isAtrasado() ? "Sim" : "Não");
         if (emprestimo.isAtrasado()) {
+            lblAtrasado.setStyle("-fx-text-fill: red");
+            btnRenovar.setDisable(true);
             lblMultado.setVisible(true);
             lblMultado.setText(emprestimo.isMultado() ? "Sim" : "Não");
 
             if (emprestimo.isMultado()) {
+                lblMultado.setStyle("-fx-text-fill: red");
+                btnDevolver.setDisable(true);
                 lblValorMulta.setVisible(true);
                 lblValorMulta.setText(String.valueOf(emprestimo.getValorMulta()));
+                btnPagar.setVisible(true);
             }
         }
     }
@@ -107,6 +124,12 @@ public class ItemPedidos implements Initializable {
 
                 return;
             }
+            Alert alertSucesso = new Alert(AlertType.INFORMATION);
+            alertSucesso.setTitle("Sucesso");
+            alertSucesso.setHeaderText("Item devolvido com sucesso");
+            alertSucesso.setContentText("O item foi devolvido com sucesso!");
+            alertSucesso.showAndWait();
+
             VBox parent = (VBox) container.getParent();
             parent.getChildren().remove(container);
             if (cliente.getEmprestimosAtivos().size() == 0) {
@@ -151,6 +174,50 @@ public class ItemPedidos implements Initializable {
             alertSucesso.setContentText("A data de devolução foi alterada para "
                     + emprestimo.getDataDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             alertSucesso.showAndWait();
+        }
+    }
+
+    @FXML
+    void pagar(ActionEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Confirmação de pagamento");
+        alert.setContentText("Deseja realmente pagar a multa?");
+
+        ButtonType btnConfirmar = new ButtonType("Confirmar", ButtonData.OK_DONE);
+        ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == btnConfirmar) {
+            Cliente cliente = (Cliente) Session.getLoggedUser();
+            try {
+                cliente.pagarMulta(emprestimo);
+            } catch (Exception e) {
+                Alert alertErro = new Alert(AlertType.ERROR);
+                alertErro.setTitle("Erro");
+                alertErro.setHeaderText("Erro ao pagar multa");
+                alertErro.setContentText(e.getMessage());
+                alertErro.showAndWait();
+
+                return;
+            }
+
+            Alert alertSucesso = new Alert(AlertType.INFORMATION);
+            alertSucesso.setTitle("Sucesso");
+            alertSucesso.setHeaderText("Multa paga com sucesso");
+            alertSucesso.setContentText("A multa foi paga com sucesso");
+            alertSucesso.showAndWait();
+
+            VBox parent = (VBox) container.getParent();
+            parent.getChildren().remove(container);
+            if (cliente.getEmprestimosAtivos().size() == 0) {
+                Label lblPlaceHoder = (Label) parent.lookup("#lblPlaceHoder");
+                lblPlaceHoder.setManaged(true);
+                lblPlaceHoder.setVisible(true);
+            }
+
+            txtSaldoDevedor.setText(String.valueOf(cliente.getSaldoDevedor()));
         }
     }
 
