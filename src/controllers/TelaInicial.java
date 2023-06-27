@@ -77,6 +77,11 @@ public class TelaInicial {
         this.stage.show();
     }
 
+    @FXML
+    void alterarData(MouseEvent event) {
+
+    }
+
     public void telaCarregamento() {
         // TODO: implementar uma tela de carregamento
     }

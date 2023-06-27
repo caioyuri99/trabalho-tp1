@@ -22,7 +22,7 @@
          <children>
             <AnchorPane layoutY="-1.0" prefHeight="50.0" prefWidth="347.0" style="-fx-background-color: #daae2b;">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="42.0" layoutX="19.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="42.0" layoutX="19.0" layoutY="10.0" onMouseClicked="#alterarData" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../imagens/bandeira.png" />
                      </image>
