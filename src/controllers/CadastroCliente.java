@@ -69,13 +69,13 @@ public class CadastroCliente {
 
         Cliente cliente = new Cliente(cpf, senha, nome, dataNascimento);
 
-        boolean res = cliente.fazerCadastro();
-
-        if (!res) {
+        try {
+            cliente.fazerCadastro();
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
-            alert.setHeaderText("CPF já cadastrado");
-            alert.setContentText("Verifique os dados e tente novamente.");
+            alert.setHeaderText("Erro ao cadastrar cliente");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
 
             return;
