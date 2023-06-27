@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import session.Session;
 
 public class PedidosCliente implements Initializable {
@@ -22,8 +23,18 @@ public class PedidosCliente implements Initializable {
     @FXML
     private Label lblPlaceHoder;
 
+    @FXML
+    private Text txtSaldoDevedor;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        try {
+            Session.verificaEmprestimos();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Cliente cliente = (Cliente) Session.getLoggedUser();
         ArrayList<Emprestimo> emprestimosAtivos = cliente.getEmprestimosAtivos();
 
@@ -54,6 +65,8 @@ public class PedidosCliente implements Initializable {
                 }
             }
         }
+
+        txtSaldoDevedor.setText("Saldo devedor: R$ " + cliente.getSaldoDevedor());
     }
 
 }
