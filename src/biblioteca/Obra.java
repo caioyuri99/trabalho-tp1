@@ -8,7 +8,7 @@ import dao.LivroDAO;
 import dao.ObraDAO;
 import dao.RevistaDAO;
 
-public class Obra {
+public class Obra implements DatePattern {
     // ATRIBUTOS
     private int id;
     private String nome;
@@ -53,14 +53,21 @@ public class Obra {
         itens.add(item);
     }
 
-    public boolean removerItem(Item item) {
-        boolean res = item.remover();
+    public void atualizarItem(Item item) throws Exception {
+        item.atualizar();
+    }
 
-        if (res) {
-            itens.remove(item);
+    public void removerItem(Item item) throws Exception {
+        item.remover();
+        itens.remove(item);
+    }
+
+    public void removeAllItems() throws Exception {
+        this.itens = this.getItensDaObra();
+
+        for (Item item : this.itens) {
+            item.remover();
         }
-
-        return res;
     }
 
     public boolean verificaDisponibilidade() {
