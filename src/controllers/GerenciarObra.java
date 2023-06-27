@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import biblioteca.Estante;
+import biblioteca.Gibi;
 import biblioteca.Item;
+import biblioteca.Livro;
 import biblioteca.Obra;
+import biblioteca.Revista;
 import controllers.cellFactoryFormat.ItemDisponivelFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,10 +20,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +37,7 @@ import javafx.stage.Stage;
 public class GerenciarObra implements Initializable {
 
     private Obra obra;
+    private TelaFuncionario telaFuncionarioController;
 
     @FXML
     private Button btnAdd;
@@ -126,17 +136,181 @@ public class GerenciarObra implements Initializable {
 
     @FXML
     void addItem(ActionEvent event) {
-
-    }
-
-    @FXML
-    void addToCarrinho(ActionEvent event) {
-
+        switch (obra.getTipo().toLowerCase()) {
+            case "livro":
+                try {
+                    Stage addLivro = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/CadastroLivro.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == CadastroLivro.class) {
+                            CadastroLivro controller = new CadastroLivro();
+                            controller.setObra(obra);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    addLivro.setScene(new Scene(loader.load()));
+                    addLivro.initModality(Modality.APPLICATION_MODAL);
+                    addLivro.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    addLivro.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            case "revista":
+                try {
+                    Stage addRevista = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/CadastroRevista.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == CadastroRevista.class) {
+                            CadastroRevista controller = new CadastroRevista();
+                            controller.setObra(obra);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    addRevista.setScene(new Scene(loader.load()));
+                    addRevista.initModality(Modality.APPLICATION_MODAL);
+                    addRevista.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    addRevista.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            case "gibi":
+                try {
+                    Stage addGibi = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/CadastroGibi.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == CadastroGibi.class) {
+                            CadastroGibi controller = new CadastroGibi();
+                            controller.setObra(obra);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    addGibi.setScene(new Scene(loader.load()));
+                    addGibi.initModality(Modality.APPLICATION_MODAL);
+                    addGibi.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    addGibi.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+        }
     }
 
     @FXML
     void editItem(ActionEvent event) {
+        Item item = tableItems.getSelectionModel().getSelectedItem();
 
+        if (item == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Nenhum item selecionado");
+            alert.setContentText("Selecione um item para editar");
+            alert.showAndWait();
+            return;
+        }
+
+        switch (obra.getTipo().toLowerCase()) {
+            case "livro":
+                try {
+                    Stage editLivro = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/AtualizarLivro.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == AtualizarLivro.class) {
+                            AtualizarLivro controller = new AtualizarLivro();
+                            controller.setLivro((Livro) item);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    editLivro.setScene(new Scene(loader.load()));
+                    editLivro.initModality(Modality.APPLICATION_MODAL);
+                    editLivro.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    editLivro.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            case "revista":
+                try {
+                    Stage editRevista = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/EditarRevista.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == AtualizarRevista.class) {
+                            AtualizarRevista controller = new AtualizarRevista();
+                            controller.setRevista((Revista) item);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    editRevista.setScene(new Scene(loader.load()));
+                    editRevista.initModality(Modality.APPLICATION_MODAL);
+                    editRevista.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    editRevista.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            case "gibi":
+                try {
+                    Stage editGibi = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/EditarGibi.fxml"));
+                    loader.setControllerFactory(param -> {
+                        if (param == AtualizarGibi.class) {
+                            AtualizarGibi controller = new AtualizarGibi();
+                            controller.setGibi((Gibi) item);
+                            return controller;
+                        } else {
+                            try {
+                                return param.getDeclaredConstructor().newInstance();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }
+                    });
+                    editGibi.setScene(new Scene(loader.load()));
+                    editGibi.initModality(Modality.APPLICATION_MODAL);
+                    editGibi.initOwner(((Node) event.getSource()).getScene().getWindow());
+                    editGibi.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+        }
     }
 
     @FXML
@@ -164,12 +338,90 @@ public class GerenciarObra implements Initializable {
     }
 
     @FXML
-    void removeItem(ActionEvent event) {
+    void deleteObra(ActionEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Remover obra");
+        alert.setHeaderText("Remover obra");
+        alert.setContentText("Tem certeza que deseja remover a obra e todos os seus itens?");
 
+        ButtonType btnConfirmar = new ButtonType("Confirmar", ButtonData.OK_DONE);
+        ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == btnConfirmar) {
+            Estante estante = obra.getEstante();
+
+            try {
+                estante.removerObra(obra);
+            } catch (Exception e) {
+                Alert alertError = new Alert(AlertType.ERROR);
+                alertError.setTitle("Erro");
+                alertError.setHeaderText("Erro ao remover obra");
+                alertError.setContentText(e.getMessage());
+                alertError.showAndWait();
+                return;
+            }
+
+            Alert alertSuccess = new Alert(AlertType.INFORMATION);
+            alertSuccess.setTitle("Sucesso");
+            alertSuccess.setHeaderText("Obra removida");
+            alertSuccess.setContentText("A obra foi removida com sucesso");
+            alertSuccess.showAndWait();
+            telaFuncionarioController.refreshTable(event);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
+    }
+
+    @FXML
+    void removeItem(ActionEvent event) {
+        Item item = tableItems.getSelectionModel().getSelectedItem();
+
+        if (item == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Nenhum item selecionado");
+            alert.setContentText("Selecione um item para remover");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Remover item");
+        alert.setHeaderText("Remover item");
+        alert.setContentText("Tem certeza que deseja remover o item?");
+
+        ButtonType btnConfirmar = new ButtonType("Confirmar", ButtonData.OK_DONE);
+        ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == btnConfirmar) {
+            try {
+                obra.removerItem(item);
+            } catch (Exception e) {
+                Alert alertError = new Alert(AlertType.ERROR);
+                alertError.setTitle("Erro");
+                alertError.setHeaderText("Erro ao remover item");
+                alertError.setContentText(e.getMessage());
+                alertError.showAndWait();
+                return;
+            }
+
+            Alert alertSuccess = new Alert(AlertType.INFORMATION);
+            alertSuccess.setTitle("Sucesso");
+            alertSuccess.setHeaderText("Item removido com sucesso");
+            alertSuccess.showAndWait();
+        }
     }
 
     public void setObra(Obra obra) {
         this.obra = obra;
+    }
+
+    public void setTelaFuncionarioController(TelaFuncionario telaFuncionarioController) {
+        this.telaFuncionarioController = telaFuncionarioController;
     }
 
 }
