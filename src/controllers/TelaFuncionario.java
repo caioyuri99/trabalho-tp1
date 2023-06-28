@@ -160,13 +160,22 @@ public class TelaFuncionario implements Initializable {
         }
 
         try {
-            this.root = FXMLLoader.load(getClass().getResource("../telas/TelaAdministrador.fxml"));
-            this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            this.stage.setScene(new Scene(root));
-            this.stage.show();
+            root = FXMLLoader.load(getClass().getResource("../telas/TelaAdministrador.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void goToMyAccount(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../telas/DadosFuncionario.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Meus dados");
+        stage.show();
     }
 
     @FXML
