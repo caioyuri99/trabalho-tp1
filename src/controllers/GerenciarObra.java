@@ -387,6 +387,51 @@ public class GerenciarObra implements Initializable {
             return;
         }
 
+        if (!item.isDisponivel()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Item emprestado");
+            alert.setContentText("Não é possível remover um item emprestado");
+            alert.showAndWait();
+            return;
+        }
+
+        if (tableItems.getItems().size() == 1) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Remover item");
+            alert.setHeaderText("Tem certeza que deseja remover o item?");
+            alert.setContentText("A obra será removida junto com o item");
+
+            ButtonType btnConfirmar = new ButtonType("Confirmar", ButtonData.OK_DONE);
+            ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == btnConfirmar) {
+                Estante estante = obra.getEstante();
+
+                try {
+                    estante.removerObra(obra);
+                } catch (Exception e) {
+                    Alert alertError = new Alert(AlertType.ERROR);
+                    alertError.setTitle("Erro");
+                    alertError.setHeaderText("Erro ao remover obra");
+                    alertError.setContentText(e.getMessage());
+                    alertError.showAndWait();
+                    return;
+                }
+
+                Alert alertSuccess = new Alert(AlertType.INFORMATION);
+                alertSuccess.setTitle("Sucesso");
+                alertSuccess.setHeaderText("Obra removida");
+                alertSuccess.setContentText("A obra foi removida com sucesso");
+                alertSuccess.showAndWait();
+                telaFuncionarioController.refreshTable(event);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
+            }
+        }
+
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Remover item");
         alert.setHeaderText("Remover item");
