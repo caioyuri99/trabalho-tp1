@@ -79,7 +79,7 @@ public class CadastroRevista implements Initializable {
             Revista revista = new Revista(editora, edicao, condicao, categoria);
 
             try {
-                obra.registrarItem(revista);
+                obra.adicionarItem(revista);
             } catch (Exception e) {
                 Alert alertErro = new Alert(AlertType.ERROR);
                 alertErro.setTitle("Erro");

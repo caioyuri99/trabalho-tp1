@@ -83,7 +83,7 @@ public class CadastroGibi implements Initializable {
             Gibi gibi = new Gibi(editora, edicao, condicao, tipo, categoria);
 
             try {
-                obra.registrarItem(gibi);
+                obra.adicionarItem(gibi);
             } catch (Exception e) {
                 Alert alertErro = new Alert(AlertType.ERROR);
                 alertErro.setTitle("Erro");

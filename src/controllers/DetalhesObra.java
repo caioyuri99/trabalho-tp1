@@ -76,7 +76,7 @@ public class DetalhesObra implements Initializable {
 
         tableItems.setPlaceholder(new Label("Nenhum item cadastrado."));
 
-        ArrayList<Item> itens = obra.getItensDaObra();
+        ArrayList<Item> itens = obra.obterItens();
 
         TableColumn<Item, Integer> clmId = new TableColumn<>("ID");
         TableColumn<Item, String> clmEditora = new TableColumn<>("Editora");

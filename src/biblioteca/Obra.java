@@ -48,7 +48,7 @@ public class Obra implements DatePattern {
     }
 
     // METODOS
-    public void registrarItem(Item item) throws Exception {
+    public void adicionarItem(Item item) throws Exception {
         item.cadastrar();
         itens.add(item);
     }
@@ -63,11 +63,9 @@ public class Obra implements DatePattern {
     }
 
     public void removeAllItems() throws Exception {
-        this.itens = this.getItensDaObra();
+        this.itens = this.obterItens();
 
-        for (Item item : this.itens) {
-            item.remover();
-        }
+        this.itens.clear();
     }
 
     public boolean verificaDisponibilidade() {
@@ -76,13 +74,15 @@ public class Obra implements DatePattern {
         return dao.isDisponivel(this);
     }
 
-    public ArrayList<Item> getItensDaObra() {
+    public ArrayList<Item> obterItens() {
         ArrayList<Item> itens = switch (this.tipo) {
             case "livro" -> new LivroDAO().getItemsOfObra(this);
             case "revista" -> new RevistaDAO().getItemsOfObra(this);
             case "gibi" -> new GibiDAO().getItemsOfObra(this);
             default -> new ArrayList<>();
         };
+
+        this.itens = itens;
 
         return itens;
     }

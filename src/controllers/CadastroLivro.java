@@ -81,7 +81,7 @@ public class CadastroLivro implements Initializable {
             Livro livro = new Livro(editora, edicao, condicao, tipoCapa);
 
             try {
-                obra.registrarItem(livro);
+                obra.adicionarItem(livro);
             } catch (Exception e) {
                 Alert alertErro = new Alert(AlertType.ERROR);
                 alertErro.setTitle("Erro");
