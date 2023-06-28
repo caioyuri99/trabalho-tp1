@@ -35,6 +35,37 @@ public class EstanteDAO {
         }
     }
 
+    public void update(Estante estante) throws Exception {
+        String sql = "UPDATE estante SET categoria = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            stmt.setString(1, estante.getCategoria());
+            stmt.setInt(2, estante.getId());
+            stmt.execute();
+
+            System.out.println("Estante atualizada com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar estante: " + e.getMessage());
+        }
+    }
+
+    public void delete(int id) throws Exception {
+        String sql = "DELETE FROM estante WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+
+            System.out.println("Estante deletada com sucesso!");
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao deletar estante: " + e.getMessage());
+        }
+    }
+
     public Estante getEstante(int id) {
         String query = "SELECT * FROM estante WHERE id = ?";
 
@@ -48,7 +79,7 @@ public class EstanteDAO {
             if (!res) {
                 System.out.println("A pesquisa não gerou resultados.");
 
-                return null;
+                return new Estante("Sem Estante");
             }
 
             estante.setId(id);

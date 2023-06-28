@@ -31,6 +31,22 @@ public class Estante {
         dao.insert(this);
     }
 
+    public void editarEstante() throws Exception {
+        EstanteDAO dao = new EstanteDAO();
+
+        if (dao.estanteExists(this.categoria)) {
+            throw new Exception("Já existe uma estante com essa categoria!");
+        }
+
+        dao.update(this);
+    }
+
+    public void deletarEstante() throws Exception {
+        EstanteDAO dao = new EstanteDAO();
+
+        dao.delete(this.id);
+    }
+
     public void registrarObra(Obra obra) throws Exception {
         ObraDAO dao = new ObraDAO();
         dao.insert(obra, this);
