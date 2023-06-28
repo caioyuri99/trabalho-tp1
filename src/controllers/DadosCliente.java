@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import biblioteca.Cliente;
+import biblioteca.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,16 +43,16 @@ public class DadosCliente implements Initializable {
             e.printStackTrace();
         }
 
-        lblCpf.setText(formatCPF(cliente.getCpf()));
+        lblCpf.setText(Usuario.formatCPF(cliente.getCpf()));
         lblDataNasc.setText(cliente.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         lblNome.setText(cliente.getNome());
         lblSaldoDevedor.setText(String.format("R$ %.2f", cliente.getSaldoDevedor()));
     }
 
     @FXML
-    void alterarDados(ActionEvent event) throws IOException {
+    void alterarSenha(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./../telas/DadosClientePopup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./../telas/UsuarioAlterarSenha.fxml"));
         stage.setScene(new Scene(loader.load()));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(((Node) event.getSource()).getScene().getWindow());
@@ -60,18 +61,8 @@ public class DadosCliente implements Initializable {
         initialize(null, null);
     }
 
-    public static String formatCPF(String cpf) {
-        // Remove caracteres não numéricos do CPF
-        cpf = cpf.replaceAll("[^0-9]", "");
-
-        // Verifica se o CPF possui 11 dígitos
-        if (cpf.length() != 11) {
-            throw new IllegalArgumentException("CPF inválido");
-        }
-
-        // Formata o CPF adicionando os pontos e o traço
-        cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
-
-        return cpf;
+    @FXML
+    void verHistoricoPedidos(ActionEvent event) {
+        // FIXME: Implementar
     }
 }
