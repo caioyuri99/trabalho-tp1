@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import dao.ClienteDAO;
 import dao.EmprestimoDAO;
 import exceptions.Confirmation;
+import session.Session;
 
-public class Cliente extends Usuario {
+public class Cliente extends Usuario implements AcessoSistema {
     // ATRIBUTOS
     private double saldoDevedor;
     private ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
@@ -22,15 +23,12 @@ public class Cliente extends Usuario {
     }
 
     // METODOS
-    @Override
-    public boolean fazerLogin(String cpf, String senha) {
+    public void login(String cpf, String senha) throws Exception {
         ClienteDAO dao = new ClienteDAO();
         Cliente cliente = dao.getCliente(cpf);
 
         if (cliente == null || !senha.equals(cliente.senha)) {
-            System.out.println("CPF ou senha incorretos.");
-
-            return false;
+            throw new Exception("CPF ou senha incorretos.");
         }
 
         this.cpf = cliente.cpf;
@@ -39,9 +37,13 @@ public class Cliente extends Usuario {
         this.dataNasc = cliente.dataNasc;
         this.saldoDevedor = cliente.saldoDevedor;
 
-        System.out.println("Login realizado com sucesso!");
+        Session.login(this);
 
-        return true;
+        System.out.println("Login realizado com sucesso!");
+    }
+
+    public void logout() {
+        Session.logout();
     }
 
     public void fazerCadastro() throws Exception {

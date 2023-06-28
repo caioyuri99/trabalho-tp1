@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import session.Session;
 
 public class TelaInicial {
 
@@ -37,19 +36,19 @@ public class TelaInicial {
 
         Cliente cliente = new Cliente();
 
-        boolean res = cliente.fazerLogin(cpf, senha);
-
-        if (!res) {
+        try {
+            cliente.login(cpf, senha);
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
-            alert.setHeaderText("CPF ou senha incorretos");
-            alert.setContentText("Verifique os dados e tente novamente.");
+            alert.setHeaderText("Erro ao tentar logar");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
-
+    
             return;
         }
 
-        Session.login(cliente);
+
 
         mostrarCatalogo(event);
     }

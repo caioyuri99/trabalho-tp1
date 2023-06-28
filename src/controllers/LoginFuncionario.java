@@ -14,7 +14,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import session.Session;
 
 public class LoginFuncionario {
 
@@ -44,19 +43,17 @@ public class LoginFuncionario {
 
         Funcionario funcionario = new Funcionario();
 
-        boolean res = funcionario.fazerLogin(cpf, senha);
-
-        if (!res) {
+        try {
+            funcionario.login(cpf, senha);
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
-            alert.setHeaderText("CPF ou senha incorretos");
-            alert.setContentText("Verifique os dados e tente novamente.");
+            alert.setHeaderText("Erro ao tentar logar");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
 
             return;
         }
-
-        Session.login(funcionario);
 
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaFuncionario.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

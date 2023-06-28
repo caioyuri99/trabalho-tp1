@@ -18,9 +18,6 @@ public abstract class Usuario implements DatePattern {
         this.dataNasc = dataNasc;
     }
 
-    // METODOS
-    abstract public boolean fazerLogin(String cpf, String senha);
-
     // GETTERS & SETTERS
     public String getSenha() {
         return senha;

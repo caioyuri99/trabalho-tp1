@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dao.FuncionarioDAO;
+import session.Session;
 
-public class Funcionario extends Usuario {
+public class Funcionario extends Usuario implements AcessoSistema {
     // ATRIBUTOS
     private String cargo;
     private boolean admin;
@@ -26,15 +27,12 @@ public class Funcionario extends Usuario {
     }
 
     // METODOS
-    @Override
-    public boolean fazerLogin(String cpf, String senha) {
+    public void login(String cpf, String senha) throws Exception {
         FuncionarioDAO dao = new FuncionarioDAO();
         Funcionario funcionario = dao.getFuncionario(cpf);
 
         if (funcionario == null || !senha.equals(funcionario.senha)) {
-            System.out.println("CPF ou senha incorretos.");
-
-            return false;
+            throw new Exception("CPF ou senha incorretos.");
         }
 
         this.cpf = funcionario.cpf;
@@ -44,9 +42,13 @@ public class Funcionario extends Usuario {
         this.cargo = funcionario.cargo;
         this.admin = funcionario.admin;
 
-        System.out.println("Login realizado com sucesso!");
+        Session.login(this);
 
-        return true;
+        System.out.println("Login realizado com sucesso!");
+    }
+
+    public void logout() {
+        Session.logout();
     }
 
     public static ArrayList<Funcionario> getListaFuncionarios(int limit, int offset) {
