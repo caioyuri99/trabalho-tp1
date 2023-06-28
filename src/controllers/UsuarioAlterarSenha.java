@@ -69,4 +69,5 @@ public class UsuarioAlterarSenha {
             stage.close();
         }
     }
+
 }
