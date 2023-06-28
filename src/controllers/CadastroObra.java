@@ -6,10 +6,19 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import assets.fxmlComponents.controllers.CadastroGibiComponent;
+import assets.fxmlComponents.controllers.CadastroLivroComponent;
+import assets.fxmlComponents.controllers.CadastroRevistaComponent;
 import biblioteca.Estante;
+import biblioteca.Gibi;
+import biblioteca.Item;
+import biblioteca.Livro;
 import biblioteca.Obra;
+import biblioteca.Revista;
+import controllers.interfaces.AddItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -22,9 +31,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CadastroObra implements Initializable {
+
+    private AddItem itemContainerController;
 
     @FXML
     private ComboBox<Estante> cbbEstante;
@@ -56,12 +68,38 @@ public class CadastroObra implements Initializable {
     @FXML
     private TextField txtGenero;
 
+    @FXML
+    private VBox itemContainer;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         ArrayList<Estante> estantes = Estante.getListaEstantes();
         cbbEstante.getItems().addAll(estantes);
 
         cbbTipo.getItems().addAll("Livro", "Revista", "Gibi");
+
+        cbbTipo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            itemContainer.getChildren().clear();
+            String resource = "";
+            switch (newValue) {
+                case "Livro":
+                    resource = "../assets/fxmlComponents/CadastroLivroComponent.fxml";
+                    break;
+                case "Revista":
+                    resource = "../assets/fxmlComponents/CadastroRevistaComponent.fxml";
+                    break;
+                case "Gibi":
+                    resource = "../assets/fxmlComponents/CadastroGibiComponent.fxml";
+                    break;
+            }
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+                this.itemContainerController = loader.getController();
+                itemContainer.getChildren().add(loader.load());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         txtUrlCapa.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -96,6 +134,86 @@ public class CadastroObra implements Initializable {
             return;
         }
 
+        String editora = itemContainerController.getEditora();
+        int edicao;
+        try {
+            edicao = Integer.parseInt(itemContainerController.getEdicao());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao cadastrar obra");
+            alert.setContentText("Edição inválida");
+
+            alert.showAndWait();
+            return;
+        }
+        String condicao = itemContainerController.getCondicao();
+
+        if (editora.isEmpty() || condicao == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao cadastrar obra");
+            alert.setContentText("Preencha todos os campos");
+
+            alert.showAndWait();
+            return;
+        }
+
+        Item item;
+        switch (tipo) {
+            case "Livro":
+                String tipoCapa = ((CadastroLivroComponent) itemContainerController).getTipoCapa();
+
+                if (tipoCapa == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao cadastrar obra");
+                    alert.setContentText("Preencha todos os campos");
+
+                    alert.showAndWait();
+                    return;
+                }
+
+                item = new Livro(editora, edicao, condicao, tipoCapa);
+                break;
+
+            case "Revista":
+                String categoriaRevista = ((CadastroRevistaComponent) itemContainerController).getCategoria();
+
+                if (categoriaRevista.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao cadastrar obra");
+                    alert.setContentText("Preencha todos os campos");
+
+                    alert.showAndWait();
+                    return;
+                }
+
+                item = new Revista(editora, edicao, condicao, categoriaRevista);
+                break;
+
+            case "Gibi":
+                String categoriaGibi = ((CadastroGibiComponent) itemContainerController).getCategoria();
+                String tipoGibi = ((CadastroGibiComponent) itemContainerController).getTipo();
+
+                if (categoriaGibi.isEmpty() || tipoGibi.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao cadastrar obra");
+                    alert.setContentText("Preencha todos os campos");
+
+                    alert.showAndWait();
+                    return;
+                }
+
+                item = new Gibi(editora, edicao, condicao, tipoGibi, categoriaGibi);
+                break;
+
+            default:
+                item = null;
+        }
+
         if (lblErrorUrl.visibleProperty().get()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -121,6 +239,7 @@ public class CadastroObra implements Initializable {
 
             try {
                 estante.registrarObra(obra);
+                obra.registrarItem(item);
             } catch (Exception e) {
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
                 alertErro.setTitle("Erro");
