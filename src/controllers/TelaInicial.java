@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -78,8 +79,13 @@ public class TelaInicial {
     }
 
     @FXML
-    void alterarData(MouseEvent event) {
-
+    void alterarData(MouseEvent event) throws IOException {
+        Stage alterarData = new Stage();
+        Parent content = FXMLLoader.load(getClass().getResource("../telas/AlterarData.fxml"));
+        alterarData.setScene(new Scene(content));
+        alterarData.initModality(Modality.APPLICATION_MODAL);
+        alterarData.initOwner(((Node) event.getSource()).getScene().getWindow());
+        alterarData.showAndWait();
     }
 
     public void telaCarregamento() {
