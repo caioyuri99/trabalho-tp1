@@ -96,7 +96,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="383.0" layoutY="461.0" mnemonicParsing="false" onAction="#addEstante" prefHeight="25.0" prefWidth="290.0" text="ADICIONAR ESTANTE">
+      <Button layoutX="383.0" layoutY="461.0" mnemonicParsing="false" onAction="#gerenciarrEstantes" prefHeight="25.0" prefWidth="290.0" text="GERENCIAR ESTANTES">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

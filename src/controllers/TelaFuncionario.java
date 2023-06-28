@@ -116,13 +116,13 @@ public class TelaFuncionario implements Initializable {
     }
 
     @FXML
-    void addEstante(ActionEvent event) throws IOException {
-        Stage addEstante = new Stage();
-        Parent content = FXMLLoader.load(getClass().getResource("../telas/AdicionarEstante.fxml"));
-        addEstante.setScene(new Scene(content));
-        addEstante.initModality(Modality.APPLICATION_MODAL);
-        addEstante.initOwner(((Node) event.getSource()).getScene().getWindow());
-        addEstante.showAndWait();
+    void gerenciarEstantes(ActionEvent event) throws IOException {
+        Stage gerenciarEstantes = new Stage();
+        Parent content = FXMLLoader.load(getClass().getResource("../telas/GerenciarEstantes.fxml"));
+        gerenciarEstantes.setScene(new Scene(content));
+        gerenciarEstantes.initModality(Modality.APPLICATION_MODAL);
+        gerenciarEstantes.initOwner(((Node) event.getSource()).getScene().getWindow());
+        gerenciarEstantes.showAndWait();
     }
 
     @FXML
