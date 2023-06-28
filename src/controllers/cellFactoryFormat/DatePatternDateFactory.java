@@ -15,7 +15,7 @@ public class DatePatternDateFactory extends TableCell<DatePattern, LocalDate> {
         if (empty) {
             setText(null);
         } else {
-            setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            setText(item.format(DatePattern.DATE_PATTERN));
         }
     }
 }
