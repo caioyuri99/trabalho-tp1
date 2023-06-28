@@ -56,9 +56,14 @@ public class Cliente extends Usuario implements AcessoSistema {
         dao.insert(this);
     }
 
-    public void atualizarCadastro() throws Exception {
-        ClienteDAO dao = new ClienteDAO();
+    public void alterarSenha(String senhaAtual, String novaSenha) throws Exception {
+        if (!senhaAtual.equals(this.senha)) {
+            throw new Exception("Senha atual incorreta.");
+        }
 
+        this.senha = novaSenha;
+
+        ClienteDAO dao = new ClienteDAO();
         dao.update(this);
     }
 

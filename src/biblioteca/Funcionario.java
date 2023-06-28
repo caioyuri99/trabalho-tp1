@@ -51,6 +51,17 @@ public class Funcionario extends Usuario implements AcessoSistema {
         Session.logout();
     }
 
+    public void alterarSenha(String senhaAtual, String novaSenha) throws Exception {
+        if (!senhaAtual.equals(this.senha)) {
+            throw new Exception("Senha atual incorreta.");
+        }
+
+        this.senha = novaSenha;
+
+        FuncionarioDAO dao = new FuncionarioDAO();
+        dao.update(this);
+    }
+
     public static ArrayList<Funcionario> getListaFuncionarios(int limit, int offset) {
         FuncionarioDAO dao = new FuncionarioDAO();
 
