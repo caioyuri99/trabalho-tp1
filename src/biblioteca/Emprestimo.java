@@ -23,16 +23,6 @@ public class Emprestimo {
     public Emprestimo() {
     }
 
-    public Emprestimo(Cliente leitor) {
-        this.leitor = leitor;
-    }
-
-    public Emprestimo(LocalDate dataDevolucao, LocalDate dataEmprestimo, Cliente leitor) {
-        this.dataDevolucao = dataDevolucao;
-        this.dataEmprestimo = dataEmprestimo;
-        this.leitor = leitor;
-    }
-
     // MÉTODOS
     public Item getItemEmprestado() {
         EmprestimoDAO dao = new EmprestimoDAO();
