@@ -15,9 +15,9 @@
    <top>
       <AnchorPane prefHeight="55.0" prefWidth="293.0" style="-fx-background-color: #ffca2b;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="29.0" fitWidth="33.0" layoutX="250.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="29.0" fitWidth="33.0" layoutX="250.0" layoutY="13.0" onMouseClicked="#exit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../imagens/dados-pessoais.png" />
+                  <Image url="@../imagens/porta.png" />
                </image>
             </ImageView>
             <Text layoutX="95.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meus Dados" textAlignment="CENTER">

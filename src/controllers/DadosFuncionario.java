@@ -14,11 +14,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import session.Session;
 
 public class DadosFuncionario implements Initializable {
+
+    private Parent root;
+    private Stage stage;
 
     @FXML
     private Label lblAdmin;
@@ -55,6 +59,15 @@ public class DadosFuncionario implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
         stage.showAndWait();
+    }
+
+    @FXML
+    void exit(MouseEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../telas/TelaFuncionario.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Gestão de Estoque");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
 }

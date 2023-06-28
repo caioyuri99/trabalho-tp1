@@ -12,13 +12,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import session.Session;
 
 public class DadosCliente implements Initializable {
+
+    private Parent root;
+    private Stage stage;
 
     @FXML
     private Label lblCpf;
@@ -59,6 +64,15 @@ public class DadosCliente implements Initializable {
         stage.showAndWait();
 
         initialize(null, null);
+    }
+
+    @FXML
+    void exit(MouseEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Catálogo");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
