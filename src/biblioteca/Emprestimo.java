@@ -4,7 +4,7 @@ import dao.EmprestimoDAO;
 
 import java.time.LocalDate;
 
-public class Emprestimo {
+public class Emprestimo implements BooleanDisplayPattern, DatePattern {
     // ATRIBUTOS
     private int id;
     private String tipoItem;
@@ -17,7 +17,7 @@ public class Emprestimo {
     private boolean atrasado;
     private boolean multado;
     private double valorMulta;
-    private boolean pago;
+    private Boolean pago;
 
     // CONSTRUTORES
     public Emprestimo() {
@@ -111,19 +111,19 @@ public class Emprestimo {
         this.multado = multado;
     }
 
-    public double getValorMulta() {
+    public Double getValorMulta() {
         return this.valorMulta;
     }
 
-    public void setValorMulta(double valorMulta) {
+    public void setValorMulta(Double valorMulta) {
         this.valorMulta = valorMulta;
     }
 
-    public boolean isPago() {
+    public Boolean isPago() {
         return this.pago;
     }
 
-    public void setPago(boolean pago) {
+    public void setPago(Boolean pago) {
         this.pago = pago;
     }
 
