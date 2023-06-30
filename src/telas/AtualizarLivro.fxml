@@ -12,7 +12,7 @@
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: #ffca2b;">
          <children>
-            <Text layoutX="114.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cadastro de Livro" textAlignment="CENTER" wrappingWidth="122.0">
+            <Text layoutX="114.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Atualização de Livro" textAlignment="CENTER" wrappingWidth="122.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
