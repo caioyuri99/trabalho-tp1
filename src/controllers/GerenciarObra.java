@@ -71,18 +71,9 @@ public class GerenciarObra implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        lblNome.setText(obra.getNome());
-        lblAutor.setText(obra.getAutor());
-        lblGenero.setText(obra.getGenero());
-        lblTipo.setText(obra.getTipo().substring(0, 1).toUpperCase() + obra.getTipo().substring(1).toLowerCase());
-        lblEstante.setText(obra.getEstante().getCategoria());
-        lblSinopse.setText(obra.getSinopse());
-        imgCapa.setImage(new Image(obra.getCapaUrl()));
-        lblDataPubli.setText(obra.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        refreshObra();
 
         tableItems.setPlaceholder(new Label("Nenhum item cadastrado."));
-
-        ArrayList<Item> itens = obra.obterItens();
 
         TableColumn<Item, Integer> clmId = new TableColumn<>("ID");
         TableColumn<Item, String> clmEditora = new TableColumn<>("Editora");
@@ -131,7 +122,7 @@ public class GerenciarObra implements Initializable {
                 break;
         }
 
-        tableItems.getItems().addAll(itens);
+        refreshTable();
     }
 
     @FXML
@@ -162,7 +153,7 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
+                break;
             case "revista":
                 try {
                     Stage addRevista = new Stage();
@@ -188,7 +179,7 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
+                break;
             case "gibi":
                 try {
                     Stage addGibi = new Stage();
@@ -214,8 +205,9 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
         }
+
+        refreshTable();
     }
 
     @FXML
@@ -257,7 +249,7 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
+                break;
             case "revista":
                 try {
                     Stage editRevista = new Stage();
@@ -283,7 +275,7 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
+                break;
             case "gibi":
                 try {
                     Stage editGibi = new Stage();
@@ -309,8 +301,9 @@ public class GerenciarObra implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return;
         }
+
+        refreshTable();
     }
 
     @FXML
@@ -335,6 +328,9 @@ public class GerenciarObra implements Initializable {
         editObra.initModality(Modality.APPLICATION_MODAL);
         editObra.initOwner(((Node) event.getSource()).getScene().getWindow());
         editObra.showAndWait();
+
+        this.obra = Obra.getObra(this.obra.getId());
+        refreshObra();
     }
 
     @FXML
@@ -396,42 +392,6 @@ public class GerenciarObra implements Initializable {
             return;
         }
 
-        if (tableItems.getItems().size() == 1) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Remover item");
-            alert.setHeaderText("Tem certeza que deseja remover o item?");
-            alert.setContentText("A obra será removida junto com o item");
-
-            ButtonType btnConfirmar = new ButtonType("Confirmar", ButtonData.OK_DONE);
-            ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(btnConfirmar, btnCancelar);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == btnConfirmar) {
-                Estante estante = obra.getEstante();
-
-                try {
-                    estante.removerObra(obra);
-                } catch (Exception e) {
-                    Alert alertError = new Alert(AlertType.ERROR);
-                    alertError.setTitle("Erro");
-                    alertError.setHeaderText("Erro ao remover obra");
-                    alertError.setContentText(e.getMessage());
-                    alertError.showAndWait();
-                    return;
-                }
-
-                Alert alertSuccess = new Alert(AlertType.INFORMATION);
-                alertSuccess.setTitle("Sucesso");
-                alertSuccess.setHeaderText("Obra removida");
-                alertSuccess.setContentText("A obra foi removida com sucesso");
-                alertSuccess.showAndWait();
-                telaFuncionarioController.refreshTable(event);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.close();
-            }
-        }
-
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Remover item");
         alert.setHeaderText("Remover item");
@@ -458,6 +418,8 @@ public class GerenciarObra implements Initializable {
             alertSuccess.setTitle("Sucesso");
             alertSuccess.setHeaderText("Item removido com sucesso");
             alertSuccess.showAndWait();
+
+            refreshTable();
         }
     }
 
@@ -467,6 +429,22 @@ public class GerenciarObra implements Initializable {
 
     public void setTelaFuncionarioController(TelaFuncionario telaFuncionarioController) {
         this.telaFuncionarioController = telaFuncionarioController;
+    }
+
+    private void refreshTable() {
+        ArrayList<Item> itens = obra.obterItens();
+        tableItems.getItems().addAll(itens);
+    }
+
+    private void refreshObra() {
+        lblNome.setText(obra.getNome());
+        lblAutor.setText(obra.getAutor());
+        lblGenero.setText(obra.getGenero());
+        lblTipo.setText(obra.getTipo().substring(0, 1).toUpperCase() + obra.getTipo().substring(1).toLowerCase());
+        lblEstante.setText(obra.getEstante().getCategoria());
+        lblSinopse.setText(obra.getSinopse());
+        imgCapa.setImage(new Image(obra.getCapaUrl()));
+        lblDataPubli.setText(obra.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
 }
