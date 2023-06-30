@@ -8,8 +8,8 @@ import session.Session;
 
 public class Funcionario extends Usuario implements AcessoSistema, BooleanDisplayPattern {
     // ATRIBUTOS
-    private String cargo;
-    private boolean admin;
+    protected String cargo;
+    protected boolean admin;
 
     // CONSTRUTORES
     public Funcionario() {
@@ -42,7 +42,11 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
         this.cargo = funcionario.cargo;
         this.admin = funcionario.admin;
 
-        Session.login(this);
+        if (this.admin) {
+            Session.login(Admin.parseAdmin(this));
+        } else {
+            Session.login(this);
+        }
 
         System.out.println("Login realizado com sucesso!");
     }
