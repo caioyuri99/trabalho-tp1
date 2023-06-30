@@ -160,6 +160,7 @@ public class TelaFuncionario implements Initializable {
         }
 
         try {
+            // TODO: transformar essa tela em uma popup
             root = FXMLLoader.load(getClass().getResource("../telas/TelaAdministrador.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
