@@ -63,9 +63,11 @@ public class Obra implements DatePattern {
     }
 
     public void removeAllItems() throws Exception {
-        this.itens = this.obterItens();
+        for (Item item : itens) {
+            item.remover();
+        }
 
-        this.itens.clear();
+        itens.clear();
     }
 
     public boolean verificaDisponibilidade() {
