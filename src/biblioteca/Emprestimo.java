@@ -16,7 +16,7 @@ public class Emprestimo implements BooleanDisplayPattern, DatePattern {
     private boolean devolvido;
     private boolean atrasado;
     private boolean multado;
-    private double valorMulta;
+    private Double valorMulta;
     private Boolean pago;
 
     // CONSTRUTORES
