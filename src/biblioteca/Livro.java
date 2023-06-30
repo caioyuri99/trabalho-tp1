@@ -14,6 +14,11 @@ public class Livro extends Item {
         super(editora, edicao, condicao);
         this.tipoCapa = tipoCapa;
     }
+    
+    public Livro(String editora, int edicao, String condicao, String tipoCapa, Obra obra) {
+        super(editora, edicao, condicao, obra);
+        this.tipoCapa = tipoCapa;
+    }
 
     public Livro(
             String editora,
