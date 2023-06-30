@@ -13,6 +13,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("./../telas/TelaInicial.fxml"));
 
         primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle("Biblioteca Distrital do DF");
         primaryStage.show();
     }
 
