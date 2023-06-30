@@ -84,7 +84,7 @@ public class AtualizarRevista implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            revista = new Revista(editora, edicao, condicao, categoria);
+            revista = new Revista(editora, edicao, condicao, obra, categoria);
 
             try {
                 obra.atualizarItem(revista);

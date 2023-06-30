@@ -78,7 +78,7 @@ public class CadastroLivro implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Livro livro = new Livro(editora, edicao, condicao, tipoCapa);
+            Livro livro = new Livro(editora, edicao, condicao, tipoCapa, obra);
 
             try {
                 obra.adicionarItem(livro);

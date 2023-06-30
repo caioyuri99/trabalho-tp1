@@ -80,7 +80,7 @@ public class CadastroGibi implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Gibi gibi = new Gibi(editora, edicao, condicao, tipo, categoria);
+            Gibi gibi = new Gibi(editora, edicao, condicao, obra, tipo, categoria);
 
             try {
                 obra.adicionarItem(gibi);

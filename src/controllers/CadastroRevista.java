@@ -76,7 +76,7 @@ public class CadastroRevista implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Revista revista = new Revista(editora, edicao, condicao, categoria);
+            Revista revista = new Revista(editora, edicao, condicao, obra, categoria);
 
             try {
                 obra.adicionarItem(revista);

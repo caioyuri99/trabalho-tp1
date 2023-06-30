@@ -87,7 +87,7 @@ public class AtualizarLivro implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            livro = new Livro(editora, edicao, condicao, tipoCapa);
+            livro = new Livro(editora, edicao, condicao, tipoCapa, obra);
 
             try {
                 obra.atualizarItem(livro);
