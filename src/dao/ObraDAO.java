@@ -205,6 +205,7 @@ public class ObraDAO {
     public ArrayList<Obra> searchCustomQuery(String search, String tipo, Estante estante, LocalDate fromData,
             LocalDate toData, String genero, String disponibilidade, String condicao, String editora, int limit,
             int offset) {
+        // TODO: fazer um filtro decente
 
         if (fromData == null) {
             fromData = LocalDate.of(1000, 1, 1);
