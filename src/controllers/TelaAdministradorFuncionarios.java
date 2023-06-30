@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import biblioteca.Admin;
+import biblioteca.BooleanDisplayPattern;
 import biblioteca.DatePattern;
 import biblioteca.Funcionario;
 import biblioteca.Usuario;
+import controllers.cellFactoryFormat.BooleanDisplayFactory;
 import controllers.cellFactoryFormat.DatePatternDateFactory;
-import controllers.cellFactoryFormat.FuncionarioAdminFactory;
 import controllers.cellFactoryFormat.UsuarioCpfFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,7 +74,7 @@ public class TelaAdministradorFuncionarios implements Initializable {
     private TableView<Funcionario> tableFuncionarios;
 
     @FXML
-    private TableColumn<Funcionario, Boolean> clmAdmin;
+    private TableColumn<BooleanDisplayPattern, Boolean> clmAdmin;
 
     @FXML
     private TableColumn<Usuario, String> clmCpf;
@@ -106,7 +107,7 @@ public class TelaAdministradorFuncionarios implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         tableFuncionarios.setPlaceholder(new Label("Nenhum funcionário encontrado"));
 
-        clmAdmin.setCellFactory(column -> new FuncionarioAdminFactory());
+        clmAdmin.setCellFactory(column -> new BooleanDisplayFactory());
         clmAdmin.setCellValueFactory(new PropertyValueFactory<>("admin"));
         clmCargo.setCellValueFactory(new PropertyValueFactory<>("cargo"));
         clmCpf.setCellFactory(column -> new UsuarioCpfFactory());
