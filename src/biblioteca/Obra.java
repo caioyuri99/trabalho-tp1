@@ -102,7 +102,7 @@ public class Obra implements DatePattern {
     }
 
     public static ArrayList<Obra> getObras(String search, String tipo, Estante estante, LocalDate fromData,
-            LocalDate toData, String genero, String disponibilidade, String condicao, String editora, int limit,
+            LocalDate toData, String genero, Boolean disponibilidade, String condicao, String editora, int limit,
             int offset) {
         ObraDAO dao = new ObraDAO();
 
