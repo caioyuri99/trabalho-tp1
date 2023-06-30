@@ -10,8 +10,8 @@ public class Admin extends Funcionario {
     public Admin() {
     }
 
-    public Admin(String cpf, String senha, String nome, LocalDate dataNasc, String cargo) {
-        super(cpf, senha, nome, dataNasc, cargo);
+    public Admin(String cpf, String senha, String nome, LocalDate dataNasc, String cargo, boolean admin) {
+        super(cpf, senha, nome, dataNasc, cargo, admin);
     }
 
     // MÉTODOS
@@ -57,5 +57,10 @@ public class Admin extends Funcionario {
         ClienteDAO dao = new ClienteDAO();
 
         dao.update(cliente);
+    }
+
+    public static Admin parseAdmin(Funcionario funcionario) {
+        return new Admin(funcionario.cpf, funcionario.senha, funcionario.nome, funcionario.dataNasc, funcionario.cargo,
+                funcionario.admin);
     }
 }
