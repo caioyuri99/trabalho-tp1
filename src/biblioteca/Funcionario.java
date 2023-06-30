@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import dao.FuncionarioDAO;
 import session.Session;
 
-public class Funcionario extends Usuario implements AcessoSistema {
+public class Funcionario extends Usuario implements AcessoSistema, BooleanDisplayPattern {
     // ATRIBUTOS
     private String cargo;
     private boolean admin;
