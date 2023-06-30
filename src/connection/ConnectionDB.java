@@ -7,8 +7,9 @@ public class ConnectionDB {
 
     public Connection getConnection() {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1/biblioteca",
+                    "jdbc:mysql://localhost:3306/biblioteca?verifyServerCertificate=false&useSSL=true&serverTimezone=UTC",
                     "root",
                     "");
 
@@ -19,5 +20,4 @@ public class ConnectionDB {
             return null;
         }
     }
-
 }
