@@ -10,6 +10,8 @@ public class EmprestimoBooleanPagoFactory extends TableCell<Emprestimo, Boolean>
         super.updateItem(item, empty);
 
         if (empty) {
+            setText(null);
+        } else if (item == null) {
             setText("Sem multa");
         } else {
             if (item) {

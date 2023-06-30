@@ -10,6 +10,8 @@ public class EmprestimoDoubleValorMultaFactory extends TableCell<Emprestimo, Dou
         super.updateItem(item, empty);
 
         if (empty) {
+            setText(null);
+        } else if (item == null) {
             setText("Sem multa");
         } else {
             setText(String.format("R$ %.2f", item));
