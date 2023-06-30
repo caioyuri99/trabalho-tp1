@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import biblioteca.Estante;
-import biblioteca.Item;
 import biblioteca.Obra;
 import connection.ConnectionDB;
 
@@ -203,21 +202,10 @@ public class ObraDAO {
     }
 
     public ArrayList<Obra> searchCustomQuery(String search, String tipo, Estante estante, LocalDate fromData,
-            LocalDate toData, String genero, String disponibilidade, String condicao, String editora, int limit,
+            LocalDate toData, String genero, Boolean disponibilidade, String condicao, String editora, int limit,
             int offset) {
-        // TODO: fazer um filtro decente
 
-        if (fromData == null) {
-            fromData = LocalDate.of(1000, 1, 1);
-        }
-
-        if (toData == null) {
-            toData = LocalDate.now();
-        }
-
-        String query = String.format(
-                "SELECT * FROM obra WHERE (LOWER(nome) LIKE ? OR LOWER(autor) LIKE ?) AND tipo LIKE ? AND estante %s AND dataPublicacao BETWEEN ? AND ? AND genero LIKE ? ORDER BY id ASC LIMIT ? OFFSET ?",
-                (estante == null) ? "IS NOT NULL" : "= ?");
+        String query = queryBuilder(estante, fromData, toData, disponibilidade);
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -226,18 +214,35 @@ public class ObraDAO {
             c++;
             stmt.setString(c, '%' + search.toLowerCase() + '%');
             c++;
-            stmt.setString(c, '%' + tipo + '%');
+            stmt.setString(c, '%' + tipo.toLowerCase() + '%');
             c++;
+            stmt.setString(c, '%' + genero.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+
             if (estante != null) {
                 stmt.setInt(c, estante.getId());
                 c++;
             }
-            stmt.setDate(c, Date.valueOf(fromData));
-            c++;
-            stmt.setDate(c, Date.valueOf(toData));
-            c++;
-            stmt.setString(c, '%' + genero + '%');
-            c++;
+
+            if (fromData != null && toData != null) {
+                stmt.setDate(c, Date.valueOf(fromData));
+                c++;
+                stmt.setDate(c, Date.valueOf(toData));
+                c++;
+            } else if (fromData != null) {
+                stmt.setDate(c, Date.valueOf(fromData));
+                c++;
+            } else if (toData != null) {
+                stmt.setDate(c, Date.valueOf(toData));
+                c++;
+            }
+
             stmt.setInt(c, limit);
             c++;
             stmt.setInt(c, offset);
@@ -256,53 +261,6 @@ public class ObraDAO {
                 obra.setCapaUrl(rs.getString("capaUrl"));
                 obra.setEstante(new EstanteDAO().getEstante(rs.getInt("estante")));
 
-                if (!disponibilidade.equals("")) {
-                    if (disponibilidade.equals("disponivel")) {
-                        if (this.isDisponivel(obra)) {
-                            continue;
-                        }
-                    } else if (disponibilidade.equals("indisponivel")) {
-                        if (!this.isDisponivel(obra)) {
-                            continue;
-                        }
-                    }
-                }
-
-                ArrayList<Item> itemsOfObra = switch (obra.getTipo()) {
-                    case "livro" -> new LivroDAO().getItemsOfObra(obra);
-                    case "revista" -> new RevistaDAO().getItemsOfObra(obra);
-                    case "gibi" -> new GibiDAO().getItemsOfObra(obra);
-                    default -> null;
-                };
-
-                if (!condicao.equals("")) {
-                    boolean hasItemWithCondition = false;
-                    for (Item item : itemsOfObra) {
-                        if (item.getCondicao().equals(condicao)) {
-                            hasItemWithCondition = true;
-                            break;
-                        }
-                    }
-
-                    if (!hasItemWithCondition) {
-                        continue;
-                    }
-                }
-
-                if (!editora.equals("")) {
-                    boolean hasItemWithEditora = false;
-                    for (Item item : itemsOfObra) {
-                        if (item.getEditora().toLowerCase().contains(editora.toLowerCase())) {
-                            hasItemWithEditora = true;
-                            break;
-                        }
-                    }
-
-                    if (!hasItemWithEditora) {
-                        continue;
-                    }
-                }
-
                 obras.add(obra);
             }
 
@@ -313,6 +271,34 @@ public class ObraDAO {
 
             return null;
         }
+    }
+
+    private String queryBuilder(Estante estante, LocalDate dateFrom, LocalDate dateTo, Boolean disponibilidade) {
+        String query = "SELECT DISTINCT obra.* FROM obra LEFT JOIN livro ON obra.tipo = 'livro' AND livro.obra = obra.id LEFT JOIN revista ON obra.tipo = 'revista' AND revista.obra = obra.id LEFT JOIN gibi ON obra.tipo = 'gibi' AND gibi.obra = obra.id WHERE (LOWER(obra.nome) LIKE ? OR LOWER(obra.autor) LIKE ?) AND LOWER(obra.tipo) LIKE ? AND LOWER(obra.genero) LIKE ? AND (LOWER(livro.editora) LIKE ? OR LOWER(revista.editora) LIKE ? OR LOWER(gibi.editora) LIKE ?) ";
+
+        if (estante != null) {
+            query += "AND obra.estante = ? ";
+        }
+
+        if (dateFrom != null && dateTo != null) {
+            query += "AND obra.dataPublicacao BETWEEN ? AND ? ";
+        } else if (dateFrom != null) {
+            query += "AND obra.dataPublicacao >= ? ";
+        } else if (dateTo != null) {
+            query += "AND obra.dataPublicacao <= ? ";
+        }
+
+        if (disponibilidade != null) {
+            if (disponibilidade) {
+                query += "(livro.disponivel = true OR revista.disponivel = true OR gibi.disponivel = true)";
+            } else {
+                query += "AND ((obra.tipo = 'livro' AND NOT EXISTS (SELECT 1 FROM livro WHERE livro.obra = obra.id AND livro.disponivel = true)) OR (obra.tipo = 'revista' AND NOT EXISTS (SELECT 1 FROM revista WHERE revista.obra = obra.id AND revista.disponivel = true)) OR (obra.tipo = 'gibi' AND NOT EXISTS (SELECT 1 FROM gibi WHERE gibi.obra = obra.id AND gibi.disponivel = true))) ";
+            }
+        }
+
+        query += "ORDER BY obra.id ASC LIMIT ? OFFSET ?";
+
+        return query;
     }
 
 }
