@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -159,7 +160,14 @@ public class EmprestimoDAO {
             emprestimo.setDevolvido(rs.getBoolean("devolvido"));
             emprestimo.setAtrasado(rs.getBoolean("atrasado"));
             emprestimo.setMultado(rs.getBoolean("multado"));
-            emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+
+            if (rs.wasNull()) {
+                emprestimo.setValorMulta(null);
+                emprestimo.setPago(null);
+            } else {
+                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+                emprestimo.setPago(rs.getBoolean("pago"));
+            }
 
             return emprestimo;
 
@@ -248,7 +256,14 @@ public class EmprestimoDAO {
                 emprestimo.setDevolvido(rs.getBoolean("devolvido"));
                 emprestimo.setAtrasado(rs.getBoolean("atrasado"));
                 emprestimo.setMultado(rs.getBoolean("multado"));
-                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+
+                if (rs.wasNull()) {
+                    emprestimo.setValorMulta(null);
+                    emprestimo.setPago(null);
+                } else {
+                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+                    emprestimo.setPago(rs.getBoolean("pago"));
+                }
 
                 emprestimos.add(emprestimo);
             }
@@ -296,7 +311,7 @@ public class EmprestimoDAO {
     }
 
     public void atualizaAtrasosMultas(Cliente cliente) throws Exception {
-        String query = "UPDATE emprestimo SET atrasado = ?, multado = ?, valorMulta = ? WHERE leitor = ? AND NOT devolvido";
+        String query = "UPDATE emprestimo SET atrasado = ?, multado = ?, valorMulta = ?, pago = ? WHERE leitor = ? AND NOT devolvido";
 
         try {
             ArrayList<Emprestimo> emprestimos = this.getEmprestimosAtivos(cliente);
@@ -307,22 +322,37 @@ public class EmprestimoDAO {
                 if (atraso <= 3 && atraso > 0) {
                     emprestimo.setAtrasado(true);
                     emprestimo.setMultado(false);
-                    emprestimo.setValorMulta(0);
+                    emprestimo.setValorMulta(null);
+                    emprestimo.setPago(null);
                 } else if (atraso > 3) {
                     emprestimo.setAtrasado(true);
                     emprestimo.setMultado(true);
                     emprestimo.setValorMulta(atraso * 0.8);
+                    emprestimo.setPago(false);
                 } else {
                     emprestimo.setAtrasado(false);
                     emprestimo.setMultado(false);
-                    emprestimo.setValorMulta(0);
+                    emprestimo.setValorMulta(null);
+                    emprestimo.setPago(null);
                 }
 
                 PreparedStatement stmt = this.connection.prepareStatement(query);
                 stmt.setBoolean(1, emprestimo.isAtrasado());
                 stmt.setBoolean(2, emprestimo.isMultado());
-                stmt.setDouble(3, emprestimo.getValorMulta());
-                stmt.setString(4, cliente.getCpf());
+
+                if (emprestimo.getValorMulta() == null) {
+                    stmt.setNull(3, Types.DECIMAL);
+                } else {
+                    stmt.setDouble(3, emprestimo.getValorMulta());
+                }
+
+                if (emprestimo.isPago() == null) {
+                    stmt.setNull(4, Types.TINYINT);
+                } else {
+                    stmt.setBoolean(4, emprestimo.isPago());
+                }
+
+                stmt.setString(5, cliente.getCpf());
                 stmt.execute();
             }
 
@@ -330,4 +360,101 @@ public class EmprestimoDAO {
             throw new Exception("Erro ao atualizar: " + e.getMessage());
         }
     }
+
+    public ArrayList<Emprestimo> getHistoricoEmprestimos(Cliente cliente, int limit, int offset) {
+        String query = "SELECT * FROM emprestimo WHERE leitor = ? ORDER BY dataEmprestimo DESC LIMIT ? OFFSET ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, cliente.getCpf());
+            stmt.setInt(2, limit);
+            stmt.setInt(3, offset);
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
+
+            while (rs.next()) {
+                Emprestimo emprestimo = new Emprestimo();
+
+                emprestimo.setId(rs.getInt("id"));
+                emprestimo.setTipoItem(rs.getString("tipoItem"));
+                emprestimo.setItem(this.getItemFromEmprestimo(emprestimo));
+                emprestimo.setLeitor(cliente);
+                emprestimo.setDataEmprestimo(rs.getDate("dataEmprestimo").toLocalDate());
+                emprestimo.setDataDevolucao(rs.getDate("dataDevolucao").toLocalDate());
+                emprestimo.setQtdRenovacoes(rs.getInt("qtdRenovacoes"));
+                emprestimo.setDevolvido(rs.getBoolean("devolvido"));
+                emprestimo.setAtrasado(rs.getBoolean("atrasado"));
+                emprestimo.setMultado(rs.getBoolean("multado"));
+
+                if (rs.wasNull()) {
+                    emprestimo.setValorMulta(null);
+                    emprestimo.setPago(null);
+                } else {
+                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+                    emprestimo.setPago(rs.getBoolean("pago"));
+                }
+
+                emprestimos.add(emprestimo);
+            }
+
+            return emprestimos;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao obter: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<Emprestimo> filtraHistoricoEmprestimos(Cliente cliente, String search, LocalDate fromDate,
+            LocalDate toDate, int limit, int offset) {
+
+        String query = "SELECT emprestimo.id, emprestimo.tipoItem, emprestimo.dataEmprestimo, emprestimo.dataDevolucao, emprestimo.qtdRenovacoes, emprestimo.devolvido, emprestimo.atrasado, emprestimo.multado, emprestimo.valorMulta, emprestimo.pago FROM emprestimo LEFT JOIN livro ON emprestimo.tipoItem = 'livro' AND emprestimo.livro = livro.id LEFT JOIN revista ON emprestimo.tipoItem = 'revista' AND emprestimo.revista = revista.id LEFT JOIN gibi ON emprestimo.tipoItem = 'gibi' AND emprestimo.gibi = gibi.id LEFT JOIN obra ON (emprestimo.tipoItem = 'livro' AND livro.obra = obra.id) OR (emprestimo.tipoItem = 'revista' AND revista.obra = obra.id) OR (emprestimo.tipoItem = 'gibi' AND gibi.obra = obra.id) WHERE emprestimo.leitor = ? AND ((LOWER(obra.nome) LIKE ? OR LOWER(obra.autor) LIKE ?)) AND emprestimo.dataEmprestimo BETWEEN ? AND ? ORDER BY emprestimo.dataEmprestimo DESC LIMIT ? OFFSET ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, cliente.getCpf());
+            stmt.setString(2, "%" + search.toLowerCase() + "%");
+            stmt.setString(3, "%" + search.toLowerCase() + "%");
+            stmt.setDate(4, Date.valueOf(fromDate));
+            stmt.setDate(5, Date.valueOf(toDate));
+            stmt.setInt(6, limit);
+            stmt.setInt(7, offset);
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
+
+            while (rs.next()) {
+                Emprestimo emprestimo = new Emprestimo();
+
+                emprestimo.setId(rs.getInt("id"));
+                emprestimo.setTipoItem(rs.getString("tipoItem"));
+                emprestimo.setItem(this.getItemFromEmprestimo(emprestimo));
+                emprestimo.setLeitor(cliente);
+                emprestimo.setDataEmprestimo(rs.getDate("dataEmprestimo").toLocalDate());
+                emprestimo.setDataDevolucao(rs.getDate("dataDevolucao").toLocalDate());
+                emprestimo.setQtdRenovacoes(rs.getInt("qtdRenovacoes"));
+                emprestimo.setDevolvido(rs.getBoolean("devolvido"));
+                emprestimo.setAtrasado(rs.getBoolean("atrasado"));
+                emprestimo.setMultado(rs.getBoolean("multado"));
+
+                if (rs.wasNull()) {
+                    emprestimo.setValorMulta(null);
+                    emprestimo.setPago(null);
+                } else {
+                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
+                    emprestimo.setPago(rs.getBoolean("pago"));
+                }
+
+                emprestimos.add(emprestimo);
+            }
+
+            return emprestimos;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao obter: " + e.getMessage());
+            return null;
+        }
+    }
+
 }

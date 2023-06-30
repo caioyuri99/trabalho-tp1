@@ -204,6 +204,30 @@ public class Cliente extends Usuario implements AcessoSistema {
         }
     }
 
+    public ArrayList<Emprestimo> getHistoricoEmprestimos(int limit, int offset) {
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        try {
+            return dao.getHistoricoEmprestimos(this, limit, offset);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        }
+    }
+
+    public ArrayList<Emprestimo> filtraHistoricoEmprestimos(String search, LocalDate dateFrom, LocalDate dateTo, int limit, int offset) {
+        EmprestimoDAO dao = new EmprestimoDAO();
+
+        try {
+            return dao.filtraHistoricoEmprestimos(this, search, dateFrom, dateTo, limit, offset);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        }
+    }
+
     public static ArrayList<Cliente> getClientesByCpfLike(String cpf, int limit, int offset) {
         ClienteDAO dao = new ClienteDAO();
 
