@@ -231,6 +231,7 @@ public class GerenciarObra implements Initializable {
                     loader.setControllerFactory(param -> {
                         if (param == AtualizarLivro.class) {
                             AtualizarLivro controller = new AtualizarLivro();
+                            controller.setObra(obra);
                             controller.setLivro((Livro) item);
                             return controller;
                         } else {
@@ -257,6 +258,7 @@ public class GerenciarObra implements Initializable {
                     loader.setControllerFactory(param -> {
                         if (param == AtualizarRevista.class) {
                             AtualizarRevista controller = new AtualizarRevista();
+                            controller.setObra(obra);
                             controller.setRevista((Revista) item);
                             return controller;
                         } else {
@@ -283,6 +285,7 @@ public class GerenciarObra implements Initializable {
                     loader.setControllerFactory(param -> {
                         if (param == AtualizarGibi.class) {
                             AtualizarGibi controller = new AtualizarGibi();
+                            controller.setObra(obra);
                             controller.setGibi((Gibi) item);
                             return controller;
                         } else {
@@ -433,7 +436,7 @@ public class GerenciarObra implements Initializable {
 
     private void refreshTable() {
         ArrayList<Item> itens = obra.obterItens();
-        tableItems.getItems().addAll(itens);
+        tableItems.getItems().setAll(itens);
     }
 
     private void refreshObra() {

@@ -41,7 +41,8 @@ public class AtualizarLivro implements Initializable {
         cbbTipoCapa.getItems().addAll("Dura", "Brochura", "Espiral", "Flexível", "Canoa");
 
         cbbCondicao.setValue(
-                livro.getCondicao().substring(0, 1).toUpperCase() + livro.getCondicao().substring(1).toLowerCase());
+                livro.getCondicao().substring(0, 1).toUpperCase() +
+                        livro.getCondicao().substring(1).toLowerCase());
 
         cbbTipoCapa.setValue(
                 livro.getTipoCapa().substring(0, 1).toUpperCase() + livro.getTipoCapa().substring(1).toLowerCase());
@@ -67,6 +68,11 @@ public class AtualizarLivro implements Initializable {
         }
         String editora = txtEditora.getText();
 
+        System.out.println(condicao);
+        System.out.println(tipoCapa);
+        System.out.println(edicao);
+        System.out.println(editora);
+
         if (editora.isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
@@ -87,7 +93,10 @@ public class AtualizarLivro implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            livro = new Livro(editora, edicao, condicao, tipoCapa, obra);
+            livro.setCondicao(condicao);
+            livro.setTipoCapa(tipoCapa);
+            livro.setEdicao(edicao);
+            livro.setEditora(editora);
 
             try {
                 obra.atualizarItem(livro);

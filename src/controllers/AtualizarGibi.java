@@ -89,7 +89,11 @@ public class AtualizarGibi implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            gibi = new Gibi(editora, edicao, condicao, obra, tipo, categoria);
+            gibi.setCondicao(condicao);
+            gibi.setCategoria(categoria);
+            gibi.setEdicao(edicao);
+            gibi.setEditora(editora);
+            gibi.setTipo(tipo);
 
             try {
                 obra.atualizarItem(gibi);
