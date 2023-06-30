@@ -109,14 +109,15 @@ public class Catalogo implements Initializable {
             }
         }
 
+        // TODO: colocar uma espécie de placehoder no bookcontainer
         bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
 
-        ArrayList<Estante> filterEstanteOpts = new ArrayList<Estante>();
+        ArrayList<Estante> filterEstanteOpts = Estante.getListaEstantes();
         Estante todos = new Estante();
         todos.setId(0);
         todos.setCategoria("Todos");
         filterEstante.getItems().add(todos);
-        filterEstanteOpts.addAll(Estante.getListaEstantes());
+        filterEstante.getItems().addAll(filterEstanteOpts);
 
         filterCondicao.getItems().addAll("Todos", "Novo", "Semi-novo", "Usado", "Restaurado");
         filterDisponibilidade.getItems().addAll("Todos", "Disponível", "Indisponível");
@@ -126,6 +127,8 @@ public class Catalogo implements Initializable {
     @FXML
     void exitLogin(MouseEvent event) throws IOException {
         if (Session.isLogged()) {
+            // TODO: se o usuário tiver itens no carrinho, mostrar uma mensagem avisando que
+            // o carrinho será esvaziado e perguntando se ele tem certeza que quer sair
             Session.logout();
         }
 
@@ -183,14 +186,18 @@ public class Catalogo implements Initializable {
 
         // filtros obra
         String tipo = filterTipo.getValue();
-        tipo = (tipo == "Todos" || tipo == null) ? "" : tipo;
+        tipo = (tipo == "Todos" || tipo == null) ? "" : tipo.toLowerCase();
         Estante estante = filterEstante.getValue();
         estante = (estante == null || estante.getId() == 0) ? null : estante;
         LocalDate fromData = filterFromDataPubli.getValue();
         LocalDate toData = filterToDataPubli.getValue();
         String genero = filterGenero.getText();
-        String disponibilidade = filterDisponibilidade.getValue();
-        disponibilidade = (disponibilidade == "Todos" || disponibilidade == null) ? "" : disponibilidade;
+        Boolean disponibilidade;
+        if (filterDisponibilidade.getValue() == "Todos" || filterDisponibilidade.getValue() == null) {
+            disponibilidade = null;
+        } else {
+            disponibilidade = (filterDisponibilidade.getValue() == "Disponível") ? true : false;
+        }
 
         // filtros item
         String condicao = filterCondicao.getValue();
