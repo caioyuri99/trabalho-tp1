@@ -76,7 +76,17 @@ public class DadosCliente implements Initializable {
     }
 
     @FXML
-    void verHistoricoPedidos(ActionEvent event) {
-        // FIXME: Implementar
+    void verHistoricoPedidos(ActionEvent event) throws IOException {
+        try {
+            Session.verificaEmprestimos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        root = FXMLLoader.load(getClass().getResource("../telas/HistoricoEmprestimos.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Histórico de Empréstimos");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
