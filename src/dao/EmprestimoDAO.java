@@ -161,12 +161,14 @@ public class EmprestimoDAO {
             emprestimo.setAtrasado(rs.getBoolean("atrasado"));
             emprestimo.setMultado(rs.getBoolean("multado"));
 
+            emprestimo.setValorMulta(rs.getDouble("valorMulta"));
             if (rs.wasNull()) {
                 emprestimo.setValorMulta(null);
+            }
+
+            emprestimo.setPago(rs.getBoolean("pago"));
+            if (rs.wasNull()) {
                 emprestimo.setPago(null);
-            } else {
-                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
-                emprestimo.setPago(rs.getBoolean("pago"));
             }
 
             return emprestimo;
@@ -257,12 +259,14 @@ public class EmprestimoDAO {
                 emprestimo.setAtrasado(rs.getBoolean("atrasado"));
                 emprestimo.setMultado(rs.getBoolean("multado"));
 
+                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
                 if (rs.wasNull()) {
                     emprestimo.setValorMulta(null);
+                }
+
+                emprestimo.setPago(rs.getBoolean("pago"));
+                if (rs.wasNull()) {
                     emprestimo.setPago(null);
-                } else {
-                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
-                    emprestimo.setPago(rs.getBoolean("pago"));
                 }
 
                 emprestimos.add(emprestimo);
@@ -387,12 +391,13 @@ public class EmprestimoDAO {
                 emprestimo.setAtrasado(rs.getBoolean("atrasado"));
                 emprestimo.setMultado(rs.getBoolean("multado"));
 
+                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
                 if (rs.wasNull()) {
                     emprestimo.setValorMulta(null);
+                }
+                emprestimo.setPago(rs.getBoolean("pago"));
+                if (rs.wasNull()) {
                     emprestimo.setPago(null);
-                } else {
-                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
-                    emprestimo.setPago(rs.getBoolean("pago"));
                 }
 
                 emprestimos.add(emprestimo);
@@ -402,7 +407,7 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             System.out.println("Erro ao obter: " + e.getMessage());
-            return null;
+            return new ArrayList<Emprestimo>();
         }
     }
 
@@ -438,12 +443,14 @@ public class EmprestimoDAO {
                 emprestimo.setAtrasado(rs.getBoolean("atrasado"));
                 emprestimo.setMultado(rs.getBoolean("multado"));
 
+                emprestimo.setValorMulta(rs.getDouble("valorMulta"));
                 if (rs.wasNull()) {
                     emprestimo.setValorMulta(null);
+                }
+
+                emprestimo.setPago(rs.getBoolean("pago"));
+                if (rs.wasNull()) {
                     emprestimo.setPago(null);
-                } else {
-                    emprestimo.setValorMulta(rs.getDouble("valorMulta"));
-                    emprestimo.setPago(rs.getBoolean("pago"));
                 }
 
                 emprestimos.add(emprestimo);
