@@ -127,6 +127,8 @@ public class DetalhesObra implements Initializable {
 
         tableItems.getItems().addAll(itens);
 
+        // TODO: colocar um aviso para o usuário logar caso tente adicionar um livro ao
+        // carrinho
         if (Session.isLogged()) {
             tableItems.setOnMouseClicked(event -> {
                 Item item = tableItems.getSelectionModel().getSelectedItem();
