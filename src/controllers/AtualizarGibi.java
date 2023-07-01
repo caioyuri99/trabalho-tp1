@@ -27,9 +27,6 @@ public class AtualizarGibi implements Initializable {
     private ComboBox<String> cbbCondicao;
 
     @FXML
-    private TextField txtCategoria;
-
-    @FXML
     private TextField txtEdicao;
 
     @FXML
@@ -45,7 +42,6 @@ public class AtualizarGibi implements Initializable {
         cbbCondicao.setValue(
                 gibi.getCondicao().substring(0, 1).toUpperCase() + gibi.getCondicao().substring(1).toLowerCase());
 
-        txtCategoria.setText(gibi.getCategoria());
         txtEdicao.setText(String.valueOf(gibi.getEdicao()));
         txtEditora.setText(gibi.getEditora());
         txtTipo.setText(gibi.getTipo());
@@ -54,7 +50,6 @@ public class AtualizarGibi implements Initializable {
     @FXML
     void updateGibi(ActionEvent event) {
         String condicao = cbbCondicao.getValue();
-        String categoria = txtCategoria.getText();
         int edicao;
         try {
             edicao = Integer.parseInt(txtEdicao.getText());
@@ -69,7 +64,7 @@ public class AtualizarGibi implements Initializable {
         String editora = txtEditora.getText();
         String tipo = txtTipo.getText();
 
-        if (categoria.isEmpty() || editora.isEmpty() || tipo.isEmpty()) {
+        if (editora.isEmpty() || tipo.isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao atualizar gibi");
@@ -90,7 +85,6 @@ public class AtualizarGibi implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
             gibi.setCondicao(condicao);
-            gibi.setCategoria(categoria);
             gibi.setEdicao(edicao);
             gibi.setEditora(editora);
             gibi.setTipo(tipo);

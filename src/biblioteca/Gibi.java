@@ -5,22 +5,19 @@ import dao.GibiDAO;
 public class Gibi extends Item {
     // ATRIBUTOS
     private String tipo;
-    private String categoria;
 
     // CONSTRUTORES
     public Gibi() {
     };
 
-    public Gibi(String editora, int edicao, String condicao, String tipo, String categoria) {
+    public Gibi(String editora, int edicao, String condicao, String tipo) {
         super(editora, edicao, condicao);
         this.tipo = tipo;
-        this.categoria = categoria;
     }
 
-    public Gibi(String editora, int edicao, String condicao, Obra obra, String tipo, String categoria) {
+    public Gibi(String editora, int edicao, String condicao, Obra obra, String tipo) {
         super(editora, edicao, condicao, obra);
         this.tipo = tipo;
-        this.categoria = categoria;
     }
 
     public Gibi(
@@ -29,11 +26,9 @@ public class Gibi extends Item {
             String condicao,
             boolean disponivel,
             Obra obra,
-            String tipo,
-            String categoria) {
+            String tipo) {
         super(editora, edicao, condicao, disponivel, obra);
         this.tipo = tipo;
-        this.categoria = categoria;
     }
 
     // MÉTODOS
@@ -94,14 +89,6 @@ public class Gibi extends Item {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
     }
 
 }

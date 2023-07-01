@@ -122,7 +122,6 @@ public class EmprestimoDAO {
 
                 case "gibi":
                     ((Gibi) item).setTipo(rs.getString(tipoItem + ".tipo"));
-                    ((Gibi) item).setCategoria(rs.getString(tipoItem + ".categoria"));
             }
 
             return item;

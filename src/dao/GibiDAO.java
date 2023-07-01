@@ -24,7 +24,7 @@ public class GibiDAO {
 
     // MÉTODOS
     public void insert(Gibi gibi) throws Exception {
-        String query = "INSERT INTO gibi (editora, edicao, condicao, obra, tipo, categoria) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO gibi (editora, edicao, condicao, obra, tipo) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -33,7 +33,6 @@ public class GibiDAO {
             stmt.setString(3, gibi.getCondicao());
             stmt.setInt(4, gibi.getObra().getId());
             stmt.setString(5, gibi.getTipo());
-            stmt.setString(6, gibi.getCategoria());
             stmt.execute();
 
             System.out.println("Gibi cadastrado com sucesso!");
@@ -44,7 +43,7 @@ public class GibiDAO {
     }
 
     public void update(Gibi gibi) throws Exception {
-        String query = "UPDATE gibi SET editora = ?, edicao = ?, condicao = ?, obra = ?, tipo = ?, categoria = ? WHERE id = ?";
+        String query = "UPDATE gibi SET editora = ?, edicao = ?, condicao = ?, obra = ?, tipo = ? WHERE id = ?";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -53,7 +52,6 @@ public class GibiDAO {
             stmt.setString(3, gibi.getCondicao());
             stmt.setInt(4, gibi.getObra().getId());
             stmt.setString(5, gibi.getTipo());
-            stmt.setString(6, gibi.getCategoria());
             stmt.setInt(7, gibi.getId());
             stmt.execute();
 
@@ -87,7 +85,6 @@ public class GibiDAO {
             gibi.setDisponivel(rs.getBoolean("disponivel"));
             gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
             gibi.setTipo(rs.getString("tipo"));
-            gibi.setCategoria(rs.getString("categoria"));
 
             return gibi;
 
@@ -115,7 +112,6 @@ public class GibiDAO {
                 gibi.setCondicao(rs.getString("condicao"));
                 gibi.setDisponivel(rs.getBoolean("disponivel"));
                 gibi.setTipo(rs.getString("tipo"));
-                gibi.setCategoria(rs.getString("categoria"));
                 gibi.setObra(obra);
 
                 items.add(gibi);
@@ -178,7 +174,6 @@ public class GibiDAO {
                 gibi.setCondicao(rs.getString("condicao"));
                 gibi.setDisponivel(rs.getBoolean("disponivel"));
                 gibi.setTipo(rs.getString("tipo"));
-                gibi.setCategoria(rs.getString("categoria"));
                 gibi.setObra(new ObraDAO().getObra(rs.getInt("obra")));
 
                 items.add(gibi);

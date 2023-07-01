@@ -26,9 +26,6 @@ public class CadastroGibi implements Initializable {
     private ComboBox<String> cbbCondicao;
 
     @FXML
-    private TextField txtCategoria;
-
-    @FXML
     private TextField txtEdicao;
 
     @FXML
@@ -45,7 +42,6 @@ public class CadastroGibi implements Initializable {
     @FXML
     void addGibi(ActionEvent event) {
         String condicao = cbbCondicao.getValue();
-        String categoria = txtCategoria.getText();
         int edicao;
         try {
             edicao = Integer.parseInt(txtEdicao.getText());
@@ -60,7 +56,7 @@ public class CadastroGibi implements Initializable {
         String editora = txtEditora.getText();
         String tipo = txtTipo.getText();
 
-        if (condicao == null || categoria == null || editora == null || tipo == null) {
+        if (condicao == null || editora.isEmpty() || tipo.isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao cadastrar gibi");
@@ -80,7 +76,7 @@ public class CadastroGibi implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Gibi gibi = new Gibi(editora, edicao, condicao, obra, tipo, categoria);
+            Gibi gibi = new Gibi(editora, edicao, condicao, obra, tipo);
 
             try {
                 obra.adicionarItem(gibi);
