@@ -114,13 +114,10 @@ public class DetalhesObra implements Initializable {
 
             case "gibi":
                 TableColumn<Item, String> clmTipo = new TableColumn<>("Tipo");
-                TableColumn<Item, String> clmCategoriaGibi = new TableColumn<>("categoria");
 
                 clmTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-                clmCategoriaGibi.setCellValueFactory(new PropertyValueFactory<>("categoria"));
 
                 tableItems.getColumns().add(clmTipo);
-                tableItems.getColumns().add(clmCategoriaGibi);
 
                 break;
         }
