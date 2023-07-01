@@ -126,7 +126,14 @@ public class EditarObra implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Obra obra = new Obra(nome, tipo, dataPubli, autor, genero, sinopse, urlCapa);
+            obra.setNome(nome);
+            obra.setTipo(tipo);
+            obra.setEstante(estante);
+            obra.setDataPublicacao(dataPubli);
+            obra.setAutor(autor);
+            obra.setGenero(genero);
+            obra.setSinopse(sinopse);
+            obra.setCapaUrl(urlCapa);
 
             try {
                 estante.atualizarObra(obra);
