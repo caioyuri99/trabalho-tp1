@@ -63,9 +63,9 @@ public class LivroItemCarrinho implements Initializable {
         alert.setTitle("Remover item");
         alert.setHeaderText("Remover item do carrinho");
         alert.setContentText("Tem certeza que deseja remover este item do carrinho?");
+
         ButtonType confirmButton = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButton = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
-
         alert.getButtonTypes().setAll(confirmButton, cancelButton);
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -74,19 +74,20 @@ public class LivroItemCarrinho implements Initializable {
             cliente.getCarrinho().remove(livro);
             VBox parent = (VBox) container.getParent();
             parent.getChildren().remove(container);
+
             if (cliente.getCarrinho().size() == 0) {
                 Label lblPlaceHolder = (Label) parent.lookup("#lblPlaceHoder");
-                lblPlaceHolder.setVisible(true);
                 lblPlaceHolder.setManaged(true);
+                lblPlaceHolder.setVisible(true);
             }
 
-            double valor = ((Cliente) Session.getLoggedUser()).getCarrinho().size() * 0.8;
+            double valor = cliente.getCarrinho().size() * 0.8;
             txtMulta.setText(String.format("R$ %.2f", valor));
         }
     }
 
-    public void setLivro(Item livro) {
-        this.livro = (Livro) livro;
+    public void setItem(Item item) {
+        this.livro = (Livro) item;
     }
 
     public void setTxtMulta(Text txtMulta) {
