@@ -58,7 +58,7 @@ public class ObraDAO {
             stmt.setString(6, obra.getSinopse());
             stmt.setString(7, obra.getCapaUrl());
             stmt.setInt(8, estante.getId());
-            stmt.setInt(8, obra.getId());
+            stmt.setInt(9, obra.getId());
             stmt.execute();
 
             System.out.println("Obra atualizada com sucesso!");
