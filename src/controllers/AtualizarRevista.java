@@ -33,6 +33,9 @@ public class AtualizarRevista implements Initializable {
     private TextField txtEdicao;
 
     @FXML
+    private TextField txtNumero;
+
+    @FXML
     private TextField txtEditora;
 
     @Override
@@ -44,6 +47,7 @@ public class AtualizarRevista implements Initializable {
 
         txtCategoria.setText(revista.getCategoria());
         txtEdicao.setText(String.valueOf(revista.getEdicao()));
+        txtNumero.setText(String.valueOf(revista.getNumero()));
         txtEditora.setText(revista.getEditora());
     }
 
@@ -59,6 +63,17 @@ public class AtualizarRevista implements Initializable {
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao atualizar revista");
             alert.setContentText("Edição inválida");
+            alert.showAndWait();
+            return;
+        }
+        int numero;
+        try {
+            numero = Integer.parseInt(txtNumero.getText());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao atualizar revista");
+            alert.setContentText("Número inválido");
             alert.showAndWait();
             return;
         }
@@ -84,12 +99,13 @@ public class AtualizarRevista implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            revista.setCondicao(condicao);
-            revista.setCategoria(categoria);
-            revista.setEdicao(edicao);
-            revista.setEditora(editora);
-
             try {
+                revista.setCondicao(condicao);
+                revista.setCategoria(categoria);
+                revista.setEdicao(edicao);
+                revista.setNumero(numero);
+                revista.setEditora(editora);
+
                 obra.atualizarItem(revista);
             } catch (Exception e) {
                 Alert alertErro = new Alert(AlertType.ERROR);

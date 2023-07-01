@@ -5,24 +5,28 @@ import dao.RevistaDAO;
 public class Revista extends Item {
     // ATRIBUTOS
     private String categoria;
+    private int numero;
 
     // CONSTRUTORES
     public Revista() {
     }
 
-    public Revista(String editora, int edicao, String condicao, String categoria) {
+    public Revista(String editora, int edicao, String condicao, String categoria, int numero) {
         super(editora, edicao, condicao);
         this.categoria = categoria;
+        this.numero = numero;
     }
 
-    public Revista(String editora, int edicao, String condicao, Obra obra, String categoria) {
+    public Revista(String editora, int edicao, String condicao, Obra obra, String categoria, int numero) {
         super(editora, edicao, condicao, obra);
         this.categoria = categoria;
+        this.numero = numero;
     }
 
-    public Revista(String editora, int edicao, String condicao, boolean disponivel, Obra obra, String categoria) {
+    public Revista(String editora, int edicao, String condicao, boolean disponivel, Obra obra, String categoria, int numero) {
         super(editora, edicao, condicao, disponivel, obra);
         this.categoria = categoria;
+        this.numero = numero;
     }
 
     // MÉTODOS
@@ -78,10 +82,22 @@ public class Revista extends Item {
 
     // GETTERS & SETTERS
     public String getCategoria() {
-        return categoria;
+        return this.categoria;
     }
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public int getNumero() {
+        return this.numero;
+    }
+
+    public void setNumero(int numero) throws Exception {
+        if (numero <= 0) {
+            throw new Exception("Número inválido");
+        }
+
+        this.numero = numero;
     }
 }

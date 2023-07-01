@@ -109,7 +109,12 @@ public class DetalhesObra implements Initializable {
             case "revista":
                 TableColumn<Item, String> clmCategoria = new TableColumn<>("Categoria");
                 clmCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+
+                TableColumn<Item, Integer> clmNumero = new TableColumn<>("Número");
+                clmNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+
                 tableItems.getColumns().add(clmCategoria);
+                tableItems.getColumns().add(3, clmNumero);
                 break;
 
             case "gibi":

@@ -24,15 +24,16 @@ public class RevistaDAO {
 
     // METODOS
     public void insert(Revista revista) throws Exception {
-        String query = "INSERT INTO revista (editora, edicao, condicao, obra, categoria) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO revista (editora, edicao, numero, condicao, obra, categoria) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
             stmt.setString(1, revista.getEditora());
             stmt.setInt(2, revista.getEdicao());
-            stmt.setString(3, revista.getCondicao());
-            stmt.setInt(4, revista.getObra().getId());
-            stmt.setString(5, revista.getCategoria());
+            stmt.setInt(3, revista.getNumero());
+            stmt.setString(4, revista.getCondicao());
+            stmt.setInt(5, revista.getObra().getId());
+            stmt.setString(6, revista.getCategoria());
             stmt.execute();
 
             System.out.println("Revista cadastrada com sucesso!");
@@ -43,16 +44,17 @@ public class RevistaDAO {
     }
 
     public void update(Revista revista) throws Exception {
-        String query = "UPDATE revista SET editora = ?, edicao = ?, condicao = ?, obra = ?, categoria = ? WHERE id = ?";
+        String query = "UPDATE revista SET editora = ?, edicao = ?, numero = ?, condicao = ?, obra = ?, categoria = ? WHERE id = ?";
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
             stmt.setString(1, revista.getEditora());
             stmt.setInt(2, revista.getEdicao());
-            stmt.setString(3, revista.getCondicao());
-            stmt.setInt(4, revista.getObra().getId());
-            stmt.setString(5, revista.getCategoria());
-            stmt.setInt(6, revista.getId());
+            stmt.setInt(3, revista.getNumero());
+            stmt.setString(4, revista.getCondicao());
+            stmt.setInt(5, revista.getObra().getId());
+            stmt.setString(6, revista.getCategoria());
+            stmt.setInt(7, revista.getId());
             stmt.execute();
 
             System.out.println("Revista atualizada com sucesso!");

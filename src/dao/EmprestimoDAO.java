@@ -118,6 +118,7 @@ public class EmprestimoDAO {
 
                 case "revista":
                     ((Revista) item).setCategoria(rs.getString(tipoItem + ".categoria"));
+                    ((Revista) item).setNumero(rs.getInt(tipoItem + ".numero"));
                     break;
 
                 case "gibi":

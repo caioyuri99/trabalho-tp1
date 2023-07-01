@@ -100,22 +100,26 @@ public class GerenciarObra implements Initializable {
             case "livro":
                 TableColumn<Item, String> clmTipoCapa = new TableColumn<>("Tipo de Capa");
                 clmTipoCapa.setCellValueFactory(new PropertyValueFactory<>("tipoCapa"));
+
                 tableItems.getColumns().add(clmTipoCapa);
                 break;
 
             case "revista":
                 TableColumn<Item, String> clmCategoria = new TableColumn<>("Categoria");
                 clmCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+
+                TableColumn<Item, Integer> clmNumero = new TableColumn<>("Número");
+                clmNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+
                 tableItems.getColumns().add(clmCategoria);
+                tableItems.getColumns().add(3, clmNumero);
                 break;
 
             case "gibi":
                 TableColumn<Item, String> clmTipo = new TableColumn<>("Tipo");
-
                 clmTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 
                 tableItems.getColumns().add(clmTipo);
-
                 break;
         }
 

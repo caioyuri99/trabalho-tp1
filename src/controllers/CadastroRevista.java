@@ -32,6 +32,9 @@ public class CadastroRevista implements Initializable {
     private TextField txtEdicao;
 
     @FXML
+    private TextField txtNumero;
+
+    @FXML
     private TextField txtEditora;
 
     @Override
@@ -51,6 +54,17 @@ public class CadastroRevista implements Initializable {
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao cadastrar revista");
             alert.setContentText("Edição inválida");
+            alert.showAndWait();
+            return;
+        }
+        int numero;
+        try {
+            numero = Integer.parseInt(txtNumero.getText());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao cadastrar revista");
+            alert.setContentText("Número inválido");
             alert.showAndWait();
             return;
         }
@@ -76,7 +90,7 @@ public class CadastroRevista implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == btnConfirmar) {
-            Revista revista = new Revista(editora, edicao, condicao, obra, categoria);
+            Revista revista = new Revista(editora, edicao, condicao, obra, categoria, numero);
 
             try {
                 obra.adicionarItem(revista);
