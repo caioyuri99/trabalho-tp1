@@ -111,13 +111,10 @@ public class GerenciarObra implements Initializable {
 
             case "gibi":
                 TableColumn<Item, String> clmTipo = new TableColumn<>("Tipo");
-                TableColumn<Item, String> clmCategoriaGibi = new TableColumn<>("categoria");
 
                 clmTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-                clmCategoriaGibi.setCellValueFactory(new PropertyValueFactory<>("categoria"));
 
                 tableItems.getColumns().add(clmTipo);
-                tableItems.getColumns().add(clmCategoriaGibi);
 
                 break;
         }
@@ -312,7 +309,7 @@ public class GerenciarObra implements Initializable {
     @FXML
     void editObra(ActionEvent event) throws IOException {
         Stage editObra = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EditarObra.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/EditarObra.fxml"));
         loader.setControllerFactory(param -> {
             if (param == EditarObra.class) {
                 EditarObra controller = new EditarObra();
