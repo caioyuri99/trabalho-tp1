@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import assets.fxmlComponents.controllers.GibiItemCarrinho;
 import assets.fxmlComponents.controllers.LivroItemCarrinho;
 import biblioteca.Cliente;
 import biblioteca.Item;
@@ -57,7 +58,7 @@ public class Carrinho implements Initializable {
                             loader.setControllerFactory(param -> {
                                 if (param == LivroItemCarrinho.class) {
                                     LivroItemCarrinho controller = new LivroItemCarrinho();
-                                    controller.setLivro(item);
+                                    controller.setItem(item);
                                     controller.setTxtMulta(txtMulta);
                                     return controller;
                                 } else {
@@ -87,16 +88,28 @@ public class Carrinho implements Initializable {
                         // }
                         break;
                     case "Gibi":
-                        // TODO: colocar gibis no banco de dados para implementar
-                        // try {
-                        // FXMLLoader loader = new
-                        // FXMLLoader(getClass().getResource("/assets/fxmlComponents/GibiItemCarrinho.fxml"));
-                        // itemContainer.getChildren().add(loader.load());
-                        // GibiItemCarrinho gibiItemCarrinho = loader.getController();
-                        // gibiItemCarrinho.setGibi(item);
-                        // } catch (Exception e) {
-                        // e.printStackTrace();
-                        // }
+                        try {
+                            FXMLLoader loader = new FXMLLoader(
+                                    getClass().getResource("/assets/fxmlComponents/GibiItemCarrinho.fxml"));
+                            loader.setControllerFactory(param -> {
+                                if (param == GibiItemCarrinho.class) {
+                                    GibiItemCarrinho controller = new GibiItemCarrinho();
+                                    controller.setItem(item);
+                                    controller.setTxtMulta(txtMulta);
+                                    return controller;
+                                } else {
+                                    try {
+                                        return param.getDeclaredConstructor().newInstance();
+                                    } catch (Exception e) {
+                                        throw new RuntimeException("Erro ao criar o controlador", e);
+                                    }
+                                }
+                            });
+                            Parent content = loader.load();
+                            itemContainer.getChildren().add(content);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     default:
                         break;
