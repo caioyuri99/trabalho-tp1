@@ -111,6 +111,7 @@ public class RevistaDAO {
                 revista.setId(rs.getInt("id"));
                 revista.setEditora(rs.getString("editora"));
                 revista.setEdicao(rs.getInt("edicao"));
+                revista.setNumero(rs.getInt("numero"));
                 revista.setCondicao(rs.getString("condicao"));
                 revista.setDisponivel(rs.getBoolean("disponivel"));
                 revista.setObra(obra);
