@@ -162,7 +162,15 @@ public class Catalogo implements Initializable {
                 txtPageNumber.setText(newValue.replaceAll("[^\\d]", ""));
             }
 
+            if (newValue.isEmpty() || txtPageNumber.getText().isEmpty()) {
+                return;
+            }
+
             int currentNum = Integer.parseInt(txtPageNumber.getText());
+
+            if (currentNum - 1 != currentPage) {
+                return;
+            }
 
             if (currentNum >= totalPages) {
                 txtPageNumber.setText(String.valueOf(totalPages));
@@ -320,6 +328,26 @@ public class Catalogo implements Initializable {
     @FXML
     void goToPreviousPage(ActionEvent event) {
         currentPage--;
+
+        if (withFilter) {
+            this.goToPageWithFilters(currentPage);
+        } else {
+            this.goToPageBasicSearch(currentPage);
+        }
+
+        this.attPageCount();
+    }
+
+    @FXML
+    void goToPage(ActionEvent event) {
+        if (txtPageNumber.getText().isEmpty() || Integer.parseInt(txtPageNumber.getText()) < 1) {
+            txtPageNumber.setText("1");
+        }
+
+        if (Integer.parseInt(txtPageNumber.getText()) > totalPages)
+            txtPageNumber.setText(Integer.toString(totalPages));
+
+        currentPage = Integer.parseInt(txtPageNumber.getText()) - 1;
 
         if (withFilter) {
             this.goToPageWithFilters(currentPage);

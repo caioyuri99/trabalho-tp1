@@ -202,7 +202,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TextField fx:id="txtPageNumber" prefHeight="31.0" prefWidth="30.0" />
+            <TextField fx:id="txtPageNumber" onAction="#goToPage" prefHeight="31.0" prefWidth="30.0" />
             <Button fx:id="btnNextPage" disable="true" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="25.0" prefWidth="23.0" styleClass="arrow">
                <graphic>
                   <ImageView fitHeight="19.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
