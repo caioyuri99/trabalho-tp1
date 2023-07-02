@@ -205,7 +205,7 @@ public class ObraDAO {
             LocalDate toData, String genero, Boolean disponibilidade, String condicao, String editora, int limit,
             int offset) {
 
-        String query = queryBuilder(estante, fromData, toData, disponibilidade);
+        String query = queryBuilder(estante, fromData, toData, disponibilidade, false);
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
@@ -273,7 +273,107 @@ public class ObraDAO {
         }
     }
 
-    private String queryBuilder(Estante estante, LocalDate dateFrom, LocalDate dateTo, Boolean disponibilidade) {
+    public int getObrasCount() {
+        String query = "SELECT COUNT(*) FROM obra";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            return 0;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return 0;
+        }
+    }
+
+    public int getObrasCount(String search) {
+        String query = "SELECT COUNT(*) FROM obra WHERE LOWER(nome) LIKE ? OR LOWER(autor) LIKE ?";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setString(1, '%' + search.toLowerCase() + '%');
+            stmt.setString(2, '%' + search.toLowerCase() + '%');
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            return 0;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return 0;
+        }
+    }
+
+    public int getObrasCount(String search, String tipo, Estante estante, LocalDate fromData, LocalDate toData,
+            String genero, Boolean disponibilidade, String condicao, String editora) {
+
+        String query = queryBuilder(estante, fromData, toData, disponibilidade, true);
+        query = "SELECT COUNT(*) FROM (" + query + ") AS obras";
+
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            int c = 1;
+            stmt.setString(c, '%' + search.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + search.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + tipo.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + genero.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+            stmt.setString(c, '%' + editora.toLowerCase() + '%');
+            c++;
+
+            if (estante != null) {
+                stmt.setInt(c, estante.getId());
+                c++;
+            }
+
+            if (fromData != null && toData != null) {
+                stmt.setDate(c, Date.valueOf(fromData));
+                c++;
+                stmt.setDate(c, Date.valueOf(toData));
+                c++;
+            } else if (fromData != null) {
+                stmt.setDate(c, Date.valueOf(fromData));
+                c++;
+            } else if (toData != null) {
+                stmt.setDate(c, Date.valueOf(toData));
+                c++;
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            return 0;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar: " + e.getMessage());
+
+            return 0;
+        }
+    }
+
+    private String queryBuilder(Estante estante, LocalDate dateFrom, LocalDate dateTo, Boolean disponibilidade,
+            boolean count) {
         String query = "SELECT DISTINCT obra.* FROM obra LEFT JOIN livro ON obra.tipo = 'livro' AND livro.obra = obra.id LEFT JOIN revista ON obra.tipo = 'revista' AND revista.obra = obra.id LEFT JOIN gibi ON obra.tipo = 'gibi' AND gibi.obra = obra.id WHERE (LOWER(obra.nome) LIKE ? OR LOWER(obra.autor) LIKE ?) AND LOWER(obra.tipo) LIKE ? AND LOWER(obra.genero) LIKE ? AND (LOWER(livro.editora) LIKE ? OR LOWER(revista.editora) LIKE ? OR LOWER(gibi.editora) LIKE ?) ";
 
         if (estante != null) {
@@ -296,7 +396,9 @@ public class ObraDAO {
             }
         }
 
-        query += "ORDER BY obra.id ASC LIMIT ? OFFSET ?";
+        if (!count) {
+            query += "ORDER BY obra.id ASC LIMIT ? OFFSET ?";
+        }
 
         return query;
     }
