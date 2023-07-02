@@ -15,12 +15,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #38761d;" stylesheets="@../css/catalogoStyle.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Catalogo">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="700.0" style="-fx-background-color: #38761d;" stylesheets="@../css/catalogoStyle.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Catalogo">
    <children>
       <TextField fx:id="query" layoutX="175.0" layoutY="86.0" onAction="#search" prefHeight="26.0" prefWidth="391.0" promptText="Pesquisar..." />
       <AnchorPane prefHeight="52.0" prefWidth="700.0" style="-fx-background-color: #ffca2b;">
@@ -100,60 +104,122 @@
       </ImageView>
       <ScrollPane hbarPolicy="NEVER" layoutX="7.0" layoutY="123.0" prefHeight="342.0" prefWidth="693.0">
          <content>
-            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+            <VBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                    <panes>
-                      <TitledPane expanded="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Filtros">
-                        <content>
-                          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox layoutX="120.0" layoutY="14.0" spacing="5.0" style="-fx-border-color: black;">
+                  <HBox alignment="BOTTOM_LEFT" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="552.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblTotalResult" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="39.0" prefWidth="88.0" text="200 resultados encontrados" textFill="WHITE" wrapText="true" />
+                        <Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                          <panes>
+                            <TitledPane expanded="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Filtros">
+                              <content>
+                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                        <children>
-                                          <Label text="Data de Publicação:">
+                                          <VBox layoutX="120.0" layoutY="14.0" spacing="5.0" style="-fx-border-color: black;">
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                             <children>
+                                                <Label text="Data de Publicação:">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label contentDisplay="RIGHT" prefHeight="25.0" text="De: " textAlignment="JUSTIFY">
+                                                   <graphic>
+                                                      <DatePicker fx:id="filterFromDataPubli" />
+                                                   </graphic>
+                                                </Label>
+                                                <Label contentDisplay="RIGHT" text="Até:">
+                                                   <graphic>
+                                                      <DatePicker fx:id="filterToDataPubli" />
+                                                   </graphic>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <TextField fx:id="filterGenero" layoutX="341.0" layoutY="14.0" promptText="Gênero" />
+                                          <TextField fx:id="filterEditora" layoutX="341.0" layoutY="46.0" promptText="Editora" />
+                                          <Button alignment="CENTER" layoutX="191.0" layoutY="112.0" mnemonicParsing="false" onAction="#queryWithFilters" prefHeight="25.0" prefWidth="109.0" text="FILTRAR" textAlignment="CENTER">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
-                                          </Label>
-                                          <Label contentDisplay="RIGHT" prefHeight="25.0" text="De: " textAlignment="JUSTIFY">
-                                             <graphic>
-                                                <DatePicker fx:id="filterFromDataPubli" />
-                                             </graphic>
-                                          </Label>
-                                          <Label contentDisplay="RIGHT" text="Até:">
-                                             <graphic>
-                                                <DatePicker fx:id="filterToDataPubli" />
-                                             </graphic>
-                                          </Label>
+                                          </Button>
+                                          <ComboBox fx:id="filterTipo" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="94.0" promptText="Tipo" />
+                                          <ComboBox fx:id="filterCondicao" layoutX="14.0" layoutY="46.0" prefHeight="25.0" prefWidth="94.0" promptText="Condição" />
+                                          <ComboBox fx:id="filterEstante" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="94.0" promptText="Estante" />
+                                          <ComboBox fx:id="filterDisponibilidade" layoutX="341.0" layoutY="78.0" prefHeight="25.0" prefWidth="149.0" promptText="Disponibilidade" />
                                        </children>
-                                    </VBox>
-                                    <TextField fx:id="filterGenero" layoutX="341.0" layoutY="14.0" promptText="Gênero" />
-                                    <TextField fx:id="filterEditora" layoutX="341.0" layoutY="46.0" promptText="Editora" />
-                                    <Button alignment="CENTER" layoutX="191.0" layoutY="112.0" mnemonicParsing="false" onAction="#queryWithFilters" prefHeight="25.0" prefWidth="109.0" text="FILTRAR" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Button>
-                                    <ComboBox fx:id="filterTipo" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="94.0" promptText="Tipo" />
-                                    <ComboBox fx:id="filterCondicao" layoutX="14.0" layoutY="46.0" prefHeight="25.0" prefWidth="94.0" promptText="Condição" />
-                                    <ComboBox fx:id="filterEstante" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="94.0" promptText="Estante" />
-                                    <ComboBox fx:id="filterDisponibilidade" layoutX="341.0" layoutY="78.0" prefHeight="25.0" prefWidth="149.0" promptText="Disponibilidade" />
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </TitledPane>
-                    </panes>
-                  </Accordion>
-                  <ScrollPane fx:id="bookContainer" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="676.0" vbarPolicy="ALWAYS" />
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children>
+                  </HBox>
+                  <ScrollPane fx:id="bookContainer" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="296.0" prefWidth="676.0">
+                     <content>
+                        <VBox prefWidth="653.0">
+                           <children>
+                              <GridPane fx:id="bookGrid" hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </content></ScrollPane>
                </children>
             </VBox>
          </content>
       </ScrollPane>
+      <HBox alignment="CENTER" layoutX="300.0" layoutY="474.0" spacing="10.0">
+         <children>
+            <Button fx:id="btnPreviousPage" disable="true" mnemonicParsing="false" onAction="#goToPreviousPage" prefHeight="25.0" prefWidth="23.0" styleClass="arrow">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imagens/arrow-left.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <TextField fx:id="txtPageNumber" prefHeight="31.0" prefWidth="30.0" />
+            <Button fx:id="btnNextPage" disable="true" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="25.0" prefWidth="23.0" styleClass="arrow">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imagens/arrow-right.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+      <Label fx:id="lblPageCount" alignment="BOTTOM_LEFT" layoutX="194.0" layoutY="481.0" maxHeight="1.7976931348623157E308" prefHeight="17.0" prefWidth="94.0" text="Página 1 de 20" textFill="WHITE" />
    </children>
 </AnchorPane>

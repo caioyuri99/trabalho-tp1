@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
@@ -28,6 +29,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,8 +38,23 @@ import session.Session;
 
 public class Catalogo implements Initializable {
     // TODO: implementar a paginação
+    // TODO: trocar os hiperlinks por labels formatadas como links
     private Parent root;
     private Stage stage;
+    private int currentPage = 0;
+    private int totalPages = 0;
+
+    // parâmetros de pesquisa
+    private boolean withFilter = false;
+    private String lastSearch = "";
+    private String lastTipo = "";
+    private Estante lastEstante = null;
+    private LocalDate lastFromData = null;
+    private LocalDate lastToData = null;
+    private String lastGenero = "";
+    private Boolean lastDisponibilidade = null;
+    private String lastCondicao = "";
+    private String lastEditora = "";
 
     @FXML
     private ScrollPane bookContainer;
@@ -89,6 +107,24 @@ public class Catalogo implements Initializable {
     @FXML
     private TextField query;
 
+    @FXML
+    private Button btnNextPage;
+
+    @FXML
+    private Button btnPreviousPage;
+
+    @FXML
+    private Label lblPageCount;
+
+    @FXML
+    private Label lblTotalResult;
+
+    @FXML
+    private TextField txtPageNumber;
+
+    @FXML
+    private GridPane bookGrid;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (!Session.isLogged()) {
@@ -110,7 +146,46 @@ public class Catalogo implements Initializable {
         }
 
         // TODO: colocar uma espécie de placehoder no bookcontainer
-        bookContainer.setContent(this.createBookGrid(5, Obra.getObras(20, 0)));
+        int total = Obra.getObrasCount();
+        lblTotalResult.setText(String.format("%d resultados encontrados", total));
+        totalPages = (int) Math.ceil(total / 20.0);
+        btnPreviousPage.setDisable(true);
+
+        if (totalPages == 1) {
+            btnNextPage.setDisable(true);
+        } else {
+            btnNextPage.setDisable(false);
+        }
+
+        txtPageNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtPageNumber.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            int currentNum = Integer.parseInt(txtPageNumber.getText());
+
+            if (currentNum >= totalPages) {
+                txtPageNumber.setText(String.valueOf(totalPages));
+                btnNextPage.setDisable(true);
+            } else {
+                btnNextPage.setDisable(false);
+            }
+
+            if (currentNum <= 1) {
+                txtPageNumber.setText("1");
+                btnPreviousPage.setDisable(true);
+            } else {
+                btnPreviousPage.setDisable(false);
+            }
+        });
+
+        attPageCount();
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        bookGrid.getRowConstraints().addAll(rowConstraints);
+
+        goToPageBasicSearch(currentPage);
 
         ArrayList<Estante> filterEstanteOpts = Estante.getListaEstantes();
         Estante todos = new Estante();
@@ -140,11 +215,18 @@ public class Catalogo implements Initializable {
 
     @FXML
     void search(ActionEvent event) {
-        String search = query.getText();
+        // TODO: fazer o botão de lupa ativar a busca
+        withFilter = false;
 
-        ArrayList<Obra> result = Obra.getObras(search, 20, 0);
+        lastSearch = query.getText();
 
-        bookContainer.setContent(this.createBookGrid((int) Math.ceil(result.size() / 4.0), result));
+        int total = Obra.getObrasCount(lastSearch);
+        lblTotalResult.setText(String.format("%d resultados encontrados", total));
+        totalPages = (int) Math.ceil(total / 20.0);
+
+        currentPage = 0;
+        attPageCount();
+        goToPageBasicSearch(currentPage);
     }
 
     @FXML
@@ -182,64 +264,92 @@ public class Catalogo implements Initializable {
 
     @FXML
     void queryWithFilters(ActionEvent event) {
-        String search = query.getText();
+        // TODO: fazer o botão de lupa ativar a busca
+        // TODO: fazer os campos de filtro ativarem a busca ao pressionar a tecla enter
+        withFilter = true;
+
+        lastSearch = query.getText();
 
         // filtros obra
-        String tipo = filterTipo.getValue();
-        tipo = (tipo == "Todos" || tipo == null) ? "" : tipo.toLowerCase();
-        Estante estante = filterEstante.getValue();
-        estante = (estante == null || estante.getId() == 0) ? null : estante;
-        LocalDate fromData = filterFromDataPubli.getValue();
-        LocalDate toData = filterToDataPubli.getValue();
-        String genero = filterGenero.getText();
-        Boolean disponibilidade;
+        lastTipo = filterTipo.getValue();
+        lastTipo = (lastTipo == "Todos" || lastTipo == null) ? "" : lastTipo.toLowerCase();
+
+        lastEstante = filterEstante.getValue();
+        lastEstante = (lastEstante == null || lastEstante.getId() == 0) ? null : lastEstante;
+
+        lastFromData = filterFromDataPubli.getValue();
+        lastToData = filterToDataPubli.getValue();
+
+        lastGenero = filterGenero.getText();
+
         if (filterDisponibilidade.getValue() == "Todos" || filterDisponibilidade.getValue() == null) {
-            disponibilidade = null;
+            lastDisponibilidade = null;
         } else {
-            disponibilidade = (filterDisponibilidade.getValue() == "Disponível") ? true : false;
+            lastDisponibilidade = (filterDisponibilidade.getValue() == "Disponível") ? true : false;
         }
 
         // filtros item
-        String condicao = filterCondicao.getValue();
-        condicao = (condicao == "Todos" || condicao == null) ? "" : condicao;
-        String editora = filterEditora.getText();
+        lastCondicao = filterCondicao.getValue();
+        lastCondicao = (lastCondicao == "Todos" || lastCondicao == null) ? "" : lastCondicao;
 
-        ArrayList<Obra> obras = Obra.getObras(search, tipo, estante, fromData, toData, genero, disponibilidade,
-                condicao, editora, 20, 0);
+        lastEditora = filterEditora.getText();
 
-        bookContainer.setContent(this.createBookGrid((int) Math.ceil(obras.size() / 4.0), obras));
+        int total = Obra.getObrasCount(lastSearch, lastTipo, lastEstante, lastFromData, lastToData, lastGenero,
+                lastDisponibilidade, lastCondicao, lastEditora);
+        lblTotalResult.setText(String.format("%d resultados encontrados", total));
+        totalPages = (int) Math.ceil(total / 20.0);
+
+        currentPage = 0;
+        attPageCount();
+        goToPageWithFilters(currentPage);
     }
 
-    public GridPane createBookGrid(int rows, ArrayList<Obra> obras) {
-        GridPane grid = new GridPane();
+    @FXML
+    void goToNextPage(ActionEvent event) {
+        currentPage++;
 
-        for (int i = 0; i < 4; i++) {
-            grid.addColumn(i);
+        if (withFilter) {
+            this.goToPageWithFilters(currentPage);
+        } else {
+            this.goToPageBasicSearch(currentPage);
         }
 
-        grid.setHgap(5);
-        grid.setVgap(5);
-        grid.setPrefWidth(652);
-        grid.setPrefHeight(rows * 211);
+        this.attPageCount();
+    }
+
+    @FXML
+    void goToPreviousPage(ActionEvent event) {
+        currentPage--;
+
+        if (withFilter) {
+            this.goToPageWithFilters(currentPage);
+        } else {
+            this.goToPageBasicSearch(currentPage);
+        }
+
+        this.attPageCount();
+    }
+
+    private void fillBookGrid(int rows, ArrayList<Obra> obras) {
+        bookGrid.getChildren().clear();
 
         for (int i = 0; i < rows; i++) {
-            grid.addRow(i);
             for (int j = 0; j < 4 && (i * 4 + j) < obras.size(); j++) {
                 int index = i * 4 + j;
-                grid.add(this.createBookCell(obras.get(index).getId(), obras.get(index).getCapaUrl(),
+                bookGrid.add(this.createBookCell(obras.get(index).getId(), obras.get(index).getCapaUrl(),
                         obras.get(index).getNome(),
                         obras.get(index).getAutor()), j, i);
             }
         }
-
-        return grid;
     }
 
-    public VBox createBookCell(int id, String urlImage, String title, String author) {
+    private VBox createBookCell(int id, String urlImage, String title, String author) {
         VBox cell = new VBox();
         cell.setAlignment(Pos.TOP_CENTER);
         cell.setMaxWidth(163);
+        cell.setPrefWidth(163);
         cell.setMaxHeight(211);
+        cell.setPrefHeight(211);
         cell.getStyleClass().add("custom-vbox");
 
         ImageView image = new ImageView(urlImage);
@@ -269,7 +379,7 @@ public class Catalogo implements Initializable {
         return cell;
     }
 
-    public void viewObraEvent(Event event, int id) throws IOException {
+    private void viewObraEvent(Event event, int id) throws IOException {
         Obra obra = Obra.getObra(id);
 
         Stage details = new Stage();
@@ -294,6 +404,20 @@ public class Catalogo implements Initializable {
         details.initModality(Modality.APPLICATION_MODAL);
         details.initOwner(bookContainer.getScene().getWindow());
         details.showAndWait();
+    }
+
+    private void attPageCount() {
+        lblPageCount.setText(String.format("Página %d de %d", currentPage + 1, totalPages));
+        txtPageNumber.textProperty().set(String.valueOf(currentPage + 1));
+    }
+
+    private void goToPageBasicSearch(int page) {
+        this.fillBookGrid(5, Obra.getObras(lastSearch, 20, 20 * page));
+    }
+
+    private void goToPageWithFilters(int page) {
+        this.fillBookGrid(5, Obra.getObras(lastSearch, lastTipo, lastEstante, lastFromData,
+                lastToData, lastGenero, lastDisponibilidade, lastCondicao, lastEditora, 20, 20 * page));
     }
 
 }
