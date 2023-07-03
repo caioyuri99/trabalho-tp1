@@ -36,6 +36,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao cadastrar cliente: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -67,6 +74,13 @@ public class ClienteDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -87,6 +101,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -102,6 +123,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao excluir: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -131,6 +159,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao pesquisar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -161,6 +196,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao pesquisar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -191,6 +233,13 @@ public class ClienteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao pesquisar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 }

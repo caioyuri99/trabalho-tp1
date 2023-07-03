@@ -19,9 +19,6 @@ import connection.ConnectionDB;
 import session.Session;
 
 public class EmprestimoDAO {
-    // TODO: ver a possibilidade de usar roolback para dar segurança ao banco de
-    // dados
-
     // ATRIBUTOS
     ConnectionDB connectionDB;
     Connection connection;
@@ -53,6 +50,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao registrar empréstimo: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -68,6 +72,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao pagar multa: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -131,6 +142,13 @@ public class EmprestimoDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -177,6 +195,13 @@ public class EmprestimoDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -196,6 +221,13 @@ public class EmprestimoDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return 0;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -215,6 +247,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao registrar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -232,6 +271,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao registrar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -276,6 +322,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao obter: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -293,6 +346,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao obter: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -311,6 +371,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao pagar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -362,6 +429,13 @@ public class EmprestimoDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -408,6 +482,13 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             System.out.println("Erro ao obter: " + e.getMessage());
             return new ArrayList<Emprestimo>();
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -461,6 +542,13 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             System.out.println("Erro ao obter: " + e.getMessage());
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 

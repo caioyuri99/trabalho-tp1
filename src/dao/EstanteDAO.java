@@ -32,6 +32,13 @@ public class EstanteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao cadastrar estante: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -48,6 +55,13 @@ public class EstanteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar estante: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -63,6 +77,13 @@ public class EstanteDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao deletar estante: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -91,6 +112,13 @@ public class EstanteDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -115,6 +143,13 @@ public class EstanteDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -139,6 +174,13 @@ public class EstanteDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return false;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 }

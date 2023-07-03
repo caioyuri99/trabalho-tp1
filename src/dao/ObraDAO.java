@@ -42,6 +42,13 @@ public class ObraDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao cadastrar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -100,6 +107,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -112,6 +126,13 @@ public class ObraDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao deletar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -130,6 +151,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return false;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -163,6 +191,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -198,6 +233,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -270,6 +312,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -290,6 +339,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return 0;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -312,6 +368,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return 0;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -369,6 +432,13 @@ public class ObraDAO {
             System.out.println("Erro ao pesquisar: " + e.getMessage());
 
             return 0;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 

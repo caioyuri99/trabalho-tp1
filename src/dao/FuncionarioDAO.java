@@ -38,6 +38,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao inserir funcionário: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -58,6 +65,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar funcionário: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -73,6 +87,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao deletar funcionário: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -105,6 +126,13 @@ public class FuncionarioDAO {
             System.out.println("Erro ao pesquisar: " + e);
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -135,6 +163,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao listar funcionários: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -166,6 +201,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao listar funcionários: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -197,6 +239,13 @@ public class FuncionarioDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao listar funcionários: " + e);
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 

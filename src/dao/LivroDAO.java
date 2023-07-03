@@ -39,6 +39,13 @@ public class LivroDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao cadastrar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -59,6 +66,13 @@ public class LivroDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -93,6 +107,13 @@ public class LivroDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -126,6 +147,13 @@ public class LivroDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -141,6 +169,13 @@ public class LivroDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao remover: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -157,6 +192,13 @@ public class LivroDAO {
 
         } catch (Exception e) {
             throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 
@@ -189,6 +231,13 @@ public class LivroDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
 
             return null;
+
+        } finally {
+            try {
+                this.connection.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
         }
     }
 }
