@@ -50,6 +50,7 @@ public class PedidosCliente implements Initializable {
                             ItemPedidos controller = new ItemPedidos();
                             controller.setEmprestimo(emprestimo);
                             controller.setItem(emprestimo.getItemEmprestado());
+                            controller.setTxtSaldoDevedor(txtSaldoDevedor);
                             return controller;
                         } else {
                             try {
@@ -66,7 +67,7 @@ public class PedidosCliente implements Initializable {
             }
         }
 
-        txtSaldoDevedor.setText("Saldo devedor: R$ " + cliente.getSaldoDevedor());
+        txtSaldoDevedor.setText(String.format("R$ %.2f", cliente.getSaldoDevedor()));
     }
 
 }
