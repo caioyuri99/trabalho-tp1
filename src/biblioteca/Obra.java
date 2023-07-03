@@ -136,6 +136,18 @@ public class Obra implements DatePattern {
         return dao.getObrasCount(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao, editora);
     }
 
+    public static ArrayList<Obra> getObras(String pesquisa, Estante estante, String tipo, int limit, int offset) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.searchCustomQuery(pesquisa, tipo, estante, null, null, "", null, "", "", limit, offset);
+    }
+
+    public static int getObrasCount(String pesquisa, Estante estante, String tipo) {
+        ObraDAO dao = new ObraDAO();
+
+        return dao.getObrasCount(pesquisa, tipo, estante, null, null, "", null, "", "");
+    }
+
     // GETTERS & SETTERS
 
     public int getId() {
