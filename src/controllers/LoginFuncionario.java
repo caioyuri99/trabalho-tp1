@@ -120,6 +120,7 @@ public class LoginFuncionario implements Initializable {
         this.root = FXMLLoader.load(getClass().getResource("../telas/TelaFuncionario.fxml"));
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         this.stage.setScene(new Scene(root));
+        this.stage.centerOnScreen();
         this.stage.show();
     }
 
