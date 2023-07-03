@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,8 +14,11 @@ import controllers.cellFactoryFormat.ItemDisponivelFactory;
 import exceptions.Confirmation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -23,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -129,17 +134,7 @@ public class DetalhesObra implements Initializable {
 
         tableItems.getItems().addAll(itens);
 
-        // TODO: colocar um aviso para o usuário logar caso tente adicionar um livro ao
-        // carrinho
         if (Session.isLogged()) {
-            tableItems.setOnMouseClicked(event -> {
-                Item item = tableItems.getSelectionModel().getSelectedItem();
-
-                if (item != null) {
-                    btnAdd.setDisable(false);
-                }
-            });
-
             try {
                 Session.verificaEmprestimos();
 
@@ -151,7 +146,46 @@ public class DetalhesObra implements Initializable {
 
     @FXML
     void addToCarrinho(ActionEvent event) {
+        if (!Session.isLogged()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Não logado");
+            alert.setContentText("Você precisa estar logado para adicionar itens ao carrinho.");
+
+            ButtonType btnLogin = new ButtonType("Login", ButtonData.OK_DONE);
+            ButtonType btnCancelar = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(btnLogin, btnCancelar);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == btnLogin) {
+                try {
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Stage owner = (Stage) stage.getOwner();
+                    Parent root = FXMLLoader.load(getClass().getResource("../telas/TelaInicial.fxml"));
+                    owner.setScene(new Scene(root));
+
+                    stage.close();
+                    owner.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return;
+        }
+
         Item item = tableItems.getSelectionModel().getSelectedItem();
+
+        if (item == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Nenhum item selecionado");
+            alert.setContentText("Você precisa selecionar um item para adicioná-lo ao carrinho.");
+
+            alert.showAndWait();
+            return;
+        }
 
         if (!item.isDisponivel()) {
             Alert alert = new Alert(AlertType.ERROR);
