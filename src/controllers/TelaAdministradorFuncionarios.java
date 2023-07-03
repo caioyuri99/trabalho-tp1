@@ -117,6 +117,42 @@ public class TelaAdministradorFuncionarios implements Initializable {
         clmNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 
         refreshTable();
+
+        txtCpf.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue == null || newValue.isEmpty()) {
+                    return;
+                }
+
+                if (newValue.length() > 14) {
+                    txtCpf.setText(oldValue);
+                    return;
+                }
+
+                // Remove caracteres não numéricos
+                String cpf = newValue.replaceAll("[^\\d]", "");
+
+                if (newValue.length() < oldValue.length()) {
+                    txtCpf.setText(newValue);
+                    return;
+                }
+
+                // Formata o CPF com pontos e traço
+                StringBuilder formattedCPF = new StringBuilder();
+                for (int i = 0; i < cpf.length(); i++) {
+                    formattedCPF.append(cpf.charAt(i));
+                    if ((i + 1) % 3 == 0 && i < 8) {
+                        formattedCPF.append(".");
+                    } else if ((i + 1) % 3 == 0 && i < 11) {
+                        formattedCPF.append("-");
+                    }
+                }
+
+                txtCpf.setText(formattedCPF.toString());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
     }
 
     @FXML
@@ -157,7 +193,9 @@ public class TelaAdministradorFuncionarios implements Initializable {
         btnCancelar.setOnAction(e -> disableFlow());
 
         btnSalvar.setOnAction(e -> {
-            String cpf = txtCpf.getText();
+            formatarCPF();
+
+            String cpf = txtCpf.getText().replaceAll("[^\\d]", "");
             String nome = txtNome.getText();
             String cargo = txtCargo.getText();
             LocalDate dataNasc = dateDataNasc.getValue();
@@ -168,6 +206,16 @@ public class TelaAdministradorFuncionarios implements Initializable {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Campos não preenchidos");
                 alert.setContentText("Preencha todos os campos");
+
+                alert.showAndWait();
+                return;
+            }
+
+            if (cpf.length() != 11) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("CPF inválido");
+                alert.setContentText("Por favor, digite um CPF válido.");
 
                 alert.showAndWait();
                 return;
@@ -287,7 +335,9 @@ public class TelaAdministradorFuncionarios implements Initializable {
         btnCancelar.setOnAction(e -> disableFlow());
 
         btnSalvar.setOnAction(e -> {
-            String cpf = txtCpf.getText();
+            formatarCPF();
+
+            String cpf = txtCpf.getText().replaceAll("[^\\d]", "");
             LocalDate dataNasc = dateDataNasc.getValue();
             String nome = txtNome.getText();
             String senha = txtSenha.getText();
@@ -299,6 +349,16 @@ public class TelaAdministradorFuncionarios implements Initializable {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Campos vazios");
                 alert.setContentText("Preencha todos os campos");
+                alert.showAndWait();
+                return;
+            }
+
+            if (cpf.length() != 11) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("CPF inválido");
+                alert.setContentText("Por favor, digite um CPF válido.");
+
                 alert.showAndWait();
                 return;
             }
@@ -366,7 +426,9 @@ public class TelaAdministradorFuncionarios implements Initializable {
         txtNome.setOnKeyReleased(e -> txtCpf.clear());
 
         btnConfirmSearch.setOnAction(e -> {
-            String cpf = txtCpf.getText();
+            formatarCPF();
+
+            String cpf = txtCpf.getText().replaceAll("[^\\d]", "");
             String nome = txtNome.getText();
 
             ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -424,6 +486,26 @@ public class TelaAdministradorFuncionarios implements Initializable {
         txtNome.setOnKeyReleased(null);
         btnConfirmSearch.setOnAction(null);
         btnRefresh.setOnAction(null);
+    }
+
+    private void formatarCPF() {
+        String cpf = txtCpf.getText().replaceAll("[^\\d]", "");
+
+        if (cpf.length() > 11) {
+            cpf = cpf.substring(0, 11);
+        }
+
+        StringBuilder formattedCPF = new StringBuilder();
+        for (int i = 0; i < cpf.length(); i++) {
+            formattedCPF.append(cpf.charAt(i));
+            if ((i + 1) % 3 == 0 && i < 8) {
+                formattedCPF.append(".");
+            } else if ((i + 1) % 3 == 0 && i < 11) {
+                formattedCPF.append("-");
+            }
+        }
+
+        txtCpf.setText(formattedCPF.toString());
     }
 
 }

@@ -99,14 +99,6 @@
             <URL value="@../css/telaInicialStyle.css" />
             <URL value="@../css/cadastrarClienteStyle.css" />
          </stylesheets></DatePicker>
-      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="267.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../imagens/lupa.png" />
-         </image>
-         <effect>
-            <ColorAdjust brightness="1.0" contrast="-0.07" />
-         </effect>
-      </ImageView>
       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="72.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../imagens/chave-de-casa.png" />
