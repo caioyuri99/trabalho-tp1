@@ -153,8 +153,10 @@ public class Catalogo implements Initializable {
 
         if (totalPages == 1) {
             btnNextPage.setDisable(true);
+            txtPageNumber.setDisable(true);
         } else {
             btnNextPage.setDisable(false);
+            txtPageNumber.setDisable(false);
         }
 
         txtPageNumber.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -231,6 +233,15 @@ public class Catalogo implements Initializable {
         int total = Obra.getObrasCount(lastSearch);
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
+        System.out.println(totalPages);
+
+        if (totalPages == 1) {
+            txtPageNumber.setDisable(true);
+            btnNextPage.setDisable(true);
+        } else {
+            txtPageNumber.setDisable(false);
+            btnNextPage.setDisable(false);
+        }
 
         currentPage = 0;
         attPageCount();
@@ -306,6 +317,14 @@ public class Catalogo implements Initializable {
                 lastDisponibilidade, lastCondicao, lastEditora);
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
+
+        if (totalPages == 1) {
+            txtPageNumber.setDisable(true);
+            btnNextPage.setDisable(true);
+        } else {
+            txtPageNumber.setDisable(false);
+            btnNextPage.setDisable(false);
+        }
 
         currentPage = 0;
         attPageCount();
