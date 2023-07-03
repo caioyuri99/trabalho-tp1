@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import biblioteca.Estante;
 import biblioteca.Obra;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +36,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import session.Session;
 
 public class Catalogo implements Initializable {
@@ -43,6 +47,8 @@ public class Catalogo implements Initializable {
     private Stage stage;
     private int currentPage = 0;
     private int totalPages = 0;
+
+    private static final double BLUR_AMOUNT = 10.0;
 
     // parâmetros de pesquisa
     private boolean withFilter = false;
@@ -195,7 +201,7 @@ public class Catalogo implements Initializable {
         rowConstraints.setVgrow(Priority.ALWAYS);
         bookGrid.getRowConstraints().addAll(rowConstraints);
 
-        goToPageBasicSearch(currentPage);
+        fillBookGrid(5, Obra.getObras(lastSearch, 20, 0));
 
         ArrayList<Estante> filterEstanteOpts = Estante.getListaEstantes();
         Estante todos = new Estante();
@@ -233,7 +239,6 @@ public class Catalogo implements Initializable {
         int total = Obra.getObrasCount(lastSearch);
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
-        System.out.println(totalPages);
 
         if (totalPages == 1) {
             txtPageNumber.setDisable(true);
@@ -416,20 +421,37 @@ public class Catalogo implements Initializable {
         cell.getChildren().addAll(image, label);
 
         cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            try {
-                this.viewObraEvent(event, id);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Stage tc = telaCarregamento();
+
+            Task<Scene> task = new Task<Scene>() {
+                @Override
+                protected Scene call() throws Exception {
+                    return viewObraEvent(event, id);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                tc.close();
+                bookContainer.getScene().getRoot().setEffect(null);
+
+                Stage stage = new Stage();
+                stage.setScene(task.getValue());
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(bookContainer.getScene().getWindow());
+                stage.showAndWait();
+            });
+
+            Thread th = new Thread(task);
+            th.start();
         });
 
         return cell;
     }
 
-    private void viewObraEvent(Event event, int id) throws IOException {
+    private Scene viewObraEvent(Event event, int id) throws IOException {
         Obra obra = Obra.getObra(id);
 
-        Stage details = new Stage();
+        // Stage details = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DetalhesObra.fxml"));
 
         loader.setControllerFactory(param -> {
@@ -446,11 +468,13 @@ public class Catalogo implements Initializable {
             }
         });
 
-        Parent content = loader.load();
-        details.setScene(new Scene(content));
-        details.initModality(Modality.APPLICATION_MODAL);
-        details.initOwner(bookContainer.getScene().getWindow());
-        details.showAndWait();
+        Scene details = new Scene(loader.load());
+        // Parent content = loader.load();
+        // details.setScene(new Scene(content));
+        // details.initModality(Modality.APPLICATION_MODAL);
+        // details.initOwner(bookContainer.getScene().getWindow());
+
+        return details;
     }
 
     private void attPageCount() {
@@ -459,12 +483,149 @@ public class Catalogo implements Initializable {
     }
 
     private void goToPageBasicSearch(int page) {
-        this.fillBookGrid(5, Obra.getObras(lastSearch, 20, 20 * page));
+        Stage tc = telaCarregamento();
+
+        Task<ArrayList<VBox>> task = new Task<ArrayList<VBox>>() {
+            @Override
+            protected ArrayList<VBox> call() throws Exception {
+                return generateBookCellList(Obra.getObras(lastSearch, 20, page * 20));
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            fillBookGrid(task.getValue());
+
+            tc.close();
+            bookContainer.getScene().getRoot().setEffect(null);
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void goToPageWithFilters(int page) {
-        this.fillBookGrid(5, Obra.getObras(lastSearch, lastTipo, lastEstante, lastFromData,
-                lastToData, lastGenero, lastDisponibilidade, lastCondicao, lastEditora, 20, 20 * page));
+        Stage tc = telaCarregamento();
+
+        Task<ArrayList<VBox>> task = new Task<ArrayList<VBox>>() {
+            @Override
+            protected ArrayList<VBox> call() throws Exception {
+                return generateBookCellList(Obra.getObras(lastSearch, lastTipo, lastEstante, lastFromData,
+                        lastToData, lastGenero, lastDisponibilidade, lastCondicao, lastEditora, 20, 20 * page));
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            fillBookGrid(task.getValue());
+
+            tc.close();
+            bookContainer.getScene().getRoot().setEffect(null);
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    private Stage telaCarregamento() {
+        Stage telaCarregamento = new Stage();
+
+        Window ownerStage = bookContainer.getScene().getWindow();
+
+        telaCarregamento.initOwner(ownerStage);
+        telaCarregamento.initModality(Modality.APPLICATION_MODAL);
+        telaCarregamento.initStyle(StageStyle.UNDECORATED);
+
+        try {
+            Parent content = FXMLLoader.load(getClass().getResource("../assets/fxmlComponents/TelaCarregamento.fxml"));
+
+            bookContainer.getScene().getRoot().setEffect(new BoxBlur(BLUR_AMOUNT, BLUR_AMOUNT, 3));
+
+            telaCarregamento.setScene(new Scene(content));
+
+            double x = ownerStage.getX() + ownerStage.getWidth() / 2 - content.prefWidth(-1) / 2;
+            double y = ownerStage.getY() + ownerStage.getHeight() / 2 - content.prefHeight(-1) / 2;
+
+            telaCarregamento.setX(x);
+            telaCarregamento.setY(y);
+
+            telaCarregamento.show();
+
+            return telaCarregamento;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
+    }
+
+    private ArrayList<VBox> generateBookCellList(ArrayList<Obra> obras) {
+        ArrayList<VBox> res = new ArrayList<VBox>();
+
+        for (Obra obra : obras) {
+            VBox cell = new VBox();
+            cell.setAlignment(Pos.TOP_CENTER);
+            cell.setMaxWidth(163);
+            cell.setPrefWidth(163);
+            cell.setMaxHeight(211);
+            cell.setPrefHeight(211);
+            cell.getStyleClass().add("custom-vbox");
+
+            ImageView image = new ImageView(obra.getCapaUrl());
+            image.setPreserveRatio(false);
+            image.setFitWidth(133);
+            image.setFitHeight(160);
+            image.getStyleClass().add("book-cover");
+
+            Label label = new Label(obra.getNome());
+            label.setWrapText(true);
+            label.setPrefWidth(150);
+            label.setPrefHeight(50);
+            label.setAlignment(Pos.TOP_LEFT);
+            Tooltip.install(label, new Tooltip(String.format("%s\n%s", obra.getNome(), obra.getAutor())));
+            label.getStyleClass().add("book-title");
+
+            cell.getChildren().addAll(image, label);
+
+            cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            Stage tc = telaCarregamento();
+
+            Task<Scene> task = new Task<Scene>() {
+                @Override
+                protected Scene call() throws Exception {
+                    return viewObraEvent(event, obra.getId());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                tc.close();
+                bookContainer.getScene().getRoot().setEffect(null);
+
+                Stage stage = new Stage();
+                stage.setScene(task.getValue());
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(bookContainer.getScene().getWindow());
+                stage.showAndWait();
+            });
+
+            Thread th = new Thread(task);
+            th.start();
+        });
+
+            res.add(cell);
+        }
+
+        return res;
+    }
+
+    private void fillBookGrid(ArrayList<VBox> cells) {
+        bookGrid.getChildren().clear();
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 4 && (i * 4 + j) < cells.size(); j++) {
+                int index = i * 4 + j;
+                bookGrid.add(cells.get(index), j, i);
+            }
+        }
     }
 
 }

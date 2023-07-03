@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import biblioteca.Cliente;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +16,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 public class TelaInicial implements Initializable {
 
     private Parent root;
     private Stage stage;
+
+    private static final double BLUR_AMOUNT = 10.0;
 
     @FXML
     private PasswordField passSenha;
@@ -114,10 +120,24 @@ public class TelaInicial implements Initializable {
 
     @FXML
     void mostrarCatalogo(ActionEvent event) throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml"));
-        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        this.stage.setScene(new Scene(root));
-        this.stage.show();
+        Stage tc = telaCarregamento();
+
+        Task<Scene> task = new Task<Scene>() {
+            @Override
+            protected Scene call() throws Exception {
+                return new Scene(FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml")));
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            this.stage.setScene(task.getValue());
+            this.stage.show();
+            tc.close();
+        });
+
+        Thread th = new Thread(task);
+        th.start();
     }
 
     @FXML
@@ -138,8 +158,30 @@ public class TelaInicial implements Initializable {
         alterarData.showAndWait();
     }
 
-    public void telaCarregamento() {
-        // TODO: implementar uma tela de carregamento
+    private Stage telaCarregamento() throws IOException {
+        Stage telaCarregamento = new Stage();
+
+        Window ownerStage = passSenha.getScene().getWindow();
+
+        telaCarregamento.initOwner(ownerStage);
+        telaCarregamento.initModality(Modality.APPLICATION_MODAL);
+        telaCarregamento.initStyle(StageStyle.UNDECORATED);
+
+        Parent content = FXMLLoader.load(getClass().getResource("../assets/fxmlComponents/TelaCarregamento.fxml"));
+
+        passSenha.getScene().getRoot().setEffect(new BoxBlur(BLUR_AMOUNT, BLUR_AMOUNT, 3));
+
+        telaCarregamento.setScene(new Scene(content));
+
+        double x = ownerStage.getX() + ownerStage.getWidth() / 2 - content.prefWidth(-1) / 2;
+        double y = ownerStage.getY() + ownerStage.getHeight() / 2 - content.prefHeight(-1) / 2;
+
+        telaCarregamento.setX(x);
+        telaCarregamento.setY(y);
+
+        telaCarregamento.show();
+
+        return telaCarregamento;
     }
 
     private void formatarCPF() {

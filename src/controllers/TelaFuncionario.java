@@ -111,7 +111,7 @@ public class TelaFuncionario implements Initializable {
             return row;
         });
 
-        ArrayList<Obra> obras = Obra.getObras(50, 0);
+        ArrayList<Obra> obras = Obra.getObras(30, 0);
         tableObras.setItems(FXCollections.observableArrayList(obras));
     }
 
