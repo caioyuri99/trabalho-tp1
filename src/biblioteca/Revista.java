@@ -34,21 +34,45 @@ public class Revista extends Item {
     public void cadastrar() throws Exception {
         RevistaDAO dao = new RevistaDAO();
 
-        dao.insert(this);
+        try {
+            dao.insert(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void atualizar() throws Exception {
         RevistaDAO dao = new RevistaDAO();
 
-        dao.update(this);
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void remover() throws Exception {
         RevistaDAO dao = new RevistaDAO();
 
-        dao.delete(this.id);
+        try {
+            dao.delete(this.id);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao remover: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -57,7 +81,15 @@ public class Revista extends Item {
 
         RevistaDAO dao = new RevistaDAO();
 
-        dao.updateLeitor(this, false);
+        try {
+            dao.updateLeitor(this, false);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao emprestar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -66,7 +98,15 @@ public class Revista extends Item {
 
         RevistaDAO dao = new RevistaDAO();
 
-        dao.updateLeitor(this, true);
+        try {
+            dao.updateLeitor(this, true);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao devolver: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override

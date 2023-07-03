@@ -36,21 +36,46 @@ public class Livro extends Item {
     public void cadastrar() throws Exception {
         LivroDAO dao = new LivroDAO();
 
-        dao.insert(this);
+        try {
+            dao.insert(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void atualizar() throws Exception {
         LivroDAO dao = new LivroDAO();
 
-        dao.update(this);
+
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void remover() throws Exception {
         LivroDAO dao = new LivroDAO();
 
-        dao.delete(this.id);
+        try {
+            dao.delete(this.id);
+            
+        } catch (Exception e) {
+            throw new Exception("Erro ao remover: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -59,7 +84,15 @@ public class Livro extends Item {
 
         LivroDAO dao = new LivroDAO();
 
-        dao.updateLeitor(this, false);
+        try {
+            dao.updateLeitor(this, false);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao emprestar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -68,7 +101,15 @@ public class Livro extends Item {
 
         LivroDAO dao = new LivroDAO();
 
-        dao.updateLeitor(this, true);
+        try {
+            dao.updateLeitor(this, true);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao devolver: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override

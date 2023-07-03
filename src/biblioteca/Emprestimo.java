@@ -27,7 +27,11 @@ public class Emprestimo implements BooleanDisplayPattern, DatePattern {
     public Item getItemEmprestado() {
         EmprestimoDAO dao = new EmprestimoDAO();
 
-        return dao.getItemFromEmprestimo(this);
+        Item item = dao.getItemFromEmprestimo(this);
+
+        dao.closeConnection();
+
+        return item;
     }
 
     // GETTERS & SETTERS

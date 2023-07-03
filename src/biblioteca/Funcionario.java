@@ -30,6 +30,7 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
     public void login(String cpf, String senha) throws Exception {
         FuncionarioDAO dao = new FuncionarioDAO();
         Funcionario funcionario = dao.getFuncionario(cpf);
+        dao.closeConnection();
 
         if (funcionario == null || !senha.equals(funcionario.senha)) {
             throw new Exception("CPF ou senha incorretos.");
@@ -63,7 +64,16 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
         this.senha = novaSenha;
 
         FuncionarioDAO dao = new FuncionarioDAO();
-        dao.update(this);
+
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public static ArrayList<Funcionario> getListaFuncionarios(int limit, int offset) {
@@ -75,6 +85,8 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
             System.out.println("Erro ao buscar lista de funcionários: " + e);
 
             return null;
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -87,6 +99,8 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
             System.out.println("Erro ao buscar lista de funcionários: " + e);
 
             return new ArrayList<Funcionario>();
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -99,6 +113,8 @@ public class Funcionario extends Usuario implements AcessoSistema, BooleanDispla
             System.out.println("Erro ao buscar lista de funcionários: " + e);
 
             return new ArrayList<Funcionario>();
+        } finally {
+            dao.closeConnection();
         }
     }
 

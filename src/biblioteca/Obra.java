@@ -73,7 +73,11 @@ public class Obra implements DatePattern {
     public boolean verificaDisponibilidade() {
         ObraDAO dao = new ObraDAO();
 
-        return dao.isDisponivel(this);
+        boolean disponivel = dao.isDisponivel(this);
+
+        dao.closeConnection();
+
+        return disponivel;
     }
 
     public ArrayList<Item> obterItens() {
@@ -92,13 +96,21 @@ public class Obra implements DatePattern {
     public static ArrayList<Obra> getObras(int limit, int offset) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getAll(limit, offset);
+        ArrayList<Obra> obras = dao.getAll(limit, offset);
+
+        dao.closeConnection();
+
+        return obras;
     }
 
     public static ArrayList<Obra> getObras(String pesquisa, int limit, int offset) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObrasByNameOrAutor(pesquisa, limit, offset);
+        ArrayList<Obra> obras = dao.getObrasByNameOrAutor(pesquisa, limit, offset);
+
+        dao.closeConnection();
+
+        return obras;
     }
 
     public static ArrayList<Obra> getObras(String search, String tipo, Estante estante, LocalDate fromData,
@@ -106,46 +118,72 @@ public class Obra implements DatePattern {
             int offset) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.searchCustomQuery(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao,
-                editora, limit,
-                offset);
+        ArrayList<Obra> obras = dao.searchCustomQuery(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao, editora, limit, offset);
+
+        dao.closeConnection();
+
+        return obras;
     }
 
     public static Obra getObra(int id) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObra(id);
+        Obra obra = dao.getObra(id);
+
+        dao.closeConnection();
+
+        return obra;
     }
 
     public static int getObrasCount() {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObrasCount();
+        int total = dao.getObrasCount();
+
+        dao.closeConnection();
+
+        return total;
     }
 
     public static int getObrasCount(String search) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObrasCount(search);
+        int total = dao.getObrasCount(search);
+
+        dao.closeConnection();
+
+        return total;
     }
 
     public static int getObrasCount(String search, String tipo, Estante estante, LocalDate fromData, LocalDate toData,
             String genero, Boolean disponibilidade, String condicao, String editora) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObrasCount(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao, editora);
+        int total = dao.getObrasCount(search, tipo, estante, fromData, toData, genero, disponibilidade, condicao, editora);
+
+        dao.closeConnection();
+
+        return total;
     }
 
     public static ArrayList<Obra> getObras(String pesquisa, Estante estante, String tipo, int limit, int offset) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.searchCustomQuery(pesquisa, tipo, estante, null, null, "", null, "", "", limit, offset);
+        ArrayList<Obra> obras = dao.searchCustomQuery(pesquisa, tipo, estante, null, null, "", null, "", "", limit, offset);
+
+        dao.closeConnection();
+
+        return obras;
     }
 
     public static int getObrasCount(String pesquisa, Estante estante, String tipo) {
         ObraDAO dao = new ObraDAO();
 
-        return dao.getObrasCount(pesquisa, tipo, estante, null, null, "", null, "", "");
+        int total = dao.getObrasCount(pesquisa, tipo, estante, null, null, "", null, "", "");
+
+        dao.closeConnection();
+
+        return total;
     }
 
     // GETTERS & SETTERS

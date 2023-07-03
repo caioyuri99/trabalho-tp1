@@ -25,7 +25,17 @@ public class Cliente extends Usuario implements AcessoSistema {
     // METODOS
     public void login(String cpf, String senha) throws Exception {
         ClienteDAO dao = new ClienteDAO();
-        Cliente cliente = dao.getCliente(cpf);
+
+        Cliente cliente;
+        try {
+            cliente = dao.getCliente(cpf);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
 
         if (cliente == null || !senha.equals(cliente.senha)) {
             throw new Exception("CPF ou senha incorretos.");
@@ -53,7 +63,15 @@ public class Cliente extends Usuario implements AcessoSistema {
             throw new Exception("CPF já cadastrado.");
         }
 
-        dao.insert(this);
+        try {
+            dao.insert(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void alterarSenha(String senhaAtual, String novaSenha) throws Exception {
@@ -64,26 +82,59 @@ public class Cliente extends Usuario implements AcessoSistema {
         this.senha = novaSenha;
 
         ClienteDAO dao = new ClienteDAO();
-        dao.update(this);
+
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void delete() throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
-        dao.delete(this);
+        try {
+            dao.delete(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void calcularMulta() throws Exception {
         EmprestimoDAO dao = new EmprestimoDAO();
         this.atualizaAtrasosMultas();
 
-        this.saldoDevedor = dao.getTotalMultas(this);
+        try {
+            this.saldoDevedor = dao.getTotalMultas(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     private void atualizaAtrasosMultas() throws Exception {
         EmprestimoDAO dao = new EmprestimoDAO();
 
-        dao.atualizaAtrasosMultas(this);
+        try {
+            dao.atualizaAtrasosMultas(this);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void pagarMulta(Emprestimo emprestimo) throws Exception {
@@ -100,7 +151,17 @@ public class Cliente extends Usuario implements AcessoSistema {
             throw new Exception("O empréstimo não possui multa.");
         }
 
-        emprestimoDAO.pagarMulta(cliente, emprestimo);
+        try {
+            emprestimoDAO.pagarMulta(cliente, emprestimo);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            clienteDAO.closeConnection();
+            emprestimoDAO.closeConnection();
+        }
+
         this.calcularMulta();
     }
 
@@ -113,8 +174,6 @@ public class Cliente extends Usuario implements AcessoSistema {
             throw new Exception("O carrinho está vazio.");
         }
 
-        EmprestimoDAO dao = new EmprestimoDAO();
-
         for (Emprestimo emprestimo : this.getEmprestimosAtivos()) {
             if (!emprestimo.isDevolvido() && emprestimo.isAtrasado()) {
                 throw new Exception("O cliente possui empréstimos atrasados.");
@@ -122,7 +181,18 @@ public class Cliente extends Usuario implements AcessoSistema {
         }
 
         for (Item item : this.carrinho) {
-            dao.insert(this, item);
+            EmprestimoDAO dao = new EmprestimoDAO();
+
+            try {
+                dao.insert(this, item);
+
+            } catch (Exception e) {
+                throw new Exception(e.getMessage());
+
+            } finally {
+                dao.closeConnection();
+            }
+
             item.emprestar();
         }
 
@@ -148,24 +218,44 @@ public class Cliente extends Usuario implements AcessoSistema {
             throw new Exception("O empréstimo está atrasado.");
         }
 
-        EmprestimoDAO dao = new EmprestimoDAO();
-        dao.renovacao(emprestimo.getId());
+        try {
+            EmprestimoDAO dao = new EmprestimoDAO();
+            dao.renovacao(emprestimo.getId());
+            dao.closeConnection();
 
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        EmprestimoDAO dao = new EmprestimoDAO();
         Emprestimo updatedEmprestimo = dao.getEmprestimo(emprestimo.getId());
         emprestimo.setQtdRenovacoes(updatedEmprestimo.getQtdRenovacoes());
         emprestimo.setDataDevolucao(updatedEmprestimo.getDataDevolucao());
+        dao.closeConnection();
     }
 
     public void fazerDevolucao(Emprestimo emprestimo) throws Exception {
         EmprestimoDAO dao = new EmprestimoDAO();
-        dao.devolucao(emprestimo.getId());
-        emprestimo.getItem().devolver();
+        try {
+            dao.devolucao(emprestimo.getId());
+            emprestimo.getItem().devolver();
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public int getTotalEmprestimos() {
         EmprestimoDAO dao = new EmprestimoDAO();
 
-        return dao.getTotalEmprestimos(this);
+        int totalEmprestimos = dao.getTotalEmprestimos(this);
+
+        dao.closeConnection();
+
+        return totalEmprestimos;
     }
 
     public void adicionarAoCarrinho(Item item) throws Exception {
@@ -201,6 +291,8 @@ public class Cliente extends Usuario implements AcessoSistema {
             System.out.println(e.getMessage());
 
             return null;
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -213,10 +305,13 @@ public class Cliente extends Usuario implements AcessoSistema {
             System.out.println(e.getMessage());
 
             return null;
+        } finally {
+            dao.closeConnection();
         }
     }
 
-    public ArrayList<Emprestimo> filtraHistoricoEmprestimos(String search, LocalDate dateFrom, LocalDate dateTo, int limit, int offset) {
+    public ArrayList<Emprestimo> filtraHistoricoEmprestimos(String search, LocalDate dateFrom, LocalDate dateTo,
+            int limit, int offset) {
         EmprestimoDAO dao = new EmprestimoDAO();
 
         try {
@@ -224,7 +319,9 @@ public class Cliente extends Usuario implements AcessoSistema {
         } catch (Exception e) {
             System.out.println(e.getMessage());
 
-            return null;
+            return new ArrayList<Emprestimo>();
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -237,6 +334,8 @@ public class Cliente extends Usuario implements AcessoSistema {
             System.out.println(e.getMessage());
 
             return new ArrayList<Cliente>();
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -249,6 +348,8 @@ public class Cliente extends Usuario implements AcessoSistema {
             System.out.println(e.getMessage());
 
             return new ArrayList<Cliente>();
+        } finally {
+            dao.closeConnection();
         }
     }
 
@@ -261,6 +362,8 @@ public class Cliente extends Usuario implements AcessoSistema {
             System.out.println(e.getMessage());
 
             return null;
+        } finally {
+            dao.closeConnection();
         }
     }
 

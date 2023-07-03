@@ -36,21 +36,45 @@ public class Gibi extends Item {
     public void cadastrar() throws Exception {
         GibiDAO dao = new GibiDAO();
 
-        dao.insert(this);
+        try {
+            dao.insert(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao cadastrar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void atualizar() throws Exception {
         GibiDAO dao = new GibiDAO();
 
-        dao.update(this);
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
     public void remover() throws Exception {
         GibiDAO dao = new GibiDAO();
 
-        dao.delete(this.id);
+        try {
+            dao.delete(this.id);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao remover: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -59,7 +83,15 @@ public class Gibi extends Item {
 
         GibiDAO dao = new GibiDAO();
 
-        dao.updateLeitor(this, false);
+        try {
+            dao.updateLeitor(this, false);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao emprestar: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override
@@ -68,7 +100,15 @@ public class Gibi extends Item {
 
         GibiDAO dao = new GibiDAO();
 
-        dao.updateLeitor(this, true);
+        try {
+            dao.updateLeitor(this, true);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao devolver: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     @Override

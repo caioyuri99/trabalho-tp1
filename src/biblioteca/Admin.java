@@ -22,7 +22,14 @@ public class Admin extends Funcionario {
             throw new Exception("CPF já cadastrado.");
         }
 
-        dao.insert(funcionario);
+        try {
+            dao.insert(funcionario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void fazerCadastro(Cliente cliente) throws Exception {
@@ -32,31 +39,70 @@ public class Admin extends Funcionario {
             throw new Exception("CPF já cadastrado.");
         }
 
-        dao.insert(cliente);
+        try {
+            dao.insert(cliente);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void deletarUsuario(Funcionario funcionario) throws Exception {
         FuncionarioDAO dao = new FuncionarioDAO();
 
-        dao.delete(funcionario);
+        try {
+            dao.delete(funcionario);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void deletarUsuario(Cliente cliente) throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
-        dao.delete(cliente);
+        try {
+            dao.delete(cliente);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void editarUsuario(Funcionario funcionario) throws Exception {
         FuncionarioDAO dao = new FuncionarioDAO();
 
-        dao.update(funcionario);
+        try {
+            dao.update(funcionario);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void editarUsuario(Cliente cliente) throws Exception {
         ClienteDAO dao = new ClienteDAO();
 
-        dao.update(cliente);
+        try {
+            dao.update(cliente);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public static Admin parseAdmin(Funcionario funcionario) {

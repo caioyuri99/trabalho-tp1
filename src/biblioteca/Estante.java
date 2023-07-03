@@ -33,7 +33,16 @@ public class Estante {
     // MÉTODOS
     public void adicionarEstante() throws Exception {
         EstanteDAO dao = new EstanteDAO();
-        dao.insert(this);
+
+        try {
+            dao.insert(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao cadastrar estante: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void editarEstante() throws Exception {
@@ -43,18 +52,43 @@ public class Estante {
             throw new Exception("Já existe uma estante com essa categoria!");
         }
 
-        dao.update(this);
+        try {
+            dao.update(this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar estante: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void deletarEstante() throws Exception {
         EstanteDAO dao = new EstanteDAO();
 
-        dao.delete(this.id);
+        try {
+            dao.delete(this.id);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao deletar estante: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void registrarObra(Obra obra) throws Exception {
         ObraDAO dao = new ObraDAO();
-        dao.insert(obra, this);
+
+        try {
+            dao.insert(obra, this);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao registrar obra: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
 
         obra.setEstante(this);
         obras.add(obra);
@@ -64,24 +98,50 @@ public class Estante {
         ObraDAO dao = new ObraDAO();
 
         obra.removeAllItems();
-        dao.delete(obra.getId());
+
+        try {
+            dao.delete(obra.getId());
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao remover obra: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public void atualizarObra(Obra obra) throws Exception {
         ObraDAO dao = new ObraDAO();
-        dao.updateObra(this, obra);
+
+        try {
+            dao.updateObra(this, obra);
+
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar obra: " + e.getMessage());
+
+        } finally {
+            dao.closeConnection();
+        }
     }
 
     public static ArrayList<Estante> getListaEstantes() {
         EstanteDAO dao = new EstanteDAO();
 
-        return dao.getAll();
+        ArrayList<Estante> estantes = dao.getAll();
+
+        dao.closeConnection();
+
+        return estantes;
     }
 
     public static boolean estanteExiste(String categoria) {
         EstanteDAO dao = new EstanteDAO();
 
-        return dao.estanteExists(categoria);
+        boolean existe = dao.estanteExists(categoria);
+
+        dao.closeConnection();
+
+        return existe;
     }
 
     // GETTERS & SETTERS
