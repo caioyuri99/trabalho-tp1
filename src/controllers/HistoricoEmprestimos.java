@@ -26,10 +26,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import session.Session;
 
@@ -83,6 +85,8 @@ public class HistoricoEmprestimos implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        tableEmprestimos.setPlaceholder(new javafx.scene.control.Label("Nenhum empréstimo encontrado."));
+
         clmAtrasado.setCellFactory(column -> new BooleanDisplayFactory());
         clmAtrasado.setCellValueFactory(new PropertyValueFactory<>("atrasado"));
         clmAutor.setCellFactory(column -> new EmprestimoItemObraAutorFactory());
@@ -103,10 +107,42 @@ public class HistoricoEmprestimos implements Initializable {
         clmValorMulta.setCellFactory(column -> new EmprestimoDoubleValorMultaFactory());
         clmValorMulta.setCellValueFactory(new PropertyValueFactory<>("valorMulta"));
 
-        refreshTable();
+        tableEmprestimos.setRowFactory(tv -> {
+            TableRow<Emprestimo> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Emprestimo rowData = row.getItem();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../telas/DetalhesObra.fxml"));
+                        loader.setControllerFactory(param -> {
+                            if (param == DetalhesObra.class) {
+                                DetalhesObra controller = new DetalhesObra();
+                                controller.setObra(rowData.getItem().getObra());
+                                return controller;
+                            } else {
+                                try {
+                                    return param.getDeclaredConstructor().newInstance();
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                        Stage detalhesObra = new Stage();
+                        detalhesObra.setTitle("Detalhes da Obra");
+                        detalhesObra.setScene(new Scene(loader.load()));
+                        detalhesObra.initModality(Modality.APPLICATION_MODAL);
+                        detalhesObra.initOwner(tableEmprestimos.getScene().getWindow());
+                        detalhesObra.showAndWait();
 
-        // TODO: fazer um evento de double click nas linhas da tabela para abrir os
-        // detalhes da obra emprestada
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return row;
+        });
+
+        refreshTable();
     }
 
     @FXML
@@ -115,6 +151,7 @@ public class HistoricoEmprestimos implements Initializable {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Meus Dados");
         stage.setScene(new Scene(root));
+        stage.centerOnScreen();
         stage.show();
     }
 
