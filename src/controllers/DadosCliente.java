@@ -68,11 +68,8 @@ public class DadosCliente implements Initializable {
 
     @FXML
     void exit(MouseEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("../telas/Catalogo.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Catálogo");
-        stage.setScene(new Scene(root));
-        stage.show();
+        stage.close();
     }
 
     @FXML
@@ -87,6 +84,7 @@ public class DadosCliente implements Initializable {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Histórico de Empréstimos");
         stage.setScene(new Scene(root));
+        stage.centerOnScreen();
         stage.show();
     }
 }
