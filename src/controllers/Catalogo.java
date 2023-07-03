@@ -130,6 +130,9 @@ public class Catalogo implements Initializable {
     @FXML
     private GridPane bookGrid;
 
+    @FXML
+    private Label lblPlaceHoder;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (!Session.isLogged()) {
@@ -150,13 +153,23 @@ public class Catalogo implements Initializable {
             }
         }
 
-        // TODO: colocar uma espécie de placehoder no bookcontainer
         int total = Obra.getObrasCount();
+
+        if (total == 0) {
+            lblPlaceHoder.setManaged(true);
+            lblPlaceHoder.setVisible(true);
+        } else {
+            lblPlaceHoder.setManaged(false);
+            lblPlaceHoder.setVisible(false);
+        }
+
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
         btnPreviousPage.setDisable(true);
 
-        if (totalPages == 1) {
+        if (totalPages <= 1) {
+            totalPages = 1;
+
             btnNextPage.setDisable(true);
             txtPageNumber.setDisable(true);
         } else {
@@ -217,7 +230,7 @@ public class Catalogo implements Initializable {
     @FXML
     void exitLogin(MouseEvent event) throws IOException {
         if (Session.isLogged()) {
-            // TODO: se o usuário tiver itens no carrinho, mostrar uma mensagem avisando que
+            // TODO: Detalhe: se o usuário tiver itens no carrinho, mostrar uma mensagem avisando que
             // o carrinho será esvaziado e perguntando se ele tem certeza que quer sair
             Session.logout();
         }
@@ -230,16 +243,26 @@ public class Catalogo implements Initializable {
 
     @FXML
     void search(ActionEvent event) {
-        // TODO: fazer o botão de lupa ativar a busca
         withFilter = false;
 
         lastSearch = query.getText();
 
         int total = Obra.getObrasCount(lastSearch);
+
+        if (total == 0) {
+            lblPlaceHoder.setManaged(true);
+            lblPlaceHoder.setVisible(true);
+        } else {
+            lblPlaceHoder.setManaged(false);
+            lblPlaceHoder.setVisible(false);
+        }
+
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
 
-        if (totalPages == 1) {
+        if (totalPages <= 1) {
+            totalPages = 1;
+
             txtPageNumber.setDisable(true);
             btnNextPage.setDisable(true);
         } else {
@@ -287,8 +310,6 @@ public class Catalogo implements Initializable {
 
     @FXML
     void queryWithFilters(ActionEvent event) {
-        // TODO: fazer o botão de lupa ativar a busca
-        // TODO: fazer os campos de filtro ativarem a busca ao pressionar a tecla enter
         withFilter = true;
 
         lastSearch = query.getText();
@@ -319,10 +340,21 @@ public class Catalogo implements Initializable {
 
         int total = Obra.getObrasCount(lastSearch, lastTipo, lastEstante, lastFromData, lastToData, lastGenero,
                 lastDisponibilidade, lastCondicao, lastEditora);
+
+        if (total == 0) {
+            lblPlaceHoder.setManaged(true);
+            lblPlaceHoder.setVisible(true);
+        } else {
+            lblPlaceHoder.setManaged(false);
+            lblPlaceHoder.setVisible(false);
+        }
+
         lblTotalResult.setText(String.format("%d resultados encontrados", total));
         totalPages = (int) Math.ceil(total / 20.0);
 
-        if (totalPages == 1) {
+        if (totalPages <= 1) {
+            totalPages = 1;
+
             txtPageNumber.setDisable(true);
             btnNextPage.setDisable(true);
         } else {
@@ -586,29 +618,29 @@ public class Catalogo implements Initializable {
             cell.getChildren().addAll(image, label);
 
             cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Stage tc = telaCarregamento();
+                Stage tc = telaCarregamento();
 
-            Task<Scene> task = new Task<Scene>() {
-                @Override
-                protected Scene call() throws Exception {
-                    return viewObraEvent(event, obra.getId());
-                }
-            };
+                Task<Scene> task = new Task<Scene>() {
+                    @Override
+                    protected Scene call() throws Exception {
+                        return viewObraEvent(event, obra.getId());
+                    }
+                };
 
-            task.setOnSucceeded(e -> {
-                tc.close();
-                bookContainer.getScene().getRoot().setEffect(null);
+                task.setOnSucceeded(e -> {
+                    tc.close();
+                    bookContainer.getScene().getRoot().setEffect(null);
 
-                Stage stage = new Stage();
-                stage.setScene(task.getValue());
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.initOwner(bookContainer.getScene().getWindow());
-                stage.showAndWait();
+                    Stage stage = new Stage();
+                    stage.setScene(task.getValue());
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(bookContainer.getScene().getWindow());
+                    stage.showAndWait();
+                });
+
+                Thread th = new Thread(task);
+                th.start();
             });
-
-            Thread th = new Thread(task);
-            th.start();
-        });
 
             res.add(cell);
         }

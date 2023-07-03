@@ -97,11 +97,6 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <ImageView fitHeight="30.0" fitWidth="42.0" layoutX="133.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../imagens/pesquisar.png" />
-         </image>
-      </ImageView>
       <ScrollPane hbarPolicy="NEVER" layoutX="7.0" layoutY="123.0" prefHeight="342.0" prefWidth="693.0">
          <content>
             <VBox alignment="TOP_CENTER" spacing="10.0">
@@ -140,8 +135,8 @@
                                                 </Label>
                                              </children>
                                           </VBox>
-                                          <TextField fx:id="filterGenero" layoutX="341.0" layoutY="14.0" promptText="Gênero" />
-                                          <TextField fx:id="filterEditora" layoutX="341.0" layoutY="46.0" promptText="Editora" />
+                                          <TextField fx:id="filterGenero" layoutX="341.0" layoutY="14.0" onAction="#queryWithFilters" promptText="Gênero" />
+                                          <TextField fx:id="filterEditora" layoutX="341.0" layoutY="46.0" onAction="#queryWithFilters" promptText="Editora" />
                                           <Button alignment="CENTER" layoutX="191.0" layoutY="112.0" mnemonicParsing="false" onAction="#queryWithFilters" prefHeight="25.0" prefWidth="109.0" text="FILTRAR" textAlignment="CENTER">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
@@ -161,7 +156,7 @@
                   </HBox>
                   <ScrollPane fx:id="bookContainer" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="296.0" prefWidth="676.0">
                      <content>
-                        <VBox prefWidth="653.0">
+                        <VBox alignment="TOP_CENTER" prefWidth="653.0">
                            <children>
                               <GridPane fx:id="bookGrid" hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS">
                                 <columnConstraints>
@@ -178,6 +173,14 @@
                                     <RowConstraints vgrow="SOMETIMES" />
                                 </rowConstraints>
                               </GridPane>
+                              <Label fx:id="lblPlaceHoder" text="Nenhum resultado encontrado" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="100.0" />
+                                 </VBox.margin>
+                              </Label>
                            </children>
                         </VBox>
                      </content></ScrollPane>
@@ -221,5 +224,14 @@
          </children>
       </HBox>
       <Label fx:id="lblPageCount" alignment="BOTTOM_LEFT" layoutX="194.0" layoutY="481.0" maxHeight="1.7976931348623157E308" prefHeight="17.0" prefWidth="94.0" text="Página 1 de 20" textFill="WHITE" />
+      <Button layoutX="130.0" layoutY="84.0" mnemonicParsing="false" onAction="#search" prefHeight="31.0" prefWidth="21.0" styleClass="arrow">
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../imagens/pesquisar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
