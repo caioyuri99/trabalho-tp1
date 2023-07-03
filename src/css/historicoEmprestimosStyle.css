@@ -1,0 +1,15 @@
+.arrow {
+    -fx-background-color: #2e6118;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+}
+
+.arrow:hover {
+    -fx-background-color: #497238;
+}
+
+.arrow:pressed {
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+}

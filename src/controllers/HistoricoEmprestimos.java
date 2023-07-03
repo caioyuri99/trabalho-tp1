@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import session.Session;
 
 public class HistoricoEmprestimos implements Initializable {
+    // TODO: Detalhe: implementar paginação nessa tela
 
     private Parent root;
     private Stage stage;

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,9 +18,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HistoricoEmprestimos">
    <center>
-      <VBox prefHeight="278.0" prefWidth="600.0" style="-fx-background-color: #38761d;" BorderPane.alignment="CENTER">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="600.0" style="-fx-background-color: #38761d;" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #D5D5D5;">
+            <HBox alignment="CENTER" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #D5D5D5;">
                <children>
                   <Button mnemonicParsing="false" onAction="#search">
                      <graphic>
@@ -74,7 +75,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
-            <TableView fx:id="tableEmprestimos">
+            <TableView fx:id="tableEmprestimos" prefHeight="248.0" prefWidth="580.0">
               <columns>
                 <TableColumn fx:id="clmTitulo" prefWidth="113.0" text="Título" />
                 <TableColumn fx:id="clmAutor" prefWidth="66.0" text="Autor" />
@@ -91,6 +92,38 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <HBox alignment="CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="580.0" spacing="5.0" stylesheets="@../css/historicoEmprestimosStyle.css">
+               <children>
+                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="arrow">
+                     <graphic>
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imagens/arrow-left.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <TextField disable="true" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="25.0" text="1" />
+                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="arrow">
+                     <graphic>
+                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imagens/arrow-right.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
