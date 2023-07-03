@@ -41,8 +41,7 @@ import javafx.stage.Window;
 import session.Session;
 
 public class Catalogo implements Initializable {
-    // TODO: implementar a paginação
-    // TODO: trocar os hiperlinks por labels formatadas como links
+    // TODO: Detalhe: trocar os hiperlinks por labels formatadas como links
     private Parent root;
     private Stage stage;
     private int currentPage = 0;

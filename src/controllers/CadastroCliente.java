@@ -100,7 +100,7 @@ public class CadastroCliente implements Initializable {
         }
 
         if (!senha.equals(confSenha)) {
-            // TODO: exibir essa informação graficamente e não como alerta
+            // TODO: Detalhe: exibir essa informação graficamente e não como alerta
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
