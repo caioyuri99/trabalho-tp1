@@ -42,8 +42,8 @@ public class EmprestimoDAO {
             stmt.setString(1, tipoItem);
             stmt.setInt(2, item.getId());
             stmt.setString(3, cliente.getCpf());
-            stmt.setDate(4, Date.valueOf(LocalDate.now()));
-            stmt.setDate(5, Date.valueOf(LocalDate.now().plusDays(14)));
+            stmt.setDate(4, Date.valueOf(Session.getDataAtual()));
+            stmt.setDate(5, Date.valueOf(Session.getDataAtual().plusDays(14)));
             stmt.execute();
 
             System.out.println("Emprestimo registrado com sucesso!");
@@ -54,8 +54,9 @@ public class EmprestimoDAO {
         } finally {
             try {
                 this.connection.close();
+
             } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                throw new Exception("Erro ao fechar conexão: " + e.getMessage());
             }
         }
     }
@@ -76,8 +77,9 @@ public class EmprestimoDAO {
         } finally {
             try {
                 this.connection.close();
+
             } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                throw new Exception("Erro ao fechar conexão: " + e.getMessage());
             }
         }
     }
@@ -143,12 +145,6 @@ public class EmprestimoDAO {
 
             return null;
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -222,12 +218,6 @@ public class EmprestimoDAO {
 
             return 0;
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -248,12 +238,6 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             throw new Exception("Erro ao registrar: " + e.getMessage());
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -262,7 +246,7 @@ public class EmprestimoDAO {
 
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-            stmt.setDate(1, Date.valueOf(LocalDate.now()));
+            stmt.setDate(1, Date.valueOf(Session.getDataAtual()));
             stmt.setBoolean(2, true);
             stmt.setInt(3, id);
             stmt.execute();
@@ -272,12 +256,6 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             throw new Exception("Erro ao registrar: " + e.getMessage());
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -323,12 +301,6 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             throw new Exception("Erro ao obter: " + e.getMessage());
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -347,12 +319,6 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             throw new Exception("Erro ao obter: " + e.getMessage());
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -372,41 +338,36 @@ public class EmprestimoDAO {
         } catch (Exception e) {
             throw new Exception("Erro ao pagar: " + e.getMessage());
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
     public void atualizaAtrasosMultas(Cliente cliente) throws Exception {
-        String query = "UPDATE emprestimo SET atrasado = ?, multado = ?, valorMulta = ?, pago = ? WHERE leitor = ? AND NOT devolvido";
+        String query = "UPDATE emprestimo SET atrasado = ?, multado = ?, valorMulta = ?, pago = ? WHERE leitor = ? AND NOT devolvido AND id = ?";
 
-        try {
-            ArrayList<Emprestimo> emprestimos = this.getEmprestimosAtivos(cliente);
+        this.connection = connectionDB.getConnection();
+        ArrayList<Emprestimo> emprestimos = this.getEmprestimosAtivos(cliente);
 
-            for (Emprestimo emprestimo : emprestimos) {
-                long atraso = ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), Session.getDataAtual());
+        for (Emprestimo emprestimo : emprestimos) {
+            long atraso = ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), Session.getDataAtual());
 
-                if (atraso <= 3 && atraso > 0) {
-                    emprestimo.setAtrasado(true);
-                    emprestimo.setMultado(false);
-                    emprestimo.setValorMulta(null);
-                    emprestimo.setPago(null);
-                } else if (atraso > 3) {
-                    emprestimo.setAtrasado(true);
-                    emprestimo.setMultado(true);
-                    emprestimo.setValorMulta(atraso * 0.8);
-                    emprestimo.setPago(false);
-                } else {
-                    emprestimo.setAtrasado(false);
-                    emprestimo.setMultado(false);
-                    emprestimo.setValorMulta(null);
-                    emprestimo.setPago(null);
-                }
+            if (atraso <= 3 && atraso > 0) {
+                emprestimo.setAtrasado(true);
+                emprestimo.setMultado(false);
+                emprestimo.setValorMulta(null);
+                emprestimo.setPago(null);
+            } else if (atraso > 3) {
+                emprestimo.setAtrasado(true);
+                emprestimo.setMultado(true);
+                emprestimo.setValorMulta(atraso * 0.8);
+                emprestimo.setPago(false);
+            } else {
+                emprestimo.setAtrasado(false);
+                emprestimo.setMultado(false);
+                emprestimo.setValorMulta(null);
+                emprestimo.setPago(null);
+            }
 
+            try {
                 PreparedStatement stmt = this.connection.prepareStatement(query);
                 stmt.setBoolean(1, emprestimo.isAtrasado());
                 stmt.setBoolean(2, emprestimo.isMultado());
@@ -424,17 +385,11 @@ public class EmprestimoDAO {
                 }
 
                 stmt.setString(5, cliente.getCpf());
+                stmt.setInt(6, emprestimo.getId());
                 stmt.execute();
-            }
-
-        } catch (Exception e) {
-            throw new Exception("Erro ao atualizar: " + e.getMessage());
-
-        } finally {
-            try {
-                this.connection.close();
             } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                throw new Exception("Erro ao atualizar: " + e.getMessage());
+
             }
         }
     }
@@ -483,12 +438,6 @@ public class EmprestimoDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
             return new ArrayList<Emprestimo>();
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
     }
 
@@ -543,12 +492,15 @@ public class EmprestimoDAO {
             System.out.println("Erro ao obter: " + e.getMessage());
             return null;
 
-        } finally {
-            try {
-                this.connection.close();
-            } catch (Exception e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            this.connection.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao fechar conexão: " + e.getMessage());
         }
     }
 
