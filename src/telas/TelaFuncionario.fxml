@@ -3,7 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +18,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <BorderPane prefHeight="398.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TelaFuncionario">
    <center>
@@ -36,8 +37,8 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <TextField fx:id="txtSearch" layoutX="56.0" layoutY="10.0" onAction="#search" prefHeight="27.0" prefWidth="538.0" promptText="Pesquisar..." />
-                  <Button layoutX="601.0" layoutY="10.0" mnemonicParsing="false" onAction="#refreshTable">
+                  <TextField fx:id="txtSearch" layoutX="56.0" layoutY="10.0" onAction="#search" prefHeight="27.0" prefWidth="306.0" promptText="Pesquisar..." />
+                  <Button layoutX="633.0" layoutY="10.0" mnemonicParsing="false" onAction="#refreshTable">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -46,6 +47,8 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <ComboBox fx:id="cbbEstante" layoutX="500.0" layoutY="11.0" prefHeight="25.0" prefWidth="124.0" promptText="Estante" />
+                  <ComboBox fx:id="cbbTipo" layoutX="368.0" layoutY="11.0" prefHeight="25.0" prefWidth="124.0" promptText="Tipo" />
                </children>
             </AnchorPane>
             <TableView fx:id="tableObras" layoutX="9.0" layoutY="60.0" prefHeight="318.0" prefWidth="682.0">
@@ -62,16 +65,46 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Button layoutX="21.0" layoutY="416.0" mnemonicParsing="false" onAction="#addObra" prefHeight="25.0" prefWidth="290.0" text="ADICIONAR OBRA">
+            <Button layoutX="22.0" layoutY="416.0" mnemonicParsing="false" onAction="#addObra" prefHeight="25.0" prefWidth="290.0" text="ADICIONAR OBRA">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="387.0" layoutY="416.0" mnemonicParsing="false" onAction="#gerenciarEstantes" prefHeight="25.0" prefWidth="290.0" text="GERENCIAR ESTANTES">
+            <Button layoutX="389.0" layoutY="416.0" mnemonicParsing="false" onAction="#gerenciarEstantes" prefHeight="25.0" prefWidth="290.0" text="GERENCIAR ESTANTES">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <HBox alignment="CENTER" layoutX="312.0" layoutY="385.0" spacing="5.0" stylesheets="@../css/telaFuncionarioStyle.css">
+               <children>
+                  <Button fx:id="btnPreviousPage" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToPreviousPage" prefHeight="20.0" prefWidth="20.0" styleClass="arrow">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imagens/arrow-left.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <TextField fx:id="txtCurrentPage" onAction="#goToPage" prefHeight="25.0" prefWidth="27.0" />
+                  <Button fx:id="btnNextPage" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="20.0" prefWidth="20.0" styleClass="arrow">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imagens/arrow-right.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Label fx:id="lblPageCount" layoutX="219.0" layoutY="389.0" text="Página 12 de 20" textFill="WHITE" />
          </children>
       </AnchorPane>
    </center>

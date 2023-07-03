@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import biblioteca.DatePattern;
+import biblioteca.Estante;
 import biblioteca.Funcionario;
 import biblioteca.Obra;
 import controllers.cellFactoryFormat.DatePatternDateFactory;
@@ -25,6 +26,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -35,6 +38,13 @@ public class TelaFuncionario implements Initializable {
 
     private Parent root;
     private Stage stage;
+
+    private int totalPages = 1;
+    private int currentPage = 0;
+
+    private String lastSearch = "";
+    private Estante lastEstante = null;
+    private String lastTipo = "";
 
     @FXML
     private TableView<Obra> tableObras;
@@ -63,6 +73,24 @@ public class TelaFuncionario implements Initializable {
     @FXML
     private TextField txtSearch;
 
+    @FXML
+    private ComboBox<Estante> cbbEstante;
+
+    @FXML
+    private ComboBox<String> cbbTipo;
+
+    @FXML
+    private Button btnNextPage;
+
+    @FXML
+    private Button btnPreviousPage;
+
+    @FXML
+    private TextField txtCurrentPage;
+
+    @FXML
+    private Label lblPageCount;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         tableObras.setPlaceholder(new Label("Nenhuma obra encontrada"));
@@ -80,6 +108,7 @@ public class TelaFuncionario implements Initializable {
             TableRow<Obra> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    // TODO: colocar uma tela de carregamento nisso
                     Obra obra = row.getItem();
 
                     Stage gerenciarObra = new Stage();
@@ -111,8 +140,66 @@ public class TelaFuncionario implements Initializable {
             return row;
         });
 
-        ArrayList<Obra> obras = Obra.getObras(30, 0);
-        tableObras.setItems(FXCollections.observableArrayList(obras));
+        int total = Obra.getObrasCount();
+        totalPages = (int) Math.ceil(total / 30);
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
+
+        if (totalPages == 1) {
+            btnNextPage.setDisable(true);
+            txtCurrentPage.setDisable(true);
+        } else {
+            btnNextPage.setDisable(false);
+            txtCurrentPage.setDisable(false);
+        }
+
+        txtCurrentPage.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtCurrentPage.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            if (newValue.isEmpty() || txtCurrentPage.getText().isEmpty()) {
+                return;
+            }
+
+            int currentNum = Integer.parseInt(txtCurrentPage.getText());
+
+            if (currentNum - 1 != currentPage) {
+                return;
+            }
+
+            if (totalPages == 1) {
+                btnNextPage.setDisable(true);
+                txtCurrentPage.setText("1");
+            } else {
+                btnNextPage.setDisable(false);
+            }
+
+            if (currentNum >= totalPages) {
+                txtCurrentPage.setText(String.valueOf(totalPages));
+                btnNextPage.setDisable(true);
+            } else {
+                btnNextPage.setDisable(false);
+            }
+
+            if (currentNum <= 1) {
+                txtCurrentPage.setText("1");
+                btnPreviousPage.setDisable(true);
+            } else {
+                btnPreviousPage.setDisable(false);
+            }
+        });
+
+        goToPage(0);
+
+        attPageCount();
+
+        Estante todas = new Estante(0, "Todas");
+        cbbEstante.getItems().add(todas);
+        cbbEstante.getItems().addAll(Estante.getListaEstantes());
+
+        cbbTipo.getItems().addAll("Todos", "Livro", "Revista", "Gibi");
     }
 
     @FXML
@@ -181,16 +268,69 @@ public class TelaFuncionario implements Initializable {
 
     @FXML
     void refreshTable(ActionEvent event) {
-        ArrayList<Obra> obras = Obra.getObras(50, 0);
+        int total = Obra.getObrasCount();
+        totalPages = (int) Math.ceil(total / 30);
+
+        ArrayList<Obra> obras = Obra.getObras(30, 0);
         tableObras.setItems(FXCollections.observableArrayList(obras));
+
+        goToPage(0);
     }
 
     @FXML
     void search(ActionEvent event) {
-        String search = txtSearch.getText();
+        lastSearch = txtSearch.getText();
+        lastTipo = (cbbTipo.getValue() == null || cbbTipo.getValue().equals("Todos")) ? "" : cbbTipo.getValue();
+        lastEstante = (cbbEstante.getValue() == null || cbbEstante.getValue().getId() == 0) ? null
+                : cbbEstante.getValue();
 
-        ArrayList<Obra> obras = Obra.getObras(search, 50, 0);
+        int total = Obra.getObrasCount(lastSearch, lastEstante, lastTipo);
+        this.totalPages = (int) Math.ceil(total / 30);
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
+
+        if (totalPages == 1) {
+            btnNextPage.setDisable(true);
+            txtCurrentPage.setDisable(true);
+        } else {
+            btnNextPage.setDisable(false);
+            txtCurrentPage.setDisable(false);
+        }
+
+        goToPage(0);
+        attPageCount();
+    }
+
+    @FXML
+    void goToNextPage(ActionEvent event) {
+        goToPage(currentPage + 1);
+        attPageCount();
+    }
+
+    @FXML
+    void goToPage(ActionEvent event) {
+        int page = Integer.parseInt(txtCurrentPage.getText()) - 1;
+        goToPage(page);
+        attPageCount();
+    }
+
+    @FXML
+    void goToPreviousPage(ActionEvent event) {
+        goToPage(currentPage - 1);
+        attPageCount();
+    }
+
+    private void goToPage(int page) {
+        currentPage = page;
+
+        ArrayList<Obra> obras = Obra.getObras(lastSearch, lastEstante, lastTipo, 30, 30 * page);
         tableObras.setItems(FXCollections.observableArrayList(obras));
+    }
+
+    private void attPageCount() {
+        lblPageCount.setText(String.format("Página %d de %d", currentPage + 1, totalPages));
+        txtCurrentPage.textProperty().set(String.valueOf(currentPage + 1));
     }
 
 }
