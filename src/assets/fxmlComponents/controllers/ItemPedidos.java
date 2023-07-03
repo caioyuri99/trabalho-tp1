@@ -2,6 +2,7 @@ package assets.fxmlComponents.controllers;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -82,6 +83,14 @@ public class ItemPedidos implements Initializable {
         lblDataEmprestimo.setText(emprestimo.getDataEmprestimo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         lblDataDevolucao.setText(emprestimo.getDataDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
+        long diasAteDevolucao = ChronoUnit.DAYS.between(Session.getDataAtual(), emprestimo.getDataDevolucao());
+
+        if (diasAteDevolucao <= 3) {
+            btnRenovar.setDisable(false);
+        } else {
+            btnRenovar.setDisable(true);
+        }
+
         lblAtrasado.setText(emprestimo.isAtrasado() ? "Sim" : "Não");
         if (emprestimo.isAtrasado()) {
             lblAtrasado.setStyle("-fx-text-fill: red");
@@ -93,7 +102,7 @@ public class ItemPedidos implements Initializable {
                 lblMultado.setStyle("-fx-text-fill: red");
                 btnDevolver.setDisable(true);
                 lblValorMulta.setVisible(true);
-                lblValorMulta.setText(String.valueOf(emprestimo.getValorMulta()));
+                lblValorMulta.setText(String.format("R$ %.2f", String.valueOf(emprestimo.getValorMulta())));
                 btnPagar.setVisible(true);
             }
         }
@@ -217,7 +226,7 @@ public class ItemPedidos implements Initializable {
                 lblPlaceHoder.setVisible(true);
             }
 
-            txtSaldoDevedor.setText(String.valueOf(cliente.getSaldoDevedor()));
+            txtSaldoDevedor.setText(String.format("R$ %.2f", String.valueOf(cliente.getSaldoDevedor())));
         }
     }
 
@@ -227,6 +236,10 @@ public class ItemPedidos implements Initializable {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public void setTxtSaldoDevedor(Text txtSaldoDevedor) {
+        this.txtSaldoDevedor = txtSaldoDevedor;
     }
 
 }
