@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import assets.fxmlComponents.controllers.GibiItemCarrinho;
 import assets.fxmlComponents.controllers.LivroItemCarrinho;
+import assets.fxmlComponents.controllers.RevistaItemCarrinho;
 import biblioteca.Cliente;
 import biblioteca.Item;
 import javafx.event.ActionEvent;
@@ -76,16 +77,28 @@ public class Carrinho implements Initializable {
                         }
                         break;
                     case "Revista":
-                        // TODO: colocar revistas no banco de dados para implementar
-                        // try {
-                        // FXMLLoader loader = new
-                        // FXMLLoader(getClass().getResource("/assets/fxmlComponents/RevistaItemCarrinho.fxml"));
-                        // itemContainer.getChildren().add(loader.load());
-                        // RevistaItemCarrinho revistaItemCarrinho = loader.getController();
-                        // revistaItemCarrinho.setRevista(item);
-                        // } catch (Exception e) {
-                        // e.printStackTrace();
-                        // }
+                        try {
+                            FXMLLoader loader = new FXMLLoader(
+                                    getClass().getResource("/assets/fxmlComponents/RevistaItemCarrinho.fxml"));
+                            loader.setControllerFactory(param -> {
+                                if (param == RevistaItemCarrinho.class) {
+                                    RevistaItemCarrinho controller = new RevistaItemCarrinho();
+                                    controller.setItem(item);
+                                    controller.setTxtMulta(txtMulta);
+                                    return controller;
+                                } else {
+                                    try {
+                                        return param.getDeclaredConstructor().newInstance();
+                                    } catch (Exception e) {
+                                        throw new RuntimeException("Erro ao criar o controlador", e);
+                                    }
+                                }
+                            });
+                            Parent content = loader.load();
+                            itemContainer.getChildren().add(content);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "Gibi":
                         try {

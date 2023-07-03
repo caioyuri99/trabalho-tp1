@@ -99,7 +99,7 @@ public class RevistaItemCarrinho implements Initializable {
         this.revista = (Revista) item;
     }
 
-    public void setTextMulta(Text txtMulta) {
+    public void setTxtMulta(Text txtMulta) {
         this.txtMulta = txtMulta;
     }
 
