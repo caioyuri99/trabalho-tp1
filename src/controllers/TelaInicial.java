@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -98,7 +99,7 @@ public class TelaInicial implements Initializable {
         try {
             cliente.login(cpf, senha);
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao tentar logar");
             alert.setContentText(e.getMessage());
