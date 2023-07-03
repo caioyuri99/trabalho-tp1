@@ -19,6 +19,11 @@ public class Estante {
         this.categoria = categoria;
     }
 
+    public Estante(int id, String categoria) {
+        this.id = id;
+        this.categoria = categoria;
+    }
+
     public Estante(int id, String categoria, ArrayList<Obra> obras) {
         this.id = id;
         this.categoria = categoria;
